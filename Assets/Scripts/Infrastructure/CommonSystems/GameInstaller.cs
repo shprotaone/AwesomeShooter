@@ -1,6 +1,7 @@
 using Infrastructure;
 using Infrastructure.AssetManagment;
 using Infrastructure.CommonSystems;
+using Infrastructure.ECS.Services;
 using Infrastructure.Factories;
 using Infrastructure.GameStates;
 using UnityEngine;
@@ -8,7 +9,6 @@ using Zenject;
 
 public class GameInstaller : MonoInstaller
 {
-    [SerializeField] private GameObject _curtainPrefab;
     public override void InstallBindings()
     {
         BindGameStateMachine();

@@ -1,3 +1,4 @@
+using Infrastructure.Bootstrappers;
 using Infrastructure.Factories;
 using Infrastructure.GameStates;
 using UnityEngine;
@@ -21,6 +22,8 @@ namespace Infrastructure
         {
             _stateMachine.RegisterState(_statesFactory.Create<GameBootstrapState>());
             _stateMachine.RegisterState(_statesFactory.Create<GameLoadingState>());
+            _stateMachine.RegisterState(_statesFactory.Create<GameHubState>());
+            _stateMachine.RegisterState(_statesFactory.Create<GameplayState>());
             
             _stateMachine.Enter<GameBootstrapState>();
             DontDestroyOnLoad(this);

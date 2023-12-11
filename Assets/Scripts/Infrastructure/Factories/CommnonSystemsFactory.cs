@@ -1,7 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Infrastructure.AssetManagment;
 using Infrastructure.CommonSystems;
-using Scripts.Infrasructure;
 using UnityEngine;
 using Zenject;
 
@@ -25,7 +24,7 @@ namespace Infrastructure.Factories
             GameObject prefab = await _assetProvider.Load<GameObject>(AssetAddress.LoadingCurtainPath);
             GameObject newObj = _instantiator.InstantiatePrefab(prefab);
             LoadingCurtain curtain = newObj.GetComponent<LoadingCurtain>();
-            _container.Bind<ILoadingCurtain>().To<LoadingCurtain>().FromInstance(curtain).AsSingle();
+            _container.Rebind<ILoadingCurtain>().To<LoadingCurtain>().FromInstance(curtain).AsSingle();
             return curtain;
         }
     }

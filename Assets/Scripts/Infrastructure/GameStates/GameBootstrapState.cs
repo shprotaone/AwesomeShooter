@@ -1,9 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Infrastructure.AssetManagment;
-using Infrastructure.CommonSystems;
 using Infrastructure.Factories;
-using Scripts.Infrasructure;
-using UnityEngine;
 
 namespace Infrastructure.GameStates
 {
@@ -12,18 +9,14 @@ namespace Infrastructure.GameStates
         private GameStateMachine _gameStateMachine;
         private CommnonSystemsFactory _commnonSystemsFactory;
         private IAssetProvider _assetProvider;
-        private StatesFactory _statesFactory;
 
         public GameBootstrapState(GameStateMachine gameStateMachine,
             CommnonSystemsFactory commonFactory,
-            IAssetProvider assetProvider,
-            StatesFactory statesFactory)
+            IAssetProvider assetProvider)
         {
             _assetProvider = assetProvider;
             _gameStateMachine = gameStateMachine;
             _commnonSystemsFactory = commonFactory;
-            _statesFactory = statesFactory;
-
         }
 
         public async UniTask Enter()

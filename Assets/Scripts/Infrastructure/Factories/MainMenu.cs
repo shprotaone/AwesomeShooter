@@ -9,21 +9,21 @@ namespace Infrastructure.Factories
     public class MainMenu : MonoBehaviour
     {
         [SerializeField] private Button _startGame;
-
-        private ISceneLoader _sceneLoader;
+        private GameStateMachine _stateMachine;
         [Inject]
-        private void Construct(ISceneLoader sceneLoader)
+        private void Construct(ISceneLoader sceneLoader,GameStateMachine stateMachine)
         {
-            _sceneLoader = sceneLoader;
+            _stateMachine = stateMachine;
         }
         private void Start()
         {
             _startGame.onClick.AddListener(StartGame);
         }
 
-        private void StartGame()
+        private async void StartGame()
         {
-            _sceneLoader.Load(AssetAddress.GameplayScenePath);
+            await _stateMachine.Enter<GameplayState>();
+            
         }
     }
 }
