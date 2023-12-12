@@ -9,10 +9,12 @@ namespace Infrastructure.ECS.Services
         public event Action<Vector2> OnHorizontalInput;
         public event Action<Vector2> OnMouseInput;
         public event Action OnJumpPressed;
+        public event Action OnAttackButton;
+        public event Action OnReload; 
 
         private PlayerControls _controls;
         private PlayerControls.GroundMovementActions _movement;
-
+        
         public InputService()
         {
             _movement = new PlayerControls().GroundMovement;
@@ -21,6 +23,13 @@ namespace Infrastructure.ECS.Services
             SetHorizontalDirection();
             SetMouseDirection();
             SetButtonJump();
+            SetWeaponAction();
+        }
+
+        private void SetWeaponAction()
+        {
+            _movement.Fire.performed += ctx => OnAttackButton?.Invoke();
+            _movement.Reload.performed += ctx => OnReload?.Invoke();
         }
 
         private void SetMouseDirection()

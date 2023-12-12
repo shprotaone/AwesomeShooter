@@ -1,6 +1,5 @@
-using Infrastructure.ECS;
 using Infrastructure.ECS.Services;
-using Leopotam.EcsLite;
+using Infrastructure.ECS.Systems;
 using Zenject;
 
 namespace Infrastructure.CommonSystems
@@ -10,8 +9,22 @@ namespace Infrastructure.CommonSystems
         public override void InstallBindings()
         {
             InputServiceBinding();
+
+            BulletFactoryBinding();
+
+            BulletPoolBinding();
         }
-        
+
+        private void BulletPoolBinding()
+        {
+            Container.Bind<BulletPool>().AsSingle();
+        }
+
+        private void BulletFactoryBinding()
+        {
+            Container.Bind<BulletFactory>().AsSingle();
+        }
+
         private void InputServiceBinding()
         {
             Container.Bind<InputService>().AsSingle();

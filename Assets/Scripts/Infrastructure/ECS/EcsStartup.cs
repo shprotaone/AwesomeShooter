@@ -3,7 +3,6 @@ using Infrastructure.ECS.Systems;
 using Leopotam.EcsLite;
 using Infrasructure.Settings;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Voody.UniLeo.Lite;
 using Zenject;
 
@@ -11,16 +10,19 @@ namespace Infrastructure.ECS
 {
     sealed class EcsStartup : MonoBehaviour 
     {
-        private EcsWorld _world;        
+        [SerializeField] private PlayerSettingsSO _playerSettingsSo;
+
+        private EcsWorld _world;
         private EcsSystems _systems;
         private EcsSystems _fixedUpdateSystems;
         private InputService _inputService;
-        [FormerlySerializedAs("_playerSettings")] [SerializeField] private PlayerSettingsSO _playerSettingsSo;
+        private BulletPool _bulletPool;
 
         [Inject]
-        private void Construct(InputService inputService)
+        private void Construct(InputService inputService,BulletPool bulletPool)
         {
             _inputService = inputService;
+            _bulletPool = bulletPool;
         }
 
         private void Awake () 
@@ -46,7 +48,9 @@ namespace Infrastructure.ECS
                 .Add(new PlayerJumpSystem(_inputService))
                 .Add(new PlayerMouseLookSystem(_inputService))
                 .Add(new CursorLockSystem())
-                .Add(new GravitySystem());
+                .Add(new GravitySystem())
+                .Add(new PlayerWeaponShootSystem(_inputService,_bulletPool))
+                .Add(new ProjectileMovement());
 
             _fixedUpdateSystems.Add(new PlayerGroundCheckSystem());
         }
