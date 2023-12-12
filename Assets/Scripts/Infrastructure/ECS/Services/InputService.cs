@@ -7,12 +7,12 @@ namespace Infrastructure.ECS.Services
     public class InputService
     {
         public event Action<Vector2> OnHorizontalInput;
+        public event Action<Vector2> OnMouseInput;
         public event Action OnJumpPressed;
 
         private PlayerControls _controls;
         private PlayerControls.GroundMovementActions _movement;
-        public Vector2 HorizontalInput { get; private set; }
-        private Vector2 _mouseInput;
+        public Vector2 MouseInput;
         
         public InputService()
         {
@@ -27,10 +27,10 @@ namespace Infrastructure.ECS.Services
         private void SetMouseDirection()
         {
             _movement.MouseX.performed += ctx =>
-                _mouseInput.x = ctx.ReadValue<float>();
+                MouseInput.x = ctx.ReadValue<float>();
 
             _movement.MouseY.performed += ctx =>
-                _mouseInput.y = ctx.ReadValue<float>();
+                MouseInput.y = ctx.ReadValue<float>();
         }
 
         private void SetHorizontalDirection()

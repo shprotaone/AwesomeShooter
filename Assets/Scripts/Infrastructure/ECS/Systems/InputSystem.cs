@@ -11,7 +11,6 @@ namespace Infrastructure.ECS
         private EcsPool<DirectionComponent> _directions;
         private InputService _inputService;
         
-        //TODO: переделать на InputService
         private Vector2 _horizontalInput;
 
         public InputSystem(InputService inputService)

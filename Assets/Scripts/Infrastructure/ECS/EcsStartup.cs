@@ -39,6 +39,7 @@ namespace Infrastructure.ECS
         private void AddSystems()
         {
             _systems.Add(new InputSystem(_inputService)).Add(new MovementSystem());
+            _systems.Add(new PlayerMouseInputSystem(_inputService));
         }
 
         private void AddInjection()

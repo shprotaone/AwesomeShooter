@@ -10,23 +10,12 @@ namespace Infrastructure.CommonSystems
         public override void InstallBindings()
         {
             InputServiceBinding();
-
-            //BindECSSystems();
         }
-
-        private void BindECSSystems()
-        {
-            BindSystem<InputSystem>();
-        }
-
+        
         private void InputServiceBinding()
         {
             Container.Bind<InputService>().AsSingle();
         }
         
-        private void BindSystem<TSystem>() where TSystem : IEcsSystem
-        {
-            Container.Bind<IEcsSystem>().To<TSystem>().AsTransient();
-        }
     }
 }
