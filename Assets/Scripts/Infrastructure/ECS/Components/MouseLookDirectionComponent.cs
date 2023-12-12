@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Numerics;
-using Cinemachine;
+using UnityEngine;
 
 namespace Infrastructure.ECS.Components
 {
     [Serializable]
     public struct MouseLookDirectionComponent
     {
-        public CinemachineVirtualCamera camera;
-        public float sensitivityX;
-        public float sensitivityY;
-        public Vector3 lookDirection;
+        public Camera camera;
+        public CinemachinePOVExtension camExtension;
     }
 }

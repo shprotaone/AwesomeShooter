@@ -46,19 +46,10 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""MouseX"",
+                    ""name"": ""Look"",
                     ""type"": ""PassThrough"",
-                    ""id"": ""fc6bfb2e-ca2f-48e3-8ccf-5362fac134df"",
-                    ""expectedControlType"": ""Axis"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""MouseY"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""9b5a7b16-bcdc-405f-ad09-73812bd73a93"",
-                    ""expectedControlType"": ""Axis"",
+                    ""id"": ""aaa53760-9b0b-4d88-a05c-96b547b0dbd4"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -133,23 +124,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""ff6ebeac-027a-43cf-aaba-34fe2fe3a23c"",
-                    ""path"": ""<Mouse>/delta/x"",
+                    ""id"": ""e5659923-a2ba-4d16-ae2b-ca08f8d98d64"",
+                    ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""MouseX"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a44307f9-0756-4201-8721-a50e1938921c"",
-                    ""path"": ""<Mouse>/delta/y"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MouseY"",
+                    ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -162,8 +142,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_GroundMovement = asset.FindActionMap("GroundMovement", throwIfNotFound: true);
         m_GroundMovement_Horizontal = m_GroundMovement.FindAction("Horizontal", throwIfNotFound: true);
         m_GroundMovement_Jump = m_GroundMovement.FindAction("Jump", throwIfNotFound: true);
-        m_GroundMovement_MouseX = m_GroundMovement.FindAction("MouseX", throwIfNotFound: true);
-        m_GroundMovement_MouseY = m_GroundMovement.FindAction("MouseY", throwIfNotFound: true);
+        m_GroundMovement_Look = m_GroundMovement.FindAction("Look", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -227,16 +206,14 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private List<IGroundMovementActions> m_GroundMovementActionsCallbackInterfaces = new List<IGroundMovementActions>();
     private readonly InputAction m_GroundMovement_Horizontal;
     private readonly InputAction m_GroundMovement_Jump;
-    private readonly InputAction m_GroundMovement_MouseX;
-    private readonly InputAction m_GroundMovement_MouseY;
+    private readonly InputAction m_GroundMovement_Look;
     public struct GroundMovementActions
     {
         private @PlayerControls m_Wrapper;
         public GroundMovementActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Horizontal => m_Wrapper.m_GroundMovement_Horizontal;
         public InputAction @Jump => m_Wrapper.m_GroundMovement_Jump;
-        public InputAction @MouseX => m_Wrapper.m_GroundMovement_MouseX;
-        public InputAction @MouseY => m_Wrapper.m_GroundMovement_MouseY;
+        public InputAction @Look => m_Wrapper.m_GroundMovement_Look;
         public InputActionMap Get() { return m_Wrapper.m_GroundMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -252,12 +229,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
-            @MouseX.started += instance.OnMouseX;
-            @MouseX.performed += instance.OnMouseX;
-            @MouseX.canceled += instance.OnMouseX;
-            @MouseY.started += instance.OnMouseY;
-            @MouseY.performed += instance.OnMouseY;
-            @MouseY.canceled += instance.OnMouseY;
+            @Look.started += instance.OnLook;
+            @Look.performed += instance.OnLook;
+            @Look.canceled += instance.OnLook;
         }
 
         private void UnregisterCallbacks(IGroundMovementActions instance)
@@ -268,12 +242,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
-            @MouseX.started -= instance.OnMouseX;
-            @MouseX.performed -= instance.OnMouseX;
-            @MouseX.canceled -= instance.OnMouseX;
-            @MouseY.started -= instance.OnMouseY;
-            @MouseY.performed -= instance.OnMouseY;
-            @MouseY.canceled -= instance.OnMouseY;
+            @Look.started -= instance.OnLook;
+            @Look.performed -= instance.OnLook;
+            @Look.canceled -= instance.OnLook;
         }
 
         public void RemoveCallbacks(IGroundMovementActions instance)
@@ -295,7 +266,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     {
         void OnHorizontal(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnMouseX(InputAction.CallbackContext context);
-        void OnMouseY(InputAction.CallbackContext context);
+        void OnLook(InputAction.CallbackContext context);
     }
 }

@@ -7,6 +7,6 @@ namespace Infrastructure.ECS
     [Serializable]
     public struct DirectionComponent
     {
-        public Vector3 direction;
+        [HideInInspector] public Vector3 direction;
     }
 }

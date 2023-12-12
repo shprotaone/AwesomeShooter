@@ -24,19 +24,10 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "MouseX",
+                    "name": "Look",
                     "type": "PassThrough",
-                    "id": "fc6bfb2e-ca2f-48e3-8ccf-5362fac134df",
-                    "expectedControlType": "Axis",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "MouseY",
-                    "type": "PassThrough",
-                    "id": "9b5a7b16-bcdc-405f-ad09-73812bd73a93",
-                    "expectedControlType": "Axis",
+                    "id": "aaa53760-9b0b-4d88-a05c-96b547b0dbd4",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -111,23 +102,12 @@
                 },
                 {
                     "name": "",
-                    "id": "ff6ebeac-027a-43cf-aaba-34fe2fe3a23c",
-                    "path": "<Mouse>/delta/x",
+                    "id": "e5659923-a2ba-4d16-ae2b-ca08f8d98d64",
+                    "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MouseX",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "a44307f9-0756-4201-8721-a50e1938921c",
-                    "path": "<Mouse>/delta/y",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MouseY",
+                    "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

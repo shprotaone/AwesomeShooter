@@ -7,6 +7,7 @@ namespace Infrastructure.ECS.Components
     public struct MovableComponent
     {
         public CharacterController characterController;
-        public float speed;
+        [HideInInspector] public Vector3 velocity;
+        [HideInInspector] public float speed;
     }
 }

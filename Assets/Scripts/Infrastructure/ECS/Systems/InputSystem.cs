@@ -1,5 +1,6 @@
 using Infrastructure.ECS.Services;
 using Leopotam.EcsLite;
+using UnityEditor;
 using UnityEngine;
 
 namespace Infrastructure.ECS
@@ -10,7 +11,7 @@ namespace Infrastructure.ECS
         private EcsFilter _inputFilter;
         private EcsPool<DirectionComponent> _directions;
         private InputService _inputService;
-        
+
         private Vector2 _horizontalInput;
 
         public InputSystem(InputService inputService)
@@ -21,7 +22,6 @@ namespace Infrastructure.ECS
         public void Init(IEcsSystems systems)
         {
             _world = systems.GetWorld();
-
             _inputService.OnHorizontalInput += SetDirection;
 
             Debug.Log("EntitiesCount" + _world.GetEntitiesCount());
@@ -40,8 +40,6 @@ namespace Infrastructure.ECS
 
                 direction.x = _horizontalInput.x;
                 direction.z = _horizontalInput.y;
-                
-                Debug.Log(_horizontalInput.ToString());
             }
         }
     }

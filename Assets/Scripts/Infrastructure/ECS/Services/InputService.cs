@@ -12,8 +12,7 @@ namespace Infrastructure.ECS.Services
 
         private PlayerControls _controls;
         private PlayerControls.GroundMovementActions _movement;
-        public Vector2 MouseInput;
-        
+
         public InputService()
         {
             _movement = new PlayerControls().GroundMovement;
@@ -26,11 +25,8 @@ namespace Infrastructure.ECS.Services
 
         private void SetMouseDirection()
         {
-            _movement.MouseX.performed += ctx =>
-                MouseInput.x = ctx.ReadValue<float>();
-
-            _movement.MouseY.performed += ctx =>
-                MouseInput.y = ctx.ReadValue<float>();
+            _movement.Look.performed += ctx =>
+                OnMouseInput?.Invoke(ctx.ReadValue<Vector2>());
         }
 
         private void SetHorizontalDirection()
