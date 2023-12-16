@@ -1,11 +1,10 @@
 ﻿using System;
-using UnityEngine;
 
 namespace Infrastructure.ECS.Components
 {
     [Serializable]
-    public struct WeaponPlayerTag
+    public struct LifeTimeComponent
     {
-
+        public float lifeTime;
     }
 }

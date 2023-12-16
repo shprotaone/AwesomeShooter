@@ -40,21 +40,16 @@ namespace Infrastructure.ECS.Systems
         {
             foreach (int entity in _movableFilter)
             {
-                ref var movableComponent = ref _movableComponent.Get(entity);
-                ref var directionComponent = ref _directionComponent.Get(entity);
+                ref var direction = ref _directionComponent.Get(entity).direction;
+                ref var camera = ref _mouseLookComponent.Get(entity).camera;
+                ref var characterController = ref _movableComponent.Get(entity).characterController;
+                ref var velocity = ref _movableComponent.Get(entity).velocity;
                 ref var modelComponent = ref _modelComponent.Get(entity);
-                ref var mouseLookComponent = ref _mouseLookComponent.Get(entity);
-                ref var gravityComponent = ref _gravityComponent.Get(entity);
-
-                ref var direction = ref directionComponent.direction;
-                ref var characterController = ref movableComponent.characterController;
-                ref var camera = ref mouseLookComponent.camera;
 
                 var cameraTransform = camera.transform;
 
                 var rawDirection = (cameraTransform.right * direction.x) +
                                    (cameraTransform.forward * direction.z);
-                ref var velocity = ref movableComponent.velocity;
 
                 rawDirection.y = velocity.y;
                 modelComponent.modelTransform.rotation = cameraTransform.rotation;

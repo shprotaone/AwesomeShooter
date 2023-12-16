@@ -9,7 +9,7 @@ namespace Infrastructure.ECS.Services
         public event Action<Vector2> OnHorizontalInput;
         public event Action<Vector2> OnMouseInput;
         public event Action OnJumpPressed;
-        public event Action OnAttackButton;
+        public event Action<bool> OnAttackButtonPressed;
         public event Action OnReload; 
 
         private PlayerControls _controls;
@@ -28,8 +28,17 @@ namespace Infrastructure.ECS.Services
 
         private void SetWeaponAction()
         {
-            _movement.Fire.performed += ctx => OnAttackButton?.Invoke();
+            _movement.Fire.started += ctx => OnAttackButtonPressed?.Invoke(true);
+            _movement.Fire.canceled += ctx => OnAttackButtonPressed?.Invoke(false);
+
             _movement.Reload.performed += ctx => OnReload?.Invoke();
+
+            OnAttackButtonPressed += Fire;
+        }
+
+        private void Fire(bool val)
+        {
+            Debug.Log("Fire" + val);
         }
 
         private void SetMouseDirection()

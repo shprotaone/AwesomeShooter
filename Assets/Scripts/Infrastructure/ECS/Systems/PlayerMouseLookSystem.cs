@@ -15,7 +15,6 @@ namespace Infrastructure.ECS.Systems
         private EcsWorld _world;
         private EcsFilter _playerFilter;
         private EcsPool<MouseLookDirectionComponent> _lookDirectionComponent;
-        private EcsPool<ModelComponent> _modelComponent;
         private PlayerSettingsSO _playerSettings;
 
         private Vector2 _deltaInput;
@@ -37,9 +36,6 @@ namespace Infrastructure.ECS.Systems
                 End();
 
             _lookDirectionComponent = _world.GetPool<MouseLookDirectionComponent>();
-            _modelComponent = _world.GetPool<ModelComponent>();
-
-            GetStartRotation();
         }
 
         public void Run(IEcsSystems systems)
@@ -59,15 +55,6 @@ namespace Infrastructure.ECS.Systems
                         _playerSettings.ClampAngle);
 
                 lookCameraComponent.camExtension.SetRotation(_startTransformRotation);
-            }
-        }
-
-        private void GetStartRotation()
-        {
-            foreach (int entity in _playerFilter)
-            {
-                ref var modelComponent = ref _modelComponent.Get(entity);
-                _startTransformRotation = modelComponent.modelTransform.rotation.eulerAngles;
             }
         }
 

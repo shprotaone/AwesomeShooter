@@ -29,7 +29,12 @@ namespace Infrastructure.ECS.Systems
                 ref var movableComponent = ref _movablePool.Get(entity);
 
                 ref var velocity = ref movableComponent.velocity;
-                velocity.y += -gravityComponent.gravity * Time.deltaTime;
+
+                if (velocity.y > -9.81f)
+                {
+                    velocity.y += -gravityComponent.gravity * Time.deltaTime;
+                }
+
             }
         }
     }

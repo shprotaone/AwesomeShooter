@@ -15,9 +15,10 @@ namespace Infrastructure.ECS.Systems
         {
             _assetProvider = assetProvider;
             _instantiator = instantiator;
+
         }
 
-        public async UniTask<Bullet> GetBulletAsync(BulletType type)
+        public async UniTask<GameObject> GetBulletAsync(BulletType type)
         {
             string address = "";
             if (type == BulletType.COMMON)
@@ -25,8 +26,7 @@ namespace Infrastructure.ECS.Systems
 
             GameObject prefab = await _assetProvider.Load<GameObject>(address);
             GameObject newObj = _instantiator.InstantiatePrefab(prefab);
-            Bullet bullet = newObj.GetComponent<Bullet>();
-            return bullet;
+            return newObj;
         }
     }
 }

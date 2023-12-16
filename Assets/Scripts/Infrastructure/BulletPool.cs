@@ -1,26 +1,30 @@
 using System;
+using UnityEngine;
 using UnityEngine.Pool;
 
 namespace Infrastructure.ECS.Systems
 {
     public class BulletPool
     {
-        private ObjectPool<Bullet> _bulletPool;
+        private ObjectPool<Projectile> _bulletPool;
         private BulletFactory _bulletFactory;
         private BulletType _bulletType;
-        private Bullet _currentBullet;
+        private GameObject _bulletPrefab;
         private int _defaultCapacity = 10;
         private int _maxCapacity = 100;
+
+        public ObjectPool<Projectile> Pool => _bulletPool;
 
         public BulletPool(BulletFactory factory)
         {
             _bulletFactory = factory;
         }
+
         public async void Init()
         {
-            _currentBullet = await _bulletFactory.GetBulletAsync(_bulletType);
+            _bulletPrefab = await _bulletFactory.GetBulletAsync(_bulletType);
 
-            _bulletPool = new ObjectPool<Bullet>(GetBullet,
+            _bulletPool = new ObjectPool<Projectile>(CreateBullet,
                 OnTakeBulletFromPool,
                 OnReleaseBulletFromPool,
                 OnOverPooling,
@@ -29,26 +33,24 @@ namespace Infrastructure.ECS.Systems
                 _maxCapacity);
         }
 
-        public Bullet Get()
-        {
-            return _bulletPool.Get();
-        }
-
         public void SetBulletType(BulletType type) =>
             _bulletType = type;
 
-        private Bullet GetBullet() => _currentBullet;
-
-        private void OnTakeBulletFromPool(Bullet bullet) =>
-            bullet.gameObject.SetActive(true);
-
-        private void OnReleaseBulletFromPool(Bullet bullet) =>
-            bullet.gameObject.SetActive(false);
-
-        private void OnOverPooling(Bullet bullet) =>
-            bullet.DestroyBullet();
+        private Projectile CreateBullet()
+        {
+            Projectile projectile = GameObject.Instantiate(_bulletPrefab).GetComponent<Projectile>();
+            projectile.SetPool(_bulletPool);
+            return projectile;
+        }
 
 
+        private void OnTakeBulletFromPool(Projectile projectile) =>
+            projectile.gameObject.SetActive(true);
 
+        private void OnReleaseBulletFromPool(Projectile projectile) =>
+            projectile.gameObject.SetActive(false);
+
+        private void OnOverPooling(Projectile projectile) =>
+            projectile.DestroyBullet();
     }
 }
