@@ -1,8 +1,9 @@
-using System;
+using Infrastructure.Factories;
+using Objects;
 using UnityEngine;
 using UnityEngine.Pool;
 
-namespace Infrastructure.ECS.Systems
+namespace Infrastructure
 {
     public class BulletPool
     {

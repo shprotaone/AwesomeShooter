@@ -1,9 +1,10 @@
 using System;
-using Infrastructure.ECS.Components;
-using UnityEngine;
 
-[Serializable]
-public struct ItemTypeComponent
+namespace Infrastructure.ECS.Components
 {
-    public ItemType type;
+    [Serializable]
+    public struct ItemTypeComponent
+    {
+        public ItemType type;
+    }
 }

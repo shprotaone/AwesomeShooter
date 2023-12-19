@@ -1,16 +1,18 @@
 using Cysharp.Threading.Tasks;
-using Infrastructure.CommonSystems;
 using UnityEngine;
 
-internal class LoadingCurtainMock : ILoadingCurtain
+namespace Infrastructure.CommonSystems
 {
-    public async UniTask Show()
+    internal class LoadingCurtainMock : ILoadingCurtain
     {
-        Debug.Log("ShowMock");
-    }
+        public async UniTask Show()
+        {
 
-    public async UniTask Hide()
-    {
+        }
+
+        public async UniTask Hide()
+        {
        
+        }
     }
 }

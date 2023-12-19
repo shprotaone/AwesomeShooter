@@ -4,9 +4,10 @@ namespace Infrastructure.AssetManagment
 {
     public static class AssetAddress
     {
+        public const string PlayerPrefabPath = "Player";
+        public const string PlayerSettingsSOPath = "PlayerSettingsSO";
         public const string CommonBulletPrefabPath = "CommonBullet";
-        public const string PlayerPrefabPath = "PlayerPrefab";
-        public const string FirstLevelPrefabPath = "FirstLevelRefab";
+        public const string FirstLevelGameSceneDataPath = "InitialPointsLevel1";
         public const string LoadingCurtainPath = "CurtainCanvas";
         public const string MainMenuCanvasPath = "MainMenuCanvas";
         public const string MainMenuScenePath = "MainMenuScene";

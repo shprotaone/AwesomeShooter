@@ -30,9 +30,13 @@ namespace Infrastructure.ECS.Systems
                 {
                     obstacleComponent.collision.entryEntity.Unpack(_world,out int bullet);
                     obstacleComponent.collision.IsEnter = false;
-                    var projectile = _projectilePool.Get(bullet);
-                    projectile.projectile.DisableBullet();
-                    _world.DelEntity(bullet);
+                    if (_projectilePool.Has(bullet))
+                    {
+                        var projectile = _projectilePool.Get(bullet);
+                        projectile.projectile.DisableBullet();
+                        _world.DelEntity(bullet);
+                    }
+
                 }
             }
         }

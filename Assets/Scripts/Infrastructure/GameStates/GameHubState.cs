@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using Infrastructure.AssetManagment;
 using Infrastructure.GameStates;
+using Infrastructure.SceneManagment;
 
 namespace Infrastructure.Bootstrappers
 {

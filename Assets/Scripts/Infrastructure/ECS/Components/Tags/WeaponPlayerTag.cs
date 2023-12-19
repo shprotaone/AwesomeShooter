@@ -1,7 +1,6 @@
 ﻿using System;
-using UnityEngine;
 
-namespace Infrastructure.ECS.Components
+namespace Infrastructure.ECS.Components.Tags
 {
     [Serializable]
     public struct WeaponPlayerTag

@@ -1,13 +1,15 @@
 ﻿using System;
+using Infrastructure.ECS.Components;
 using Infrastructure.ECS.Services;
 using Leopotam.EcsLite;
 
 namespace Infrastructure.ECS.Systems
 {
-    public class ReloadMagazineSystem : IEcsInitSystem
+    public class ReloadMagazineSystem : IEcsInitSystem,IEcsRunSystem
     {
         private EcsWorld _world;
         private EcsFilter _magazineFilter;
+        private EcsFilter _weaponFilter;
         private EcsPool<AmmoMagazineComponent> _magazinePool;
         private EcsPool<WeaponComponent> _weaponPool;
 
@@ -23,22 +25,29 @@ namespace Infrastructure.ECS.Systems
         public void Init(IEcsSystems systems)
         {
             _world = systems.GetWorld();
-            _magazineFilter = _world.Filter<AmmoMagazineComponent>().End();
             _magazinePool = _world.GetPool<AmmoMagazineComponent>();
+            _weaponFilter = _world.Filter<WeaponComponent>().End();
             _weaponPool = _world.GetPool<WeaponComponent>();
         }
 
-        public void SetWeaponEntity(int entity)
+        public void Run(IEcsSystems systems)
         {
-            _weaponEntity = entity;
+            foreach (var weapon in _weaponFilter)
+            {
+                ref var current = ref _weaponPool.Get(weapon);
+                if (current.isEquipped)
+                {
+                    _weaponEntity = weapon;
+                }
+            }
         }
 
         public void Reload()
         {
-            foreach (int entity in _magazineFilter)
+            foreach (int entity in _weaponFilter)
             {
-                ref var currentAmmo = ref _magazinePool.Get(entity)._currentAmmo;
-                currentAmmo = ref _weaponPool.Get(_weaponEntity).settings.magazineCapacity;
+                ref var currentAmmo = ref _magazinePool.Get(entity);
+                currentAmmo._currentAmmo = currentAmmo._maxCapacity;
             }
         }
     }

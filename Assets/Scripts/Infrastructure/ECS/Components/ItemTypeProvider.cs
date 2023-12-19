@@ -1,3 +1,6 @@
 using Voody.UniLeo.Lite;
 
-public sealed class ItemTypeProvider : MonoProvider<ItemTypeComponent>{}
+namespace Infrastructure.ECS.Components
+{
+    public sealed class ItemTypeProvider : MonoProvider<ItemTypeComponent>{}
+}

@@ -6,12 +6,7 @@ namespace Extention
 {
     public static class GOToECSExtention
     {
-        public static int CreateEntity(EcsWorld world)
-        {
-            return world.NewEntity();
-        }
-
-        public static T GetComponents<T>(this int entity, EcsWorld world) where T : struct
+        public static T GetECSComponent<T>(this int entity, EcsWorld world) where T : struct
         {
             return world.GetPool<T>().Get(entity);
         }

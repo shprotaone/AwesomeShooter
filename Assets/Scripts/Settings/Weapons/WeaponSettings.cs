@@ -1,9 +1,13 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Settings/WeaponSettings")]
-public class WeaponSettings : ScriptableObject
+namespace Settings.Weapons
 {
-    public WeaponType WeaponType;
-    public float fireRate;
-    public int magazineCapacity;
+    [CreateAssetMenu(menuName = "Settings/WeaponSettings")]
+    public class WeaponSettings : ScriptableObject
+    {
+        public WeaponType WeaponType;
+        public Vector3 positionPreset;
+        public float fireRate;
+        public int magazineCapacity;
+    }
 }

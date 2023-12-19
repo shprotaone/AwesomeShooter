@@ -1,4 +1,7 @@
-public enum WeaponType
+namespace Settings.Weapons
 {
-    BASE
+    public enum WeaponType
+    {
+        BASE
+    }
 }

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Infrastructure.ECS.Systems
+namespace Infrastructure.ECS.Components
 {
     [Serializable]
     public struct FireRateComponent

@@ -1,6 +1,4 @@
-using Scripts.Infrasructure;
-
-namespace Infrastructure
+namespace Infrastructure.StateMachines
 {
     public class GameStateMachine : StateMachine
     {

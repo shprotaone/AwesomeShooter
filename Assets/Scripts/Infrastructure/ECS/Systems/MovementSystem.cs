@@ -1,8 +1,8 @@
 using System;
-using Infrasructure.Settings;
 using Infrastructure.ECS.Components;
 using Infrastructure.ECS.Components.Providers;
 using Leopotam.EcsLite;
+using Settings;
 using UnityEditor;
 using UnityEngine;
 

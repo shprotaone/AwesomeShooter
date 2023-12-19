@@ -1,3 +1,6 @@
 using Voody.UniLeo.Lite;
 
-public sealed class WeaponComponentProvider : MonoProvider<WeaponComponent>{}
+namespace Infrastructure.ECS.Components.Providers
+{
+    public sealed class WeaponComponentProvider : MonoProvider<WeaponComponent>{}
+}

@@ -1,9 +1,10 @@
 ﻿using Cysharp.Threading.Tasks;
 using Infrastructure.AssetManagment;
 using Infrastructure.GameStates;
+using Infrastructure.SceneManagment;
 using UnityEngine;
 
-namespace Infrastructure
+namespace Infrastructure.Bootstrappers
 {
     internal class GameplayState : IState
     {

@@ -1,6 +1,6 @@
 using Voody.UniLeo.Lite;
 
-namespace Infrastructure.ECS.Components
+namespace Infrastructure.ECS.Components.Tags
 {
     public sealed class WeaponTagProvider : MonoProvider<WeaponPlayerTag>{}
 }

@@ -1,4 +1,7 @@
-public enum EnemyType
+namespace Settings
 {
-    COMMON
+    public enum EnemyType
+    {
+        COMMON
+    }
 }

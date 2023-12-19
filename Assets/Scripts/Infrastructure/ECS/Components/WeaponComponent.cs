@@ -1,10 +1,14 @@
-using System;
+﻿using System;
+using Settings.Weapons;
 using UnityEngine;
 
-[Serializable]
-public struct WeaponComponent
+namespace Infrastructure.ECS.Components
 {
-    public WeaponSettings settings;
-    public Transform muzzle;
-    public bool isEquipped;
+    [Serializable]
+    public struct WeaponComponent
+    {
+        public WeaponSettings settings;
+        public Transform muzzle;
+        public bool isEquipped;
+    }
 }

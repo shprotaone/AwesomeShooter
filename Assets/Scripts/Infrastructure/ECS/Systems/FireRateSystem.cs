@@ -1,4 +1,5 @@
-﻿using Leopotam.EcsLite;
+﻿using Infrastructure.ECS.Components;
+using Leopotam.EcsLite;
 using UnityEngine;
 
 namespace Infrastructure.ECS.Systems

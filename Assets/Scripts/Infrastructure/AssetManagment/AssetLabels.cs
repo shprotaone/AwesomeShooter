@@ -1,4 +1,4 @@
-namespace Infrastructure.GameStates
+namespace Infrastructure.AssetManagment
 {
     public static class AssetLabels
     {

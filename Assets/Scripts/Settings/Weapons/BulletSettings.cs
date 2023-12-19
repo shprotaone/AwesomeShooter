@@ -1,13 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
-using Infrastructure.ECS.Systems;
+using Infrastructure.Factories;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Settings/BulletSettings")]
-public class BulletSettings : ScriptableObject
+namespace Settings.Weapons
 {
-    public BulletType bulletType;
-    public float projectileSpeed;
-    public float damage;
-    public float lifetime;
+    [CreateAssetMenu(menuName = "Settings/BulletSettings")]
+    public class BulletSettings : ScriptableObject
+    {
+        public BulletType bulletType;
+        public float projectileSpeed;
+        public float damage;
+        public float lifetime;
+    }
 }

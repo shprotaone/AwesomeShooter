@@ -1,37 +1,42 @@
 using Infrastructure.ECS.Services;
 using Infrastructure.ECS.Systems;
 using Leopotam.EcsLite;
-using Infrasructure.Settings;
+using Settings;
 using UnityEngine;
 using Voody.UniLeo.Lite;
 using Zenject;
+using PickUpSystem = Infrastructure.ECS.Components.PickUpSystem;
 
 namespace Infrastructure.ECS
 {
     sealed class EcsStartup : MonoBehaviour 
     {
-        [SerializeField] private PlayerSettingsSO _playerSettingsSo;
+        private PlayerSettingsSO _playerSettingsSo;
 
         private EcsWorld _world;
         private EcsSystems _systems;
         private EcsSystems _fixedUpdateSystems;
         private InputService _inputService;
         private BulletPool _bulletPool;
+        private PlayerInitSystem _playerInitSystem;
         private DiContainer _container;
+
         [Inject]
-        private void Construct(InputService inputService,BulletPool bulletPool,DiContainer container)
+        private void Construct(InputService inputService,
+            BulletPool bulletPool,
+            PlayerInitSystem playerInitSystem)
         {
             _inputService = inputService;
             _bulletPool = bulletPool;
-            _container = container;
+            _playerInitSystem = playerInitSystem;
         }
 
-        private void Awake ()
+        private void Start ()
         {
             _world = new EcsWorld();
 
-            _systems = new EcsSystems(_world,_playerSettingsSo);
-            _fixedUpdateSystems = new EcsSystems(_world,_playerSettingsSo);
+            _systems = new EcsSystems(_world);
+            _fixedUpdateSystems = new EcsSystems(_world);
             _systems.ConvertScene();
             AddSystems();
 
@@ -41,13 +46,13 @@ namespace Infrastructure.ECS
 #endif
             _systems.Init();
             _fixedUpdateSystems.Init();
-
-            _container.Bind<EcsWorld>().AsSingle(); //ВРЕМЕННО
         }
 
         private void AddSystems()
         {
-            _systems.Add(new InputSystem(_inputService))
+            _systems
+                .Add(_playerInitSystem)
+                .Add(new InputSystem(_inputService))
                 .Add(new MovementSystem())
                 .Add(new PlayerJumpSystem(_inputService))
                 .Add(new PlayerMouseLookSystem(_inputService))

@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 
-namespace Infrastructure.GameStates
+namespace Infrastructure.SceneManagment
 {
     public interface ISceneLoader
     {

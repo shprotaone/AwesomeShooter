@@ -1,21 +1,26 @@
-using Infrastructure.ECS.Systems;
 using Leopotam.EcsLite;
 using UnityEngine;
 
-public class CollisionEvent : MonoBehaviour
+namespace Objects
 {
-   public EcsPackedEntity entryEntity;
-   public bool IsEnter;
-
-   private void OnTriggerEnter(Collider other)
+   public class CollisionEvent : MonoBehaviour
    {
-      IsEnter = true;
-      entryEntity = other.GetComponent<Projectile>().PackedEntity;
-      Debug.Log("Collision with " + other.gameObject.name);
-   }
+      public EcsPackedEntity entryEntity;
+      public bool IsEnter;
 
-   private void OnTriggerExit(Collider other)
-   {
-      IsEnter = false;
+      private void OnTriggerEnter(Collider other)
+      {
+         IsEnter = true;
+         if (other.TryGetComponent(out Projectile projectile))
+         {
+            entryEntity = projectile.PackedEntity;
+            Debug.Log("Collision with " + other.gameObject.name);
+         }
+      }
+
+      private void OnTriggerExit(Collider other)
+      {
+         IsEnter = false;
+      }
    }
 }

@@ -1,4 +1,4 @@
-namespace Infrastructure.ECS.Systems
+namespace Infrastructure.Factories
 {
     public enum BulletType
     {

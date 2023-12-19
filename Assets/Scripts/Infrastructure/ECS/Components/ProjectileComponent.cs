@@ -1,4 +1,5 @@
 ﻿using Infrastructure.ECS.Systems;
+using Objects;
 using UnityEngine;
 using UnityEngine.Serialization;
 

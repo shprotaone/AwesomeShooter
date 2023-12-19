@@ -1,9 +1,9 @@
-using System;
 using Leopotam.EcsLite;
+using Settings.Weapons;
 using UnityEngine;
 using UnityEngine.Pool;
 
-namespace Infrastructure.ECS.Systems
+namespace Objects
 {
     public class Projectile : MonoBehaviour
     {
@@ -16,6 +16,9 @@ namespace Infrastructure.ECS.Systems
         public bool IsActive => gameObject.activeSelf;
         public BulletSettings Settings => _bulletSettings;
         public EcsPackedEntity PackedEntity => _packedEntity;
+
+        public void SetPackEntity(EcsPackedEntity packEntity) =>
+            _packedEntity = packEntity;
 
         public void SetPool(ObjectPool<Projectile> pool) =>
             _bulletPool = pool;
@@ -32,7 +35,5 @@ namespace Infrastructure.ECS.Systems
                 _bulletPool.Release(this);
             }
         }
-
-        public void SetPackEntity(EcsPackedEntity packEntity) => _packedEntity = packEntity;
     }
 }

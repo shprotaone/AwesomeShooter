@@ -1,25 +1,28 @@
 using Cinemachine;
 using UnityEngine;
 
-public class CinemachinePOVExtension : CinemachineExtension
+namespace Extention
 {
-    private Vector3 _startingRotation;
-
-    public void SetRotation(Vector3 startTransformRotation)
+    public class CinemachinePOVExtension : CinemachineExtension
     {
-        _startingRotation = startTransformRotation;
-    }
+        private Vector3 _startingRotation;
 
-    protected override void PostPipelineStageCallback(CinemachineVirtualCameraBase vcam,
-        CinemachineCore.Stage stage,
-        ref CameraState state,
-        float deltaTime)
-    {
-        if (vcam.Follow)
+        public void SetRotation(Vector3 startTransformRotation)
         {
-            if (stage == CinemachineCore.Stage.Aim)
+            _startingRotation = startTransformRotation;
+        }
+
+        protected override void PostPipelineStageCallback(CinemachineVirtualCameraBase vcam,
+            CinemachineCore.Stage stage,
+            ref CameraState state,
+            float deltaTime)
+        {
+            if (vcam.Follow)
             {
-                state.RawOrientation = Quaternion.Euler(-_startingRotation.y, _startingRotation.x,0f);
+                if (stage == CinemachineCore.Stage.Aim)
+                {
+                    state.RawOrientation = Quaternion.Euler(-_startingRotation.y, _startingRotation.x,0f);
+                }
             }
         }
     }

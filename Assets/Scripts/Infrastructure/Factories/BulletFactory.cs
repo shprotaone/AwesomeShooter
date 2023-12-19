@@ -3,7 +3,7 @@ using Infrastructure.AssetManagment;
 using UnityEngine;
 using Zenject;
 
-namespace Infrastructure.ECS.Systems
+namespace Infrastructure.Factories
 {
     public class BulletFactory
     {

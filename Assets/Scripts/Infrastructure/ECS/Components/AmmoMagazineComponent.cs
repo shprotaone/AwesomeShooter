@@ -1,9 +1,11 @@
+using System;
 
-using UnityEngine;
-
-[SerializeField]
-public struct AmmoMagazineComponent
+namespace Infrastructure.ECS.Components
 {
-    public int _maxCapacity;
-    public int _currentAmmo;
+    [Serializable]
+    public struct AmmoMagazineComponent
+    {
+        public int _maxCapacity;
+        public int _currentAmmo;
+    }
 }

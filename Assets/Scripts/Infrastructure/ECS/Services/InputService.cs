@@ -32,14 +32,8 @@ namespace Infrastructure.ECS.Services
             _movement.Fire.canceled += ctx => OnAttackButtonPressed?.Invoke(false);
 
             _movement.Reload.performed += ctx => OnReload?.Invoke();
-
-            OnAttackButtonPressed += Fire;
         }
 
-        private void Fire(bool val)
-        {
-            Debug.Log("Fire" + val);
-        }
 
         private void SetMouseDirection()
         {

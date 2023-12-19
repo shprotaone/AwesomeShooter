@@ -1,5 +1,6 @@
-using Infrastructure;
-
-public class SceneStateMachine : StateMachine
+namespace Infrastructure.StateMachines
 {
+    public class SceneStateMachine : StateMachine
+    {
+    }
 }

@@ -1,12 +1,14 @@
 using Cysharp.Threading.Tasks;
 using Infrastructure.AssetManagment;
 using Infrastructure.CommonSystems;
+using MonoBehaviours;
+using MonoBehaviours.Interfaces;
 using UnityEngine;
 using Zenject;
 
 namespace Infrastructure.Factories
 {
-    public class CommnonSystemsFactory
+    public class CommnonSystemsFactory : ICommonSystemsFactory
     {
         private IInstantiator _instantiator;
         private IAssetProvider _assetProvider;
@@ -19,6 +21,7 @@ namespace Infrastructure.Factories
             _assetProvider = assetProvider;
             _container = container;
         }
+
         public async UniTask<LoadingCurtain> InitializeCurtainLoadingAsync()
         {
             GameObject prefab = await _assetProvider.Load<GameObject>(AssetAddress.LoadingCurtainPath);
@@ -26,6 +29,12 @@ namespace Infrastructure.Factories
             LoadingCurtain curtain = newObj.GetComponent<LoadingCurtain>();
             _container.Rebind<ILoadingCurtain>().To<LoadingCurtain>().FromInstance(curtain).AsSingle();
             return curtain;
+        }
+
+        public async UniTask<IGameSceneData> GetGameSceneData()
+        {
+            GameObject prefab = await _assetProvider.Load<GameObject>(AssetAddress.FirstLevelGameSceneDataPath);
+            return prefab.GetComponent<GameSceneData>();
         }
     }
 }

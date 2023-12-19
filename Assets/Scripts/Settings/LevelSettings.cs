@@ -1,4 +1,4 @@
-﻿namespace Client.Settings
+﻿namespace Settings
 {
     public class LevelSettings
     {

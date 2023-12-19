@@ -1,32 +1,36 @@
 using System;
+using Settings;
 using UnityEngine;
 
-[Serializable]
-public class Enemy : MonoBehaviour
+namespace Objects
 {
-    public event Action OnDeath;
-
-    [SerializeField] private EnemySettings _settings;
-    [SerializeField] private float health;
-
-    private void Start()
+    [Serializable]
+    public class Enemy : MonoBehaviour
     {
-        Init();
-    }
+        public event Action OnDeath;
 
-    private void Init()
-    {
-        health = _settings.Health;
-    }
+        [SerializeField] private EnemySettings _settings;
+        [SerializeField] private float health;
 
-    public void GetDamage(float projectileDamage)
-    {
-        health -= projectileDamage;
-
-        if (health < 0)
+        private void Start()
         {
-            OnDeath?.Invoke();
-            Debug.Log("Death");
+            Init();
+        }
+
+        private void Init()
+        {
+            health = _settings.Health;
+        }
+
+        public void GetDamage(float projectileDamage)
+        {
+            health -= projectileDamage;
+
+            if (health < 0)
+            {
+                OnDeath?.Invoke();
+                Debug.Log("Death");
+            }
         }
     }
 }

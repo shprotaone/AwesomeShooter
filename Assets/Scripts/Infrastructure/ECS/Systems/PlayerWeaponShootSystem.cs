@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using Extention;
 using Infrastructure.ECS.Components;
+using Infrastructure.ECS.Components.Tags;
 using Infrastructure.ECS.Services;
+using Infrastructure.Factories;
 using Leopotam.EcsLite;
+using Objects;
 
 namespace Infrastructure.ECS.Systems
 {
@@ -40,6 +43,7 @@ namespace Infrastructure.ECS.Systems
 
             _playerWeaponPool = _world.GetPool<WeaponComponent>();
             _fireRatePool = _world.GetPool<FireRateComponent>();
+            _magazinePool = _world.GetPool<AmmoMagazineComponent>();
         }
 
         public void Run(IEcsSystems systems)
@@ -48,12 +52,14 @@ namespace Infrastructure.ECS.Systems
             {
                 ref var firerate = ref _fireRatePool.Get(entity).firerate;
                 ref var weaponComponent = ref _playerWeaponPool.Get(entity);
+                ref var magazine = ref _magazinePool.Get(entity);
 
                 if (_isAttack && weaponComponent.isEquipped)
                 {
                     if (firerate >= weaponComponent.settings.fireRate)
                     {
                         SpawnBullet(weaponComponent);
+                        magazine._currentAmmo--;
                         firerate = 0;
                     }
                 }
@@ -64,8 +70,8 @@ namespace Infrastructure.ECS.Systems
         {
             Projectile projectile = _bulletPool.Pool.Get();
 
-            var projectileEntity = GOToECSExtention.CreateEntity(_world);
-            projectileEntity.ConstructEntity(_world,ConstructEntity(weaponComponent,projectile));
+            var projectileEntity = _world.NewEntity();
+            projectileEntity.ConstructEntity(_world,ConstructProjectile(weaponComponent,projectile));
 
             projectile.SetPackEntity(_world.PackEntity(projectileEntity));
 
@@ -76,7 +82,7 @@ namespace Infrastructure.ECS.Systems
             _isAttack = flag;
         }
 
-        private List<object> ConstructEntity(WeaponComponent weaponComponent, Projectile bul)
+        private List<object> ConstructProjectile(WeaponComponent weaponComponent, Projectile bul)
         {
             List<object> components = new List<object>();
 
