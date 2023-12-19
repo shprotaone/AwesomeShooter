@@ -1,96 +1,90 @@
+using System;
+using System.Collections.Generic;
 using Infrastructure.ECS.Services;
-using Infrastructure.ECS.Systems;
 using Leopotam.EcsLite;
-using Settings;
 using UnityEngine;
 using Voody.UniLeo.Lite;
 using Zenject;
-using PickUpSystem = Infrastructure.ECS.Components.PickUpSystem;
 
 namespace Infrastructure.ECS
 {
-    sealed class EcsStartup : MonoBehaviour 
+    public class EcsStartup : IInitializable,ITickable,IFixedTickable,IDisposable
     {
-        private PlayerSettingsSO _playerSettingsSo;
-
         private EcsWorld _world;
-        private EcsSystems _systems;
+        private EcsSystems _updateSystems;
         private EcsSystems _fixedUpdateSystems;
-        private InputService _inputService;
-        private BulletPool _bulletPool;
-        private PlayerInitSystem _playerInitSystem;
-        private DiContainer _container;
+        private IEcsUpdateSystems _ecsUpdateSystems;
+        private IEcsFixedSystems _ecsFixedSystems;
 
         [Inject]
         private void Construct(InputService inputService,
             BulletPool bulletPool,
-            PlayerInitSystem playerInitSystem)
+            IEcsUpdateSystems updateSystems,
+            IEcsFixedSystems ecsFixedSystems)
         {
-            _inputService = inputService;
-            _bulletPool = bulletPool;
-            _playerInitSystem = playerInitSystem;
+            _ecsUpdateSystems = updateSystems;
+            _ecsFixedSystems = ecsFixedSystems;
         }
 
-        private void Start ()
+        public void Initialize()
         {
+            Debug.Log("StartInit");
             _world = new EcsWorld();
 
-            _systems = new EcsSystems(_world);
+            _updateSystems = new EcsSystems(_world);
             _fixedUpdateSystems = new EcsSystems(_world);
-            _systems.ConvertScene();
+            _updateSystems.ConvertScene();
             AddSystems();
 
-            _systems
+            _updateSystems
 #if UNITY_EDITOR
                 .Add (new Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem ());
 #endif
-            _systems.Init();
+            _updateSystems.Init();
             _fixedUpdateSystems.Init();
         }
 
         private void AddSystems()
         {
-            _systems
-                .Add(_playerInitSystem)
-                .Add(new InputSystem(_inputService))
-                .Add(new MovementSystem())
-                .Add(new PlayerJumpSystem(_inputService))
-                .Add(new PlayerMouseLookSystem(_inputService))
-                .Add(new CursorLockSystem())
-                .Add(new GravitySystem())
-                .Add(new PlayerWeaponShootSystem(_inputService, _bulletPool))
-                .Add(new ProjectileMovementSystem())
-                .Add(new LifetimeSystem())
-                .Add(new FireRateSystem())
-                .Add(new ObstacleCollisionCheckSystem())
-                .Add(new EnemyCollisionCheckSystem())
-                .Add(new ReloadMagazineSystem(_inputService))
-                .Add(new WeaponHolderSystem())
-                .Add(new PickUpSystem());
-
-            _fixedUpdateSystems.Add(new PlayerGroundCheckSystem());
+            _updateSystems = GetSystems(_ecsUpdateSystems.Systems);
+            _fixedUpdateSystems = GetSystems(_ecsFixedSystems.Systems);
         }
 
-        private void Update ()
+        public void Tick()
         {
-            _systems?.Run ();
+            _updateSystems?.Run ();
         }
 
-        private void FixedUpdate()
+        public void FixedTick()
         {
             _fixedUpdateSystems?.Run();
         }
 
-        private void OnDestroy () {
-            if (_systems != null) {
-                _systems.Destroy ();
-                _systems = null;
+        public void Dispose()
+        {
+            Debug.Log("Dispose");
+            if (_updateSystems != null)
+            {
+                _updateSystems.Destroy();
+                _updateSystems = null;
             }
 
-            if (_world != null) {
-                _world.Destroy ();
+            if (_world != null)
+            {
+                _world.Destroy();
                 _world = null;
             }
+        }
+
+        private EcsSystems GetSystems(List<IEcsSystem> bindingSystems)
+        {
+            EcsSystems systems = new EcsSystems(_world);
+            foreach (var s in bindingSystems)
+            {
+                systems.Add(s);
+            }
+
+            return systems;
         }
     }
 }

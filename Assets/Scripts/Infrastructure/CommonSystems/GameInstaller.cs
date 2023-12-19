@@ -1,4 +1,5 @@
 using Infrastructure.AssetManagment;
+using Infrastructure.ECS.Services;
 using Infrastructure.Factories;
 using Infrastructure.SceneManagment;
 using Infrastructure.StateMachines;
@@ -21,6 +22,8 @@ namespace Infrastructure.CommonSystems
             BindSceneLoader();
 
             BindLoadingCurtain();
+            
+            BindInputService();
 
         }
 
@@ -51,5 +54,10 @@ namespace Infrastructure.CommonSystems
 
         private void BindGameStateMachine() => 
             Container.Bind<GameStateMachine>().AsSingle();
+        
+        private void BindInputService()
+        {
+            Container.Bind<InputService>().AsSingle();
+        }
     }
 }

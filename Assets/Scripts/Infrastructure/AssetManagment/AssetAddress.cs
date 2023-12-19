@@ -4,6 +4,7 @@ namespace Infrastructure.AssetManagment
 {
     public static class AssetAddress
     {
+        public const string ECSStartUp = "ECSGameStartUp";
         public const string PlayerPrefabPath = "Player";
         public const string PlayerSettingsSOPath = "PlayerSettingsSO";
         public const string CommonBulletPrefabPath = "CommonBullet";

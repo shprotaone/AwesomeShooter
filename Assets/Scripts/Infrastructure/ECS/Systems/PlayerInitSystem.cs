@@ -1,16 +1,15 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Extention;
 using Infrastructure.CommonSystems;
 using Infrastructure.ECS.Components;
 using Infrastructure.ECS.Components.Tags;
 using Infrastructure.Factories;
 using Leopotam.EcsLite;
-using MonoBehaviours;
 using MonoBehaviours.Interfaces;
 using Settings;
 using StaticData;
 using UnityEngine;
-using Zenject;
 
 public class PlayerInitSystem : IEcsInitSystem
 {
@@ -19,11 +18,15 @@ public class PlayerInitSystem : IEcsInitSystem
     private readonly IPlayerFactory _playerFactory;
     private readonly ICommonSystemsFactory _commonSystemsFactory;
     private IGameSceneData _gameSceneData;
+    private PlayerSettingsSO _playerSettingsSo;
 
-    public PlayerInitSystem(IPlayerFactory playerFactory, ICommonSystemsFactory commonSystemsFactory)
+    public PlayerInitSystem(IPlayerFactory playerFactory, 
+        ICommonSystemsFactory commonSystemsFactory,
+        PlayerSettingsSO playerSettings)
     {
         _playerFactory = playerFactory;
         _commonSystemsFactory = commonSystemsFactory;
+        _playerSettingsSo = playerSettings;
     }
 
     public void Init(IEcsSystems systems)
@@ -43,14 +46,12 @@ public class PlayerInitSystem : IEcsInitSystem
     {
         int entity = _world.NewEntity();
         GameObject playerPrefab = await _playerFactory.GetPlayer();
-        PlayerSettingsSO playerSettings = await _playerFactory.GetPlayerSettings();
-
-        SetUpEntity(entity,playerPrefab,playerSettings);
-
-        playerPrefab.transform.position = gameSceneData.SpawnPlayerPoint.position;
+        GameObject player = GameObject.Instantiate(playerPrefab);
+        await SetUpEntity(entity,player,_playerSettingsSo);
+        player.transform.position = gameSceneData.SpawnPlayerPoint.position;
     }
 
-    private void SetUpEntity(int entity,GameObject playerPrefab,PlayerSettingsSO settings)
+    private async UniTask SetUpEntity(int entity,GameObject playerPrefab,PlayerSettingsSO settings)
     {
         List<object> components = new List<object>();
 

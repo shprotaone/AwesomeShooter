@@ -19,11 +19,15 @@ namespace Infrastructure.ECS.Systems
         private EcsPool<GravityComponent> _gravityComponent;
         private PlayerSettingsSO _playerSettings;
 
+        public MovementSystem(PlayerSettingsSO playerSettingsSo)
+        {
+            _playerSettings = playerSettingsSo;
+        }
+
         public void Init(IEcsSystems systems)
         {
             _world = systems.GetWorld();
-            _playerSettings = systems.GetShared<PlayerSettingsSO>();
-
+            
             _movableFilter = _world.Filter<MovableComponent>().
                 Inc<DirectionComponent>().
                 Inc<ModelComponent>().

@@ -20,16 +20,16 @@ namespace Infrastructure.ECS.Systems
         private Vector2 _deltaInput;
         private Vector3 _startTransformRotation;
 
-        public PlayerMouseLookSystem(InputService inputService)
+        public PlayerMouseLookSystem(InputService inputService,PlayerSettingsSO playerSettings)
         {
             _inputService = inputService;
             _inputService.OnMouseInput += SetDelta;
+            _playerSettings = playerSettings;
         }
 
         public void Init(IEcsSystems systems)
         {
             _world = systems.GetWorld();
-            _playerSettings = systems.GetShared<PlayerSettingsSO>();
 
             _playerFilter = _world.Filter<MouseLookDirectionComponent>().
                 Inc<ModelComponent>().

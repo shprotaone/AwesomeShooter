@@ -26,9 +26,9 @@ namespace Infrastructure.CommonSystems
 
         public async UniTask<PlayerSettingsSO> GetPlayerSettings()
         {
-            ScriptableObject settingsSo =
-                await _assetProvider.Load<ScriptableObject>(AssetAddress.PlayerSettingsSOPath);
-            return (PlayerSettingsSO)settingsSo;
+            GameObject settingsSo =
+                await _assetProvider.Load<GameObject>(AssetAddress.PlayerSettingsSOPath);
+            return settingsSo.GetComponent<PlayerSettingsSO>();
         }
     }
 }

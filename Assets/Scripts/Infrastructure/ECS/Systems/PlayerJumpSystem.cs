@@ -22,15 +22,15 @@ namespace Infrastructure.ECS.Systems
         private InputService _inputService;
 
         private bool _isJumped;
-        public PlayerJumpSystem(InputService inputService)
+        public PlayerJumpSystem(InputService inputService,PlayerSettingsSO playerSettings)
         {
             _inputService = inputService;
+            _playerSettings = playerSettings;
         }
 
         public void Init(IEcsSystems systems)
         {
             _world = systems.GetWorld();
-            _playerSettings = systems.GetShared<PlayerSettingsSO>();
 
             _jumpFilter = _world.Filter<PlayerTag>()
                 .Inc<JumpComponent>()
@@ -46,7 +46,6 @@ namespace Infrastructure.ECS.Systems
 
         private void Jump()
         {
-            Debug.Log("Jump");
             _isJumped = true;
         }
 

@@ -1,40 +1,50 @@
-using Infrastructure.ECS.Services;
-using Infrastructure.ECS.Systems;
+using Infrastructure.ECS;
 using Infrastructure.Factories;
-using Leopotam.EcsLite;
-using MonoBehaviours;
+using Settings;
 using UnityEngine;
-using UnityEngine.Rendering;
 using Zenject;
 
 namespace Infrastructure.CommonSystems
 {
     public class GameplayInstaller : MonoInstaller
     {
+        [SerializeField] private PlayerSettingsSO _playerSettings;
         public override void InstallBindings()
         {
-            InputServiceBinding();
-
+            BindPlayerSettings();
+            
             BulletFactoryBinding();
 
             BulletPoolBinding();
 
             PlayerFactoryBinding();
 
-            PlayerInitBinding();
+            BindEcsSystems();
 
-            FooBinding();
+            BindEcs();
+            
+            Debug.Log("BindingComplete");
         }
 
-        private void FooBinding()
+        private void BindEcsSystems()
         {
-            Container.Bind<Foo>().AsSingle();
-            Container.Bind<IBar>().To<Bar>().AsSingle();
+            Container.BindInterfacesAndSelfTo<EcsUpdateSystems>()
+                .FromSubContainerResolve()
+                .ByInstaller<ECSUpdateSystemsInstaller>().AsSingle();
+
+            Container.BindInterfacesAndSelfTo<EcsFixedSystems>()
+                .FromSubContainerResolve()
+                .ByInstaller<ECSFixedUpdateSystemsInstaller>().AsSingle();
         }
 
-        private void PlayerInitBinding()
+        private void BindPlayerSettings()
         {
-            Container.Bind<PlayerInitSystem>().AsSingle();
+            Container.Bind<PlayerSettingsSO>().FromScriptableObject(_playerSettings).AsSingle();
+        }
+
+        private void BindEcs()
+        {
+            Container.BindInterfacesAndSelfTo<EcsStartup>().AsSingle();
         }
 
         private void PlayerFactoryBinding()
@@ -51,31 +61,6 @@ namespace Infrastructure.CommonSystems
         {
             Container.Bind<BulletFactory>().AsSingle();
         }
-
-        private void InputServiceBinding()
-        {
-            Container.Bind<InputService>().AsSingle();
-        }
-        
-    }
-
-    internal class Bar : IBar
-    {
-    }
-
-    public class Foo
-    {
-        IBar _bar;
-
-        public Foo(IBar bar)
-        {
-            _bar = bar;
-            Debug.Log("Init");
-        }
-    }
-
-    public interface IBar
-    {
 
     }
 }
