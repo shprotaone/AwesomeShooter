@@ -23,7 +23,6 @@ namespace Infrastructure.GameStates
         public async UniTask Enter()
         {
             await InitServices();
-            
             _gameStateMachine.Enter<GameLoadingState>().Forget();
         }
 

@@ -27,11 +27,12 @@ namespace Infrastructure.CommonSystems
 
         }
 
+
         private void BindLoadingCurtain()
         {
-            Container.Bind<ILoadingCurtain>().To<LoadingCurtainMock>().AsCached();
+            Container.BindInterfacesAndSelfTo<LoadingCurtainProxy>().AsSingle();
         }
-
+        
         private void BindSceneLoader()
         {
             Container.BindInterfacesTo<SceneLoader>().AsSingle();

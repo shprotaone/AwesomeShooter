@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using Infrastructure.CommonSystems;
 using Infrastructure.ECS.Services;
 using Leopotam.EcsLite;
 using UnityEngine;
@@ -8,7 +10,7 @@ using Zenject;
 
 namespace Infrastructure.ECS
 {
-    public class EcsStartup : IInitializable,ITickable,IFixedTickable,IDisposable
+    public class EcsStartup : IInitializable,ITickable,IFixedTickable,IDisposable,IEcsStartupWorld
     {
         private EcsWorld _world;
         private EcsSystems _updateSystems;
@@ -16,6 +18,8 @@ namespace Infrastructure.ECS
         private IEcsUpdateSystems _ecsUpdateSystems;
         private IEcsFixedSystems _ecsFixedSystems;
 
+        private bool _isInitialized;
+        
         [Inject]
         private void Construct(InputService inputService,
             BulletPool bulletPool,
@@ -34,30 +38,36 @@ namespace Infrastructure.ECS
             _updateSystems = new EcsSystems(_world);
             _fixedUpdateSystems = new EcsSystems(_world);
             _updateSystems.ConvertScene();
-            AddSystems();
+        }
 
-            _updateSystems
-#if UNITY_EDITOR
-                .Add (new Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem ());
-#endif
+        public void StartSystems()
+        {
+            AddSystems();
             _updateSystems.Init();
             _fixedUpdateSystems.Init();
+            _isInitialized = true;
         }
 
         private void AddSystems()
         {
             _updateSystems = GetSystems(_ecsUpdateSystems.Systems);
+            _updateSystems
+#if UNITY_EDITOR
+                .Add (new Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem ());
+#endif
             _fixedUpdateSystems = GetSystems(_ecsFixedSystems.Systems);
         }
 
         public void Tick()
         {
-            _updateSystems?.Run ();
+            if(_isInitialized)
+                _updateSystems?.Run ();
         }
 
         public void FixedTick()
         {
-            _fixedUpdateSystems?.Run();
+            if(_isInitialized)
+                _fixedUpdateSystems?.Run();
         }
 
         public void Dispose()
@@ -67,6 +77,12 @@ namespace Infrastructure.ECS
             {
                 _updateSystems.Destroy();
                 _updateSystems = null;
+            }
+
+            if (_fixedUpdateSystems != null)
+            {
+                _fixedUpdateSystems.Destroy();
+                _fixedUpdateSystems = null;
             }
 
             if (_world != null)

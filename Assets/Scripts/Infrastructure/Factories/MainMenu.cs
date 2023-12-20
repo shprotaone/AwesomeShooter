@@ -26,7 +26,6 @@ namespace Infrastructure.Factories
         private async void StartGame()
         {
             await _stateMachine.Enter<GameplayState>();
-            
         }
     }
 }

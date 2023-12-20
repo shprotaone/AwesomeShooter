@@ -12,23 +12,24 @@ namespace Infrastructure.Factories
     {
         private IInstantiator _instantiator;
         private IAssetProvider _assetProvider;
-        private DiContainer _container;
+        private LoadingCurtainProxy _curtain;
 
         [Inject]
-        private void Construct(IInstantiator instantiator,IAssetProvider assetProvider,DiContainer container)
+        private void Construct(IInstantiator instantiator,
+            IAssetProvider assetProvider,
+            LoadingCurtainProxy curtain)
         {
             _instantiator = instantiator;
             _assetProvider = assetProvider;
-            _container = container;
+            _curtain = curtain;
         }
 
-        public async UniTask<LoadingCurtain> InitializeCurtainLoadingAsync()
+        public async UniTask InitializeCurtainLoadingAsync()
         {
             GameObject prefab = await _assetProvider.Load<GameObject>(AssetAddress.LoadingCurtainPath);
             GameObject newObj = _instantiator.InstantiatePrefab(prefab);
             LoadingCurtain curtain = newObj.GetComponent<LoadingCurtain>();
-            _container.Rebind<ILoadingCurtain>().To<LoadingCurtain>().FromInstance(curtain).AsSingle();
-            return curtain;
+            await _curtain.InitializeCurtain(curtain);
         }
 
         public async UniTask<IGameSceneData> GetGameSceneData()

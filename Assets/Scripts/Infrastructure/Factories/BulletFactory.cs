@@ -15,7 +15,6 @@ namespace Infrastructure.Factories
         {
             _assetProvider = assetProvider;
             _instantiator = instantiator;
-
         }
 
         public async UniTask<GameObject> GetBulletAsync(BulletType type)

@@ -1,5 +1,6 @@
 using Infrastructure.ECS;
 using Infrastructure.Factories;
+using Infrastructure.StateMachines;
 using Settings;
 using UnityEngine;
 using Zenject;
@@ -9,8 +10,11 @@ namespace Infrastructure.CommonSystems
     public class GameplayInstaller : MonoInstaller
     {
         [SerializeField] private PlayerSettingsSO _playerSettings;
+        
         public override void InstallBindings()
         {
+            BindWeaponFactory();
+            
             BindPlayerSettings();
             
             BulletFactoryBinding();
@@ -20,31 +24,52 @@ namespace Infrastructure.CommonSystems
             PlayerFactoryBinding();
 
             BindEcsSystems();
-
-            BindEcs();
             
+            BindStatesFactory();
+
+            BindSceneStateMachine();
+            
+            BindLevelSettings();
+
+            //BindEcs();
+
             Debug.Log("BindingComplete");
         }
 
-        private void BindEcsSystems()
+        private void BindStatesFactory()
         {
-            Container.BindInterfacesAndSelfTo<EcsUpdateSystems>()
-                .FromSubContainerResolve()
-                .ByInstaller<ECSUpdateSystemsInstaller>().AsSingle();
-
-            Container.BindInterfacesAndSelfTo<EcsFixedSystems>()
-                .FromSubContainerResolve()
-                .ByInstaller<ECSFixedUpdateSystemsInstaller>().AsSingle();
+            Container.BindInterfacesAndSelfTo<StatesFactory>().AsSingle();
         }
 
-        private void BindPlayerSettings()
+        private void BindSceneStateMachine()
         {
-            Container.Bind<PlayerSettingsSO>().FromScriptableObject(_playerSettings).AsSingle();
+            Container.Bind<SceneStateMachine>().AsSingle();
         }
 
         private void BindEcs()
         {
             Container.BindInterfacesAndSelfTo<EcsStartup>().AsSingle();
+        }
+
+        private void BindWeaponFactory()
+        {
+            Container.BindInterfacesAndSelfTo<WeaponFactory>().AsSingle();
+        }
+
+        private void BindEcsSystems()
+        {
+            // Container.BindInterfacesAndSelfTo<EcsUpdateSystems>()
+            //     .FromSubContainerResolve()
+            //     .ByInstaller<ECSUpdateSystemsInstaller>().AsSingle();
+            //
+            // Container.BindInterfacesAndSelfTo<EcsFixedSystems>()
+            //     .FromSubContainerResolve()
+            //     .ByInstaller<ECSFixedUpdateSystemsInstaller>().AsSingle();
+        }
+
+        private void BindPlayerSettings()
+        {
+            Container.Bind<PlayerSettingsSO>().FromScriptableObject(_playerSettings).AsSingle();
         }
 
         private void PlayerFactoryBinding()
@@ -60,6 +85,11 @@ namespace Infrastructure.CommonSystems
         private void BulletFactoryBinding()
         {
             Container.Bind<BulletFactory>().AsSingle();
+        }
+        
+        private void BindLevelSettings()
+        {
+            Container.BindInterfacesAndSelfTo<LevelSettingsLoader>().AsSingle();
         }
 
     }

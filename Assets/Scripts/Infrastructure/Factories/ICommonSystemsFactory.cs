@@ -7,7 +7,7 @@ namespace Infrastructure.Factories
 {
     public interface ICommonSystemsFactory
     {
-        UniTask<LoadingCurtain> InitializeCurtainLoadingAsync();
+        UniTask InitializeCurtainLoadingAsync();
         UniTask<IGameSceneData> GetGameSceneData();
     }
 }

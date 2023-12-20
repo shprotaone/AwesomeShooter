@@ -9,6 +9,7 @@ namespace Infrastructure.ECS
         public override void InstallBindings()
         {
             Container.BindInterfacesAndSelfTo<PlayerInitSystem>().AsSingle();
+            //Container.BindInterfacesAndSelfTo<WeaponSpawnSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<InputSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<MovementSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerJumpSystem>().AsSingle();

@@ -22,24 +22,19 @@ public class PlayerInitSystem : IEcsInitSystem
 
     public PlayerInitSystem(IPlayerFactory playerFactory, 
         ICommonSystemsFactory commonSystemsFactory,
-        PlayerSettingsSO playerSettings)
+        PlayerSettingsSO playerSettings,
+        ILevelSettingsLoader levelSettingsLoader)
     {
         _playerFactory = playerFactory;
         _commonSystemsFactory = commonSystemsFactory;
         _playerSettingsSo = playerSettings;
+        _gameSceneData = levelSettingsLoader.GameSceneData;
     }
 
     public void Init(IEcsSystems systems)
     {
-        //TODO: Прогрев
         _world = systems.GetWorld();
-        GetGameSceneData();
-    }
-
-    private async void GetGameSceneData()
-    {
-         _gameSceneData = await _commonSystemsFactory.GetGameSceneData();
-         CreateEntity(_gameSceneData);
+        CreateEntity(_gameSceneData);
     }
 
     private async void CreateEntity(IGameSceneData gameSceneData)
