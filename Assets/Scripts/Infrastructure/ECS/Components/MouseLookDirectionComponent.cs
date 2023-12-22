@@ -1,4 +1,5 @@
 ﻿using System;
+using Extention;
 using UnityEngine;
 
 namespace Infrastructure.ECS.Components

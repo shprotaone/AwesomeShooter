@@ -1,9 +1,11 @@
 ﻿using System;
-using Infrasructure.Settings;
 using Infrastructure.ECS.Components;
 using Infrastructure.ECS.Components.Providers;
+using Infrastructure.ECS.Components.Tags;
 using Infrastructure.ECS.Services;
 using Leopotam.EcsLite;
+using MonoBehaviours.Interfaces;
+using Settings;
 using UnityEditor;
 using UnityEngine;
 
@@ -29,7 +31,7 @@ namespace Infrastructure.ECS.Systems
         public void Init(IEcsSystems systems)
         {
             _world = systems.GetWorld();
-            _playerSettings = systems.GetShared<PlayerSettingsSO>();
+            _playerSettings = systems.GetShared<IGameSceneData>().PlayerSettingsSo;
 
             _jumpFilter = _world.Filter<PlayerTag>()
                 .Inc<JumpComponent>()
@@ -45,7 +47,6 @@ namespace Infrastructure.ECS.Systems
 
         private void Jump()
         {
-            Debug.Log("Jump");
             _isJumped = true;
         }
 

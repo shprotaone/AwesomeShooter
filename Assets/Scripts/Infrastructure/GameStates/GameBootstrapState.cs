@@ -1,35 +1,35 @@
 using Cysharp.Threading.Tasks;
 using Infrastructure.AssetManagment;
 using Infrastructure.Factories;
+using Infrastructure.StateMachines;
 
 namespace Infrastructure.GameStates
 {
     public class GameBootstrapState : IState
     {
         private GameStateMachine _gameStateMachine;
-        private CommnonSystemsFactory _commnonSystemsFactory;
+        private CommonSystemsFactory commonSystemsFactory;
         private IAssetProvider _assetProvider;
 
         public GameBootstrapState(GameStateMachine gameStateMachine,
-            CommnonSystemsFactory commonFactory,
+            CommonSystemsFactory commonFactory,
             IAssetProvider assetProvider)
         {
             _assetProvider = assetProvider;
             _gameStateMachine = gameStateMachine;
-            _commnonSystemsFactory = commonFactory;
+            commonSystemsFactory = commonFactory;
         }
 
         public async UniTask Enter()
         {
             await InitServices();
-            
             _gameStateMachine.Enter<GameLoadingState>().Forget();
         }
 
         private async UniTask InitServices()
         {
             await _assetProvider.InitializeAsync();
-            await _commnonSystemsFactory.InitializeCurtainLoadingAsync();
+            await commonSystemsFactory.InitializeCurtainLoadingAsync();
         }
 
         public UniTask Exit() => default;

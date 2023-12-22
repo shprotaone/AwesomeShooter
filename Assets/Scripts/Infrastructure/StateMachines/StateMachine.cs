@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Infrastructure.GameStates;
-using Scripts.Infrasructure;
 
-namespace Infrastructure
+namespace Infrastructure.StateMachines
 {
     public class StateMachine : IStateMachine
     {

@@ -7,7 +7,7 @@ namespace Infrastructure.ECS.Systems
     {
         public void Init(IEcsSystems systems)
         {
-            Cursor.lockState = CursorLockMode.Locked;
+            //Cursor.lockState = CursorLockMode.Locked;
         }
     }
 }

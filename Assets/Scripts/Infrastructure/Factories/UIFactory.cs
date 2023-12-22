@@ -1,27 +1,28 @@
-using System;
 using Cysharp.Threading.Tasks;
 using Infrastructure.AssetManagment;
-using Infrastructure.Factories;
 using UnityEngine;
 using Zenject;
 
-public class UIFactory
+namespace Infrastructure.Factories
 {
-    private IAssetProvider _assetProvider;
-    private IInstantiator _instantiator;
-
-    [Inject]
-    public UIFactory(IAssetProvider assetProvider, 
-        IInstantiator instantiator)
+    public class UIFactory
     {
-        _assetProvider = assetProvider;
-        _instantiator = instantiator;
-    }
+        private IAssetProvider _assetProvider;
+        private IInstantiator _instantiator;
 
-    public async UniTask<MainMenu> CreateMainMenu()
-    {
-        GameObject prefab = await _assetProvider.Load<GameObject>(AssetAddress.MainMenuCanvasPath);
-        GameObject newPrefab = _instantiator.InstantiatePrefab(prefab);
-        return newPrefab.GetComponent<MainMenu>();
+        [Inject]
+        public UIFactory(IAssetProvider assetProvider, 
+            IInstantiator instantiator)
+        {
+            _assetProvider = assetProvider;
+            _instantiator = instantiator;
+        }
+
+        public async UniTask<MainMenu> CreateMainMenu()
+        {
+            GameObject prefab = await _assetProvider.Load<GameObject>(AssetAddress.MainMenuCanvasPath);
+            GameObject newPrefab = _instantiator.InstantiatePrefab(prefab);
+            return newPrefab.GetComponent<MainMenu>();
+        }
     }
 }

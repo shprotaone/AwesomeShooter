@@ -1,9 +1,10 @@
+using Infrastructure.ECS.Components;
+using Infrastructure.ECS.Components.Tags;
 using Infrastructure.ECS.Services;
 using Leopotam.EcsLite;
-using UnityEditor;
 using UnityEngine;
 
-namespace Infrastructure.ECS
+namespace Infrastructure.ECS.Systems
 {
     sealed class InputSystem : IEcsInitSystem, IEcsRunSystem
     {
@@ -24,7 +25,6 @@ namespace Infrastructure.ECS
             _world = systems.GetWorld();
             _inputService.OnHorizontalInput += SetDirection;
 
-            Debug.Log("EntitiesCount" + _world.GetEntitiesCount());
             _inputFilter = _world.Filter<PlayerTag>().Inc<DirectionComponent>().End();
             _directions = _world.GetPool<DirectionComponent>();
         }

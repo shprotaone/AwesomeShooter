@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Infrastructure.ECS.Components.Providers
+namespace Infrastructure.ECS.Components
 {
     [Serializable]
     public struct GravityComponent

@@ -1,4 +1,5 @@
-﻿using Voody.UniLeo.Lite;
+﻿using Infrastructure.ECS.Components.Tags;
+using Voody.UniLeo.Lite;
 
 namespace Infrastructure.ECS.Components.Providers
 {

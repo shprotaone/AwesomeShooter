@@ -1,10 +1,10 @@
-using Infrastructure.Bootstrappers;
 using Infrastructure.Factories;
 using Infrastructure.GameStates;
+using Infrastructure.StateMachines;
 using UnityEngine;
 using Zenject;
 
-namespace Infrastructure
+namespace Infrastructure.Bootstrappers
 {
     public class GameBootstrapper : MonoBehaviour
     {

@@ -1,24 +1,27 @@
-using Cysharp.Threading.Tasks;
 using Infrastructure.CommonSystems;
+using Infrastructure.Factories;
 using UnityEngine;
 using Zenject;
 
-public class MainMenuBootstrapper : MonoBehaviour
+namespace Infrastructure.Bootstrappers
 {
-    private UIFactory _uiFactory;
-    private ILoadingCurtain _loadingCurtain;
+    public class MainMenuBootstrapper : MonoBehaviour
+    {
+        private UIFactory _uiFactory;
+        private ILoadingCurtain _loadingCurtain;
 
-    [Inject]
-    public void Construct(UIFactory uiFactory,ILoadingCurtain loadingCurtain)
-    {
-        _uiFactory = uiFactory;
-        _loadingCurtain = loadingCurtain;
-    }
+        [Inject]
+        public void Construct(UIFactory uiFactory,ILoadingCurtain loadingCurtain)
+        {
+            _uiFactory = uiFactory;
+            _loadingCurtain = loadingCurtain;
+        }
     
-    public async void Start()
-    {
-        await _loadingCurtain.Show();
-        await _uiFactory.CreateMainMenu();
-        await _loadingCurtain.Hide();
+        public async void Start()
+        {
+            await _loadingCurtain.Show();
+            await _uiFactory.CreateMainMenu();
+            await _loadingCurtain.Hide();
+        }
     }
 }

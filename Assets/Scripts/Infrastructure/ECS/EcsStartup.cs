@@ -1,76 +1,112 @@
+using System;
+using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using Infrastructure.CommonSystems;
 using Infrastructure.ECS.Services;
-using Infrastructure.ECS.Systems;
 using Leopotam.EcsLite;
-using Infrasructure.Settings;
+using MonoBehaviours.Interfaces;
+using Settings;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Voody.UniLeo.Lite;
 using Zenject;
 
 namespace Infrastructure.ECS
 {
-    sealed class EcsStartup : MonoBehaviour 
+    public class EcsStartup : IECSRunner,IRestartble
     {
-        private EcsWorld _world;        
-        private EcsSystems _systems;
+        private EcsWorld _world;
+        private EcsSystems _updateSystems;
         private EcsSystems _fixedUpdateSystems;
-        private InputService _inputService;
-        [FormerlySerializedAs("_playerSettings")] [SerializeField] private PlayerSettingsSO _playerSettingsSo;
+        private IEcsUpdateSystems _ecsUpdateSystems;
+        private IEcsFixedSystems _ecsFixedSystems;
+        private IGameSceneData _gameSceneData;
 
-        [Inject]
-        private void Construct(InputService inputService)
+        private bool _isInitialized;
+
+        public EcsWorld CurrentWorld => _world;
+
+        private EcsStartup(IEcsUpdateSystems updateSystems, IEcsFixedSystems ecsFixedSystems)
         {
-            _inputService = inputService;
+            _ecsUpdateSystems = updateSystems;
+            _ecsFixedSystems = ecsFixedSystems;
         }
 
-        private void Awake () 
+        public async UniTask Initialize(IGameSceneData gameSceneData)
         {
+            Debug.Log("StartInit");
             _world = new EcsWorld();
-            _systems = new EcsSystems(_world,_playerSettingsSo);
-            _fixedUpdateSystems = new EcsSystems(_world,_playerSettingsSo);
-            _systems.ConvertScene();
-            AddSystems();
+            _gameSceneData = gameSceneData;
+        }
 
-            _systems
-#if UNITY_EDITOR
-                .Add (new Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem ());
-#endif
-            _systems.Init();
+        public void StartSystems()
+        {
+            AddSystems();
+            _updateSystems.ConvertScene();
+            _fixedUpdateSystems.ConvertScene();
+            _updateSystems.Init();
             _fixedUpdateSystems.Init();
+            _isInitialized = true;
         }
 
         private void AddSystems()
         {
-            _systems.Add(new InputSystem(_inputService))
-                .Add(new MovementSystem())
-                .Add(new PlayerJumpSystem(_inputService))
-                .Add(new PlayerMouseLookSystem(_inputService))
-                .Add(new CursorLockSystem())
-                .Add(new GravitySystem());
-
-            _fixedUpdateSystems.Add(new PlayerGroundCheckSystem());
+            _updateSystems = GetSystems(_ecsUpdateSystems.Systems);
+            _updateSystems
+#if UNITY_EDITOR
+                .Add (new Leopotam.EcsLite.UnityEditor.EcsWorldDebugSystem ());
+#endif
+            _fixedUpdateSystems = GetSystems(_ecsFixedSystems.Systems);
         }
 
-        private void Update ()
+        public void Tick()
         {
-            _systems?.Run ();
+            Debug.Log("Tick");
+            if(_isInitialized)
+                _updateSystems?.Run ();
         }
 
-        private void FixedUpdate()
+        public void FixedTick()
         {
-            _fixedUpdateSystems?.Run();
+            if(_isInitialized)
+                _fixedUpdateSystems?.Run();
         }
 
-        private void OnDestroy () {
-            if (_systems != null) {
-                _systems.Destroy ();
-                _systems = null;
+        public void Dispose()
+        {
+            Debug.Log("Dispose");
+            if (_updateSystems != null)
+            {
+                _updateSystems.Destroy();
+                _updateSystems = null;
             }
 
-            if (_world != null) {
-                _world.Destroy ();
+            if (_fixedUpdateSystems != null)
+            {
+                _fixedUpdateSystems.Destroy();
+                _fixedUpdateSystems = null;
+            }
+
+            if (_world != null)
+            {
+                _world.Destroy();
                 _world = null;
             }
+        }
+
+        private EcsSystems GetSystems(List<IEcsSystem> bindingSystems)
+        {
+            EcsSystems systems = new EcsSystems(_world,_gameSceneData);
+            foreach (var s in bindingSystems)
+            {
+                systems.Add(s);
+            }
+
+            return systems;
+        }
+
+        public void Restart()
+        {
+            Dispose();
         }
     }
 }

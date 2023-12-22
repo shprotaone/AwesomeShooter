@@ -1,7 +1,6 @@
 using Cysharp.Threading.Tasks;
-using Infrastructure.GameStates;
 
-namespace Scripts.Infrasructure
+namespace Infrastructure.GameStates
 {
     public interface IStateMachine
     {

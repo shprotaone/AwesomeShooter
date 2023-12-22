@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Infrastructure.ECS.Systems
+namespace Infrastructure.ECS.Components
 {
     [Serializable]
     public struct JumpComponent

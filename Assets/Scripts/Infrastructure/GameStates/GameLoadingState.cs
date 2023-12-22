@@ -2,7 +2,9 @@ using Cysharp.Threading.Tasks;
 using Infrastructure.AssetManagment;
 using Infrastructure.Bootstrappers;
 using Infrastructure.CommonSystems;
-using Scripts.Infrasructure;
+using Infrastructure.ECS;
+using Infrastructure.SceneManagment;
+using Infrastructure.StateMachines;
 using UnityEngine.UIElements;
 using Zenject;
 
