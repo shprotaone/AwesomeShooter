@@ -40,7 +40,7 @@ namespace Infrastructure.CommonSystems
 
         private void BindCommonSystemFactory()
         {
-            Container.BindInterfacesAndSelfTo<CommnonSystemsFactory>().AsSingle();
+            Container.BindInterfacesAndSelfTo<CommonSystemsFactory>().AsSingle();
         }
 
         private void BindStatesFactory()

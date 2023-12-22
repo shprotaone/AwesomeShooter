@@ -14,5 +14,6 @@ namespace Infrastructure.AssetManagment
         public const string GameBootstrapperPath = "GameBootstrapper";
         public const string GameplayScenePath = "GameplayScene";
         public const string WeaponBaseModelPath = "BaseWeapon";
+        public const string CommonEnemyPrefabPath = "CommonEnemy";
     }
 }

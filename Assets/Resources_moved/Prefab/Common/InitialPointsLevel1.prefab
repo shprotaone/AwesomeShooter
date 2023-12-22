@@ -49,13 +49,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e728f23785f5c4c42a4e02be7b7420e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerSettings: {fileID: 11400000, guid: d75eae15cdcf0844d9cd1d7b4e8cd640, type: 2}
   _spawnPlayerPoint: {fileID: 3288620513612704246}
   _spawnWeaponPoints:
-  - {fileID: 2426692749726050536}
-  - {fileID: 4874972055099865461}
+  - {fileID: 2197371267981721405}
+  - {fileID: 2556950222718051934}
   _spawnEnemiesPoints:
-  - {fileID: 783865855272320175}
-  - {fileID: 4935724221311929891}
+  - {fileID: 8975926558224606263}
+  - {fileID: 2558850616344349991}
 --- !u!1 &1310283736698151338
 GameObject:
   m_ObjectHideFlags: 0
@@ -65,6 +66,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4935724221311929891}
+  - component: {fileID: 2558850616344349991}
   m_Layer: 0
   m_Name: EnemyPoint2
   m_TagString: Untagged
@@ -87,6 +89,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2893472245236589458}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2558850616344349991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1310283736698151338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db1a22e3d7cb46b0b793abc1828b5616, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _transform: {fileID: 4935724221311929891}
+  _enemyType: 0
 --- !u!1 &4906809316994459691
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,6 +112,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2426692749726050536}
+  - component: {fileID: 2197371267981721405}
   m_Layer: 0
   m_Name: WeaponPoint1
   m_TagString: Untagged
@@ -118,6 +135,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2893472245236589458}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2197371267981721405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4906809316994459691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13c7e20d009a4d969d91e6ef041fd75a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _transform: {fileID: 2426692749726050536}
+  _weaponType: 0
+  _isPicked: 0
 --- !u!1 &6456163859882362043
 GameObject:
   m_ObjectHideFlags: 0
@@ -127,6 +159,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4874972055099865461}
+  - component: {fileID: 2556950222718051934}
   m_Layer: 0
   m_Name: WeaponPoint2
   m_TagString: Untagged
@@ -149,6 +182,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2893472245236589458}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2556950222718051934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6456163859882362043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13c7e20d009a4d969d91e6ef041fd75a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _transform: {fileID: 4874972055099865461}
+  _weaponType: 0
+  _isPicked: 0
 --- !u!1 &7145450873593371058
 GameObject:
   m_ObjectHideFlags: 0
@@ -189,6 +237,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 783865855272320175}
+  - component: {fileID: 8975926558224606263}
   m_Layer: 0
   m_Name: EnemyPoint1
   m_TagString: Untagged
@@ -211,3 +260,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2893472245236589458}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8975926558224606263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8979656065187910569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db1a22e3d7cb46b0b793abc1828b5616, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _transform: {fileID: 783865855272320175}
+  _enemyType: 0

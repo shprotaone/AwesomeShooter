@@ -71,7 +71,7 @@ namespace Infrastructure.ECS.Systems
             Projectile projectile = _bulletPool.Pool.Get();
 
             var projectileEntity = _world.NewEntity();
-            projectileEntity.ConstructEntity(_world,ConstructProjectile(weaponComponent,projectile));
+            GOToECSExtention.ConstructEntity(projectileEntity,_world,ConstructProjectile(weaponComponent,projectile));
 
             projectile.SetPackEntity(_world.PackEntity(projectileEntity));
 

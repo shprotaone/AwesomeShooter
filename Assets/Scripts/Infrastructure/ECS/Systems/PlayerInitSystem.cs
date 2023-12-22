@@ -4,6 +4,7 @@ using Extention;
 using Infrastructure.CommonSystems;
 using Infrastructure.ECS.Components;
 using Infrastructure.ECS.Components.Tags;
+using Infrastructure.ECS.Systems;
 using Infrastructure.Factories;
 using Leopotam.EcsLite;
 using MonoBehaviours.Interfaces;
@@ -16,37 +17,34 @@ public class PlayerInitSystem : IEcsInitSystem
     private EcsWorld _world;
 
     private readonly IPlayerFactory _playerFactory;
-    private readonly ICommonSystemsFactory _commonSystemsFactory;
     private IGameSceneData _gameSceneData;
-    private PlayerSettingsSO _playerSettingsSo;
 
-    public PlayerInitSystem(IPlayerFactory playerFactory, 
-        ICommonSystemsFactory commonSystemsFactory,
-        PlayerSettingsSO playerSettings,
-        ILevelSettingsLoader levelSettingsLoader)
+    public PlayerInitSystem(IPlayerFactory playerFactory, ILevelSettingsLoader levelSettingsLoader)
     {
         _playerFactory = playerFactory;
-        _commonSystemsFactory = commonSystemsFactory;
-        _playerSettingsSo = playerSettings;
-        _gameSceneData = levelSettingsLoader.GameSceneData;
     }
 
     public void Init(IEcsSystems systems)
     {
         _world = systems.GetWorld();
+        _gameSceneData = systems.GetShared<IGameSceneData>();
         CreateEntity(_gameSceneData);
     }
 
-    private async void CreateEntity(IGameSceneData gameSceneData)
+    private async UniTask CreateEntity(IGameSceneData gameSceneData)
     {
-        int entity = _world.NewEntity();
         GameObject playerPrefab = await _playerFactory.GetPlayer();
         GameObject player = GameObject.Instantiate(playerPrefab);
-        await SetUpEntity(entity,player,_playerSettingsSo);
+
         player.transform.position = gameSceneData.SpawnPlayerPoint.position;
+        var playerSettingsSo = gameSceneData.PlayerSettingsSo;
+        var componentList = CreateComponents(player, playerSettingsSo);
+
+        var entity = _world.NewEntityWithComponents(componentList);
+        _world.PackEntity(entity);
     }
 
-    private async UniTask SetUpEntity(int entity,GameObject playerPrefab,PlayerSettingsSO settings)
+    private List<object> CreateComponents(GameObject playerPrefab,PlayerSettingsSO settings)
     {
         List<object> components = new List<object>();
 
@@ -83,6 +81,17 @@ public class PlayerInitSystem : IEcsInitSystem
             groundMask = Masks.Floor
         });
 
-        entity.ConstructEntity(_world,components);
+        components.Add(new AroundScanComponent()
+        {
+            around = ""
+        });
+
+        components.Add(new WeaponHolderComponent()
+        {
+            holderTransform = playerPrefab.GetComponentInChildren<WeaponHolderTag>().transform,
+            IsBusy = false
+        });
+
+        return components;
     }
 }

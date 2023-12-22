@@ -1,3 +1,4 @@
+using Infrastructure.ECS.Components;
 using UnityEngine;
 
 namespace Settings.Weapons
@@ -9,5 +10,6 @@ namespace Settings.Weapons
         public Vector3 positionPreset;
         public float fireRate;
         public int magazineCapacity;
+        public ItemType ItemType;
     }
 }

@@ -9,14 +9,16 @@ namespace Infrastructure.ECS
         public override void InstallBindings()
         {
             Container.BindInterfacesAndSelfTo<PlayerInitSystem>().AsSingle();
-            //Container.BindInterfacesAndSelfTo<WeaponSpawnSystem>().AsSingle();
+            Container.BindInterfacesAndSelfTo<WeaponSpawnSystem>().AsSingle();
+            Container.BindInterfacesAndSelfTo<SpawnEnemySystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<InputSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<MovementSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerJumpSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerMouseLookSystem>().AsSingle();
-            Container.BindInterfacesAndSelfTo<CursorLockSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<GravitySystem>().AsSingle();
+            Container.BindInterfacesAndSelfTo<CursorLockSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerWeaponShootSystem>().AsSingle();
+            Container.BindInterfacesAndSelfTo<ProjectileMovementSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<LifetimeSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<FireRateSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<ObstacleCollisionCheckSystem>().AsSingle();
@@ -24,6 +26,7 @@ namespace Infrastructure.ECS
             Container.BindInterfacesAndSelfTo<ReloadMagazineSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<WeaponHolderSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<PickUpSystem>().AsSingle();
+            Container.BindInterfacesAndSelfTo<DamageSystem>().AsSingle();
 
             Container.BindInterfacesAndSelfTo<EcsUpdateSystems>().AsSingle();
 

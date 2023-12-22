@@ -1,7 +1,9 @@
 using System;
+using Infrastructure.CommonSystems;
 using Infrastructure.ECS.Components;
 using Infrastructure.ECS.Components.Providers;
 using Leopotam.EcsLite;
+using MonoBehaviours.Interfaces;
 using Settings;
 using UnityEditor;
 using UnityEngine;
@@ -17,16 +19,18 @@ namespace Infrastructure.ECS.Systems
         private EcsPool<ModelComponent> _modelComponent;
         private EcsPool<MouseLookDirectionComponent> _mouseLookComponent;
         private EcsPool<GravityComponent> _gravityComponent;
+        private IPlayerFactory _playerFactory;
         private PlayerSettingsSO _playerSettings;
 
-        public MovementSystem(PlayerSettingsSO playerSettingsSo)
+        public MovementSystem(IPlayerFactory playerFactory)
         {
-            _playerSettings = playerSettingsSo;
+            _playerFactory = playerFactory;
         }
 
-        public void Init(IEcsSystems systems)
+        public async void Init(IEcsSystems systems)
         {
             _world = systems.GetWorld();
+            _playerSettings = systems.GetShared<IGameSceneData>().PlayerSettingsSo;
             
             _movableFilter = _world.Filter<MovableComponent>().
                 Inc<DirectionComponent>().

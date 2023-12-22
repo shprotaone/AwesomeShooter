@@ -8,7 +8,7 @@ using Zenject;
 
 namespace Infrastructure.Factories
 {
-    public class CommnonSystemsFactory : ICommonSystemsFactory
+    public class CommonSystemsFactory : ICommonSystemsFactory
     {
         private IInstantiator _instantiator;
         private IAssetProvider _assetProvider;

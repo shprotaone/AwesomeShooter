@@ -9,31 +9,47 @@ namespace Infrastructure.CommonSystems
 {
     public class GameplayInstaller : MonoInstaller
     {
-        [SerializeField] private PlayerSettingsSO _playerSettings;
-        
         public override void InstallBindings()
         {
             BindWeaponFactory();
-            
-            BindPlayerSettings();
-            
+
             BulletFactoryBinding();
 
             BulletPoolBinding();
 
             PlayerFactoryBinding();
 
-            BindEcsSystems();
-            
             BindStatesFactory();
 
             BindSceneStateMachine();
-            
+
             BindLevelSettings();
 
-            //BindEcs();
+            BindEnemyFactory();
+
+            BindEcsSystems();
+
+            BindEcsRunner();
+
+            BindRestartService();
 
             Debug.Log("BindingComplete");
+        }
+
+        private void BindEnemyFactory()
+        {
+            Container.BindInterfacesAndSelfTo<EnemyFactory>().AsSingle();
+            Container.BindInterfacesAndSelfTo<EnemyPool>().AsSingle();
+        }
+
+        private void BindEcsRunner()
+        {
+            Container.BindInterfacesAndSelfTo<EcsStartup>().AsSingle();
+        }
+
+        private void BindRestartService()
+        {
+            Container.BindInterfacesAndSelfTo<RestartService>().AsSingle();
         }
 
         private void BindStatesFactory()
@@ -46,11 +62,6 @@ namespace Infrastructure.CommonSystems
             Container.Bind<SceneStateMachine>().AsSingle();
         }
 
-        private void BindEcs()
-        {
-            Container.BindInterfacesAndSelfTo<EcsStartup>().AsSingle();
-        }
-
         private void BindWeaponFactory()
         {
             Container.BindInterfacesAndSelfTo<WeaponFactory>().AsSingle();
@@ -58,18 +69,13 @@ namespace Infrastructure.CommonSystems
 
         private void BindEcsSystems()
         {
-            // Container.BindInterfacesAndSelfTo<EcsUpdateSystems>()
-            //     .FromSubContainerResolve()
-            //     .ByInstaller<ECSUpdateSystemsInstaller>().AsSingle();
-            //
-            // Container.BindInterfacesAndSelfTo<EcsFixedSystems>()
-            //     .FromSubContainerResolve()
-            //     .ByInstaller<ECSFixedUpdateSystemsInstaller>().AsSingle();
-        }
+            Container.BindInterfacesAndSelfTo<EcsUpdateSystems>()
+                .FromSubContainerResolve()
+                .ByInstaller<ECSUpdateSystemsInstaller>().AsSingle();
 
-        private void BindPlayerSettings()
-        {
-            Container.Bind<PlayerSettingsSO>().FromScriptableObject(_playerSettings).AsSingle();
+            Container.BindInterfacesAndSelfTo<EcsFixedSystems>()
+                .FromSubContainerResolve()
+                .ByInstaller<ECSFixedUpdateSystemsInstaller>().AsSingle();
         }
 
         private void PlayerFactoryBinding()

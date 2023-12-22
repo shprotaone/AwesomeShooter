@@ -8,6 +8,7 @@ namespace Infrastructure.ECS
         public override void InstallBindings()
         {          
             Container.BindInterfacesAndSelfTo<PlayerGroundCheckSystem>().AsSingle();
+
             Container.BindInterfacesAndSelfTo<EcsFixedSystems>().AsSingle();
         }
     }

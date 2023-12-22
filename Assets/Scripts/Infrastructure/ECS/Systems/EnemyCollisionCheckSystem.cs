@@ -1,4 +1,5 @@
-﻿using Infrastructure.ECS.Components;
+﻿using Extention;
+using Infrastructure.ECS.Components;
 using Leopotam.EcsLite;
 
 namespace Infrastructure.ECS.Systems
@@ -8,6 +9,7 @@ namespace Infrastructure.ECS.Systems
         private EcsWorld _world;
         private EcsFilter _obstacleFilter;
         private EcsFilter _projectileFilter;
+        private EcsPool<DamageRequestComponent> _damagePool;
         private EcsPool<EnemyCollisionComponent> _obstaclePool;
         private EcsPool<ProjectileComponent> _projectilePool;
 
@@ -17,6 +19,7 @@ namespace Infrastructure.ECS.Systems
             _obstacleFilter = _world.Filter<EnemyCollisionComponent>().End();
             _obstaclePool = _world.GetPool<EnemyCollisionComponent>();
             _projectilePool = _world.GetPool<ProjectileComponent>();
+            _damagePool = _world.GetPool<DamageRequestComponent>();
         }
 
         public void Run(IEcsSystems systems)
@@ -28,6 +31,7 @@ namespace Infrastructure.ECS.Systems
 
                 if (isEnter)
                 {
+                    int damageRequest = _world.NewEntity();
                     enemyComponent.collision.entryEntity.Unpack(_world,out int bullet);
                     enemyComponent.collision.IsEnter = false;
 
@@ -35,7 +39,12 @@ namespace Infrastructure.ECS.Systems
                     {
                         var projectile = _projectilePool.Get(bullet);
 
-                        enemyComponent.enemy.GetDamage(projectile.projectile.Damage);
+                        _world.AddComponentToEntity(damageRequest,new DamageRequestComponent()
+                        {
+                            packEntity = enemyComponent.enemy.PackedEntity,
+                            damage = projectile.projectile.Damage
+                        });
+
                         projectile.projectile.DisableBullet();
                         _world.DelEntity(bullet);
                     }

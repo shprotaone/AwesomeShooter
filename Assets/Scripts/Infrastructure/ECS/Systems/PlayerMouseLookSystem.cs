@@ -2,6 +2,7 @@
 using Infrastructure.ECS.Components;
 using Infrastructure.ECS.Services;
 using Leopotam.EcsLite;
+using MonoBehaviours.Interfaces;
 using Settings;
 using UnityEditor;
 using UnityEngine;
@@ -20,16 +21,16 @@ namespace Infrastructure.ECS.Systems
         private Vector2 _deltaInput;
         private Vector3 _startTransformRotation;
 
-        public PlayerMouseLookSystem(InputService inputService,PlayerSettingsSO playerSettings)
+        public PlayerMouseLookSystem(InputService inputService)
         {
             _inputService = inputService;
             _inputService.OnMouseInput += SetDelta;
-            _playerSettings = playerSettings;
         }
 
         public void Init(IEcsSystems systems)
         {
             _world = systems.GetWorld();
+            _playerSettings = systems.GetShared<IGameSceneData>().PlayerSettingsSo;
 
             _playerFilter = _world.Filter<MouseLookDirectionComponent>().
                 Inc<ModelComponent>().

@@ -1,16 +1,23 @@
 using System;
+using Leopotam.EcsLite;
 using Settings;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace Objects
 {
-    [Serializable]
     public class Enemy : MonoBehaviour
     {
         public event Action OnDeath;
 
         [SerializeField] private EnemySettings _settings;
         [SerializeField] private float health;
+
+        private ObjectPool<Enemy> _pool;
+        private EcsPackedEntity _packedEntity;
+
+        public EcsPackedEntity PackedEntity => _packedEntity;
+        public EnemySettings EnemySettings => _settings;
 
         private void Start()
         {
@@ -22,15 +29,17 @@ namespace Objects
             health = _settings.Health;
         }
 
-        public void GetDamage(float projectileDamage)
-        {
-            health -= projectileDamage;
+        public void SetPool(ObjectPool<Enemy> pool) =>
+            _pool = pool;
 
-            if (health < 0)
-            {
-                OnDeath?.Invoke();
-                Debug.Log("Death");
-            }
+        public void DestroyObj()
+        {
+            Destroy(this.gameObject);
+        }
+
+        public void SetPackedEntity(EcsPackedEntity packEntity)
+        {
+            _packedEntity = packEntity;
         }
     }
 }

@@ -9,9 +9,9 @@ namespace Infrastructure.ECS.Systems
         private EcsWorld _world;
         private EcsFilter _pickUpRequestFilter;
         private EcsFilter _weaponHolderFilter;
-        private EcsFilter _modelFilter;
 
         private EcsPool<ModelComponent> _modelPool;
+        private EcsPool<WeaponHolderComponent> _weaponHolderPool;
         private EcsPool<WeaponComponent> _weaponPool;
         private EcsPool<PickUpRequest> _pickUpRequestPool;
         private EcsPool<AmmoMagazineComponent> _ammoPool;
@@ -19,10 +19,10 @@ namespace Infrastructure.ECS.Systems
         public void Init(IEcsSystems systems)
         {
             _world = systems.GetWorld();
-            _modelFilter = _world.Filter<ModelComponent>().Inc<WeaponComponent>().End();
-            _weaponHolderFilter = _world.Filter<ModelComponent>().Inc<WeaponHolderTag>().End();
+            _weaponHolderFilter = _world.Filter<ModelComponent>().Inc<WeaponHolderComponent>().End();
             _pickUpRequestFilter = _world.Filter<PickUpRequest>().End();
 
+            _weaponHolderPool = _world.GetPool<WeaponHolderComponent>();
             _modelPool = _world.GetPool<ModelComponent>();
             _weaponPool = _world.GetPool<WeaponComponent>();
             _ammoPool = _world.GetPool<AmmoMagazineComponent>();
@@ -37,21 +37,36 @@ namespace Infrastructure.ECS.Systems
 
                 if (requestComponent.itemType == ItemType.WEAPON)
                 {
-                    var weaponHolder = FindHolder();
-                    SetUpWeapon(requestComponent,weaponHolder);
+                    var weaponHolderEntity = FindHolderEntity();
+                    SetUpWeaponHolder(weaponHolderEntity, requestComponent);
+
                     _pickUpRequestPool.Del(request);
                     _world.DelEntity(request);
                 }
             }
         }
 
-        private void SetUpWeapon(PickUpRequest requestComponent,ModelComponent weaponHolderComponent)
+        private void SetUpWeaponHolder(int? weaponHolderEntity, PickUpRequest requestComponent)
+        {
+            if (weaponHolderEntity != null)
+            {
+                ref var weaponHolderComponent = ref _weaponHolderPool.Get((int)weaponHolderEntity);
+
+                if (!weaponHolderComponent.IsBusy)
+                {
+                    weaponHolderComponent.IsBusy = true;
+                    SetUpWeapon(requestComponent, weaponHolderComponent);
+                }
+            }
+        }
+
+        private void SetUpWeapon(PickUpRequest requestComponent,WeaponHolderComponent weaponHolderComponent)
         {
             requestComponent.entity.Unpack(_world, out int weapon);
-            ref var currentWeapon = ref _weaponPool.Get(weapon);
-            currentWeapon.isEquipped = true;
-            SetAmmo(weapon,currentWeapon);
-            SetWeaponPosition(weaponHolderComponent,currentWeapon.settings.positionPreset);
+            ref var weaponComponent = ref _weaponPool.Get(weapon);
+            weaponComponent.isEquipped = true;
+            SetAmmo(weapon,weaponComponent);
+            SetWeaponPosition(weapon,weaponComponent, weaponHolderComponent);
         }
 
         private void SetAmmo(int entity, WeaponComponent weaponComponent)
@@ -62,23 +77,27 @@ namespace Infrastructure.ECS.Systems
 
         }
 
-        private void SetWeaponPosition(ModelComponent weaponHolder,Vector3 presetPosition)
+        private void SetWeaponPosition(int weaponEntity, WeaponComponent weaponComponent,WeaponHolderComponent weaponHolder)
         {
-            foreach (int weaponModel in _modelFilter)
-            {
-                ref var weaponModelTransform = ref _modelPool.Get(weaponModel).modelTransform;
-                weaponModelTransform.SetParent(weaponHolder.modelTransform);
-                weaponModelTransform.localPosition = presetPosition;
-                weaponModelTransform.localEulerAngles = Vector3.zero;
-            }
+            ref var weaponModelTransform = ref _modelPool.Get(weaponEntity).modelTransform;
+            weaponModelTransform.SetParent(weaponHolder.holderTransform);
+            weaponModelTransform.localPosition = weaponComponent.settings.positionPreset;
+            weaponModelTransform.localEulerAngles = Vector3.zero;
         }
 
-        private ModelComponent FindHolder()
+        private int? FindHolderEntity()
         {
             foreach (int holder in _weaponHolderFilter)
-                return _modelPool.Get(holder);
+            {
+                ref var holderBusy = ref _weaponHolderPool.Get(holder).IsBusy;
 
-            return default;
+                if (!holderBusy)
+                {
+                    return holder;
+                }
+            }
+
+            return null;
         }
     }
 }

@@ -13,27 +13,25 @@ namespace Infrastructure.Bootstrappers
         private SceneStateMachine _sceneStateMachine;
         private DiContainer _container;
         private ILevelSettingsLoader _levelSettingsLoader;
-        private IInstantiator _instantiator;
-
+        private EnemyPool _enemyPool;
+        private EcsStartup _ecsStartup;
         public InitGamePlayState(SceneStateMachine sceneStateMachine,
-            DiContainer container,
-            IInstantiator instantiator,
-            ILevelSettingsLoader levelSettingsLoader)
+            ILevelSettingsLoader levelSettingsLoader,
+            EnemyPool enemyPool,
+        EcsStartup ecsStartup)
         {
             _sceneStateMachine = sceneStateMachine;
-            _container = container;
             _levelSettingsLoader = levelSettingsLoader;
-            _instantiator = instantiator;
+            _ecsStartup = ecsStartup;
+            _enemyPool = enemyPool;
         }
         
         public async UniTask Enter()
         {
-            await _levelSettingsLoader.LoadGameSceneData();
-            ECSUpdateSystemsInstaller.Install(_container);
-            ECSFixedUpdateSystemsInstaller.Install(_container);
-            var ecs = _instantiator.Instantiate<EcsStartup>();
-            ecs.Initialize();
-            ecs.StartSystems();
+            var gameSceneData = await _levelSettingsLoader.LoadGameSceneData();
+            await _enemyPool.Init();
+            await _ecsStartup.Initialize(gameSceneData);
+            _ecsStartup.StartSystems();
         }
 
         public UniTask Exit()

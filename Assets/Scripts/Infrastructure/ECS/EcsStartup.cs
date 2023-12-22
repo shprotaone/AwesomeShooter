@@ -4,45 +4,45 @@ using Cysharp.Threading.Tasks;
 using Infrastructure.CommonSystems;
 using Infrastructure.ECS.Services;
 using Leopotam.EcsLite;
+using MonoBehaviours.Interfaces;
+using Settings;
 using UnityEngine;
 using Voody.UniLeo.Lite;
 using Zenject;
 
 namespace Infrastructure.ECS
 {
-    public class EcsStartup : IInitializable,ITickable,IFixedTickable,IDisposable,IEcsStartupWorld
+    public class EcsStartup : IECSRunner,IRestartble
     {
         private EcsWorld _world;
         private EcsSystems _updateSystems;
         private EcsSystems _fixedUpdateSystems;
         private IEcsUpdateSystems _ecsUpdateSystems;
         private IEcsFixedSystems _ecsFixedSystems;
+        private IGameSceneData _gameSceneData;
 
         private bool _isInitialized;
-        
-        [Inject]
-        private void Construct(InputService inputService,
-            BulletPool bulletPool,
-            IEcsUpdateSystems updateSystems,
-            IEcsFixedSystems ecsFixedSystems)
+
+        public EcsWorld CurrentWorld => _world;
+
+        private EcsStartup(IEcsUpdateSystems updateSystems, IEcsFixedSystems ecsFixedSystems)
         {
             _ecsUpdateSystems = updateSystems;
             _ecsFixedSystems = ecsFixedSystems;
         }
 
-        public void Initialize()
+        public async UniTask Initialize(IGameSceneData gameSceneData)
         {
             Debug.Log("StartInit");
             _world = new EcsWorld();
-
-            _updateSystems = new EcsSystems(_world);
-            _fixedUpdateSystems = new EcsSystems(_world);
-            _updateSystems.ConvertScene();
+            _gameSceneData = gameSceneData;
         }
 
         public void StartSystems()
         {
             AddSystems();
+            _updateSystems.ConvertScene();
+            _fixedUpdateSystems.ConvertScene();
             _updateSystems.Init();
             _fixedUpdateSystems.Init();
             _isInitialized = true;
@@ -60,6 +60,7 @@ namespace Infrastructure.ECS
 
         public void Tick()
         {
+            Debug.Log("Tick");
             if(_isInitialized)
                 _updateSystems?.Run ();
         }
@@ -94,13 +95,18 @@ namespace Infrastructure.ECS
 
         private EcsSystems GetSystems(List<IEcsSystem> bindingSystems)
         {
-            EcsSystems systems = new EcsSystems(_world);
+            EcsSystems systems = new EcsSystems(_world,_gameSceneData);
             foreach (var s in bindingSystems)
             {
                 systems.Add(s);
             }
 
             return systems;
+        }
+
+        public void Restart()
+        {
+            Dispose();
         }
     }
 }

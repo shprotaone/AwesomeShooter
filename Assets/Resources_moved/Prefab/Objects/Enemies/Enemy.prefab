@@ -12,10 +12,8 @@ GameObject:
   - component: {fileID: 5750910583326156966}
   - component: {fileID: 3669364689721287033}
   - component: {fileID: 4034518817097619132}
-  - component: {fileID: 6312116305641422581}
-  - component: {fileID: 2197674478092803662}
-  - component: {fileID: 6380748933582632491}
   - component: {fileID: 5805994142920144667}
+  - component: {fileID: 6312116305641422581}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -111,48 +109,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6312116305641422581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6866783491494392202}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfb3e0be6abdde44e99ef94c56b716d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IsEnter: 0
---- !u!114 &2197674478092803662
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6866783491494392202}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 236f59dc59fdd4c8a846a7fc5bb735ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  convertMode: 2
-  customWorld: 
---- !u!114 &6380748933582632491
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6866783491494392202}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d3ff2d6517d4eb4887709f859d396cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  value:
-    enemy: {fileID: 5805994142920144667}
-    collision: {fileID: 6312116305641422581}
 --- !u!114 &5805994142920144667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,3 +123,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _settings: {fileID: 11400000, guid: e3c8bc1626a753049a31a6ba4b773f0e, type: 2}
   health: 0
+--- !u!114 &6312116305641422581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6866783491494392202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfb3e0be6abdde44e99ef94c56b716d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsEnter: 0

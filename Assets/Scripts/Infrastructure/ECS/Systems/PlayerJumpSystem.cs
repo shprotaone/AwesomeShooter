@@ -4,6 +4,7 @@ using Infrastructure.ECS.Components.Providers;
 using Infrastructure.ECS.Components.Tags;
 using Infrastructure.ECS.Services;
 using Leopotam.EcsLite;
+using MonoBehaviours.Interfaces;
 using Settings;
 using UnityEditor;
 using UnityEngine;
@@ -22,15 +23,15 @@ namespace Infrastructure.ECS.Systems
         private InputService _inputService;
 
         private bool _isJumped;
-        public PlayerJumpSystem(InputService inputService,PlayerSettingsSO playerSettings)
+        public PlayerJumpSystem(InputService inputService)
         {
             _inputService = inputService;
-            _playerSettings = playerSettings;
         }
 
         public void Init(IEcsSystems systems)
         {
             _world = systems.GetWorld();
+            _playerSettings = systems.GetShared<IGameSceneData>().PlayerSettingsSo;
 
             _jumpFilter = _world.Filter<PlayerTag>()
                 .Inc<JumpComponent>()

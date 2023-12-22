@@ -2,6 +2,7 @@
 using Infrastructure.Factories;
 using MonoBehaviours;
 using MonoBehaviours.Interfaces;
+using Settings;
 
 namespace Infrastructure.CommonSystems
 {
@@ -9,17 +10,24 @@ namespace Infrastructure.CommonSystems
     {
         private IGameSceneData _gameSceneData;
         private ICommonSystemsFactory _commonSystemsFactory;
+        private IPlayerFactory _playerFactory;
 
         public IGameSceneData GameSceneData => _gameSceneData;
 
-        public LevelSettingsLoader(ICommonSystemsFactory commonSystemsFactory)
+        public LevelSettingsLoader(ICommonSystemsFactory commonSystemsFactory,IPlayerFactory playerFactory)
         {
             _commonSystemsFactory = commonSystemsFactory;
+            _playerFactory = playerFactory;
         }
 
-        public async UniTask LoadGameSceneData()
+        public async UniTask<IGameSceneData> LoadGameSceneData()
         {
-            _gameSceneData = await _commonSystemsFactory.GetGameSceneData();
+            return await _commonSystemsFactory.GetGameSceneData();
+        }
+
+        public async UniTask<PlayerSettingsSO> GetPlayerSettings()
+        {
+            return await _playerFactory.GetPlayerSettings();
         }
     }
 }

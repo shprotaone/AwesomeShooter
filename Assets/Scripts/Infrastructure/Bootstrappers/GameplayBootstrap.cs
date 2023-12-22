@@ -17,12 +17,12 @@ namespace Infrastructure.Bootstrappers
             _statesFactory = statesFactory;
         }
 
-        public void Start()
+        public async void Start()
         {
             _sceneStateMachine.RegisterState(_statesFactory.Create<InitGamePlayState>());
             _sceneStateMachine.RegisterState(_statesFactory.Create<PlayGameplayState>());
 
-            _sceneStateMachine.Enter<InitGamePlayState>();
+            await _sceneStateMachine.Enter<InitGamePlayState>();
         }
     }
 }
