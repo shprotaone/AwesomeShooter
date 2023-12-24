@@ -94,6 +94,11 @@ namespace Infrastructure.ECS.Systems
                 _maxCapacity = weapon.WeaponSettings.magazineCapacity
             });
 
+            components.Add(new ColliderComponent()
+            {
+                collider = weapon.GetComponent<Collider>()
+            });
+
             return components;
         }
     }

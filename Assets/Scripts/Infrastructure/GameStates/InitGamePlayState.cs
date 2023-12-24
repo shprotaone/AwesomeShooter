@@ -15,10 +15,11 @@ namespace Infrastructure.Bootstrappers
         private ILevelSettingsLoader _levelSettingsLoader;
         private EnemyPool _enemyPool;
         private EcsStartup _ecsStartup;
+
         public InitGamePlayState(SceneStateMachine sceneStateMachine,
             ILevelSettingsLoader levelSettingsLoader,
             EnemyPool enemyPool,
-        EcsStartup ecsStartup)
+            EcsStartup ecsStartup)
         {
             _sceneStateMachine = sceneStateMachine;
             _levelSettingsLoader = levelSettingsLoader;

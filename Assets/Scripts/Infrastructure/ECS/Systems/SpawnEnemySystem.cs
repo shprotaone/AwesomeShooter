@@ -66,6 +66,11 @@ namespace Infrastructure.ECS.Systems
                 health = enemy.EnemySettings.Health
             });
 
+            components.Add(new DeathComponent()
+            {
+                OnDeath = enemy.DisableObj
+            });
+
             return components;
         }
     }

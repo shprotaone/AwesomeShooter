@@ -2,7 +2,7 @@
 
 namespace Infrastructure.ECS.Components
 {
-    public struct DeathEventComponent
+    public struct DeathRequestComponent
     {
         public EcsPackedEntity packedEntity;
     }

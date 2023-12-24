@@ -15,6 +15,7 @@ namespace Infrastructure.ECS.Systems
         private EcsPool<WeaponComponent> _weaponPool;
         private EcsPool<PickUpRequest> _pickUpRequestPool;
         private EcsPool<AmmoMagazineComponent> _ammoPool;
+        private EcsPool<ColliderComponent> _colliderPool;
 
         public void Init(IEcsSystems systems)
         {
@@ -27,6 +28,7 @@ namespace Infrastructure.ECS.Systems
             _weaponPool = _world.GetPool<WeaponComponent>();
             _ammoPool = _world.GetPool<AmmoMagazineComponent>();
             _pickUpRequestPool = _world.GetPool<PickUpRequest>();
+            _colliderPool = _world.GetPool<ColliderComponent>();
         }
 
         public void Run(IEcsSystems systems)
@@ -63,8 +65,13 @@ namespace Infrastructure.ECS.Systems
         private void SetUpWeapon(PickUpRequest requestComponent,WeaponHolderComponent weaponHolderComponent)
         {
             requestComponent.entity.Unpack(_world, out int weapon);
+
             ref var weaponComponent = ref _weaponPool.Get(weapon);
             weaponComponent.isEquipped = true;
+
+            ref var colliderComponent = ref _colliderPool.Get(weapon);
+            colliderComponent.collider.enabled = false;
+
             SetAmmo(weapon,weaponComponent);
             SetWeaponPosition(weapon,weaponComponent, weaponHolderComponent);
         }

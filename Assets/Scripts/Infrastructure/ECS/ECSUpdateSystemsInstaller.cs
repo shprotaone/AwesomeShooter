@@ -1,5 +1,4 @@
 ﻿using Infrastructure.ECS.Systems;
-using UnityEngine.Rendering;
 using Zenject;
 
 namespace Infrastructure.ECS
@@ -16,7 +15,6 @@ namespace Infrastructure.ECS
             Container.BindInterfacesAndSelfTo<PlayerJumpSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerMouseLookSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<GravitySystem>().AsSingle();
-            Container.BindInterfacesAndSelfTo<CursorLockSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerWeaponShootSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<ProjectileMovementSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<LifetimeSystem>().AsSingle();
@@ -27,7 +25,7 @@ namespace Infrastructure.ECS
             Container.BindInterfacesAndSelfTo<WeaponHolderSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<PickUpSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<DamageSystem>().AsSingle();
-
+            Container.BindInterfacesAndSelfTo<DeathSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<EcsUpdateSystems>().AsSingle();
 
         }

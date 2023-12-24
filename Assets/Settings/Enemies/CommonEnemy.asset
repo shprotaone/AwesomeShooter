@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: CommonEnemy
   m_EditorClassIdentifier: 
   _type: 0
-  _health: 50
+  _health: 10
