@@ -13,7 +13,7 @@ namespace Infrastructure.CommonSystems
         }
         public async UniTask Show()
         {
-            _curtain.Show();
+            await _curtain.Show();
         }
 
         public async UniTask Hide()

@@ -32,6 +32,11 @@ namespace Objects
         public void SetPool(ObjectPool<Enemy> pool) =>
             _pool = pool;
 
+        public void DisableObj()
+        {
+            _pool.Release(this);
+        }
+
         public void DestroyObj()
         {
             Destroy(this.gameObject);

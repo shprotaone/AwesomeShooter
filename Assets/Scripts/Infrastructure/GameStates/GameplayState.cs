@@ -11,20 +11,25 @@ namespace Infrastructure.Bootstrappers
 {
     public class GameplayState : IState
     {
+        private ILoadingCurtain _loadingCurtain;
         private IInstantiator _instantiator;
         private ISceneLoader _sceneLoader;
 
 
         public GameplayState(ISceneLoader sceneLoader,
-            IInstantiator instantiator)
+            IInstantiator instantiator,
+            ILoadingCurtain loadingCurtain)
         {
             _sceneLoader = sceneLoader;
             _instantiator = instantiator;
+            _loadingCurtain = loadingCurtain;
         }
 
         public async UniTask Enter()
         {
+            await _loadingCurtain.Show();
             await _sceneLoader.Load(AssetAddress.GameplayScenePath);
+            await _loadingCurtain.Hide();
         }
 
         public async UniTask Exit()

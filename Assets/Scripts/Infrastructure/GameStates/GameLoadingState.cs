@@ -33,8 +33,6 @@ namespace Infrastructure.GameStates
             _loadingCurtain.Show();
 
             await _assetProvider.WarmupAssetsByLabel(AssetLabels.GameLoadingState);
-            _loadingCurtain.Hide();
-
             await _stateMachine.Enter<GameHubState>();
 
         }

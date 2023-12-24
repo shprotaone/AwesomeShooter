@@ -31,25 +31,30 @@ namespace Infrastructure.ECS.Systems
 
                 if (isEnter)
                 {
-                    int damageRequest = _world.NewEntity();
-                    enemyComponent.collision.entryEntity.Unpack(_world,out int bullet);
+                    enemyComponent.collision.entryEntity.Unpack(_world,out int enterEntity);
                     enemyComponent.collision.IsEnter = false;
 
-                    if (_projectilePool.Has(bullet))
-                    {
-                        var projectile = _projectilePool.Get(bullet);
-
-                        _world.AddComponentToEntity(damageRequest,new DamageRequestComponent()
-                        {
-                            packEntity = enemyComponent.enemy.PackedEntity,
-                            damage = projectile.projectile.Damage
-                        });
-
-                        projectile.projectile.DisableBullet();
-                        _world.DelEntity(bullet);
-                    }
+                    DamageRequest(enterEntity, enemyComponent);
 
                 }
+            }
+        }
+
+        private void DamageRequest(int enterEntity, EnemyCollisionComponent enemyComponent)
+        {
+            if (_projectilePool.Has(enterEntity))
+            {
+                int damageRequest = _world.NewEntity();
+                var projectile = _projectilePool.Get(enterEntity);
+
+                _world.AddComponentToEntity(damageRequest, new DamageRequestComponent()
+                {
+                    packEntity = enemyComponent.enemy.PackedEntity,
+                    damage = projectile.projectile.Damage
+                });
+
+                projectile.projectile.DisableBullet();
+                _world.DelEntity(enterEntity);
             }
         }
     }

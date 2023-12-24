@@ -36,9 +36,9 @@ namespace Infrastructure.ECS.Systems
                 if (damagedHealth <= 0)
                 {
                     int deathRequest = _world.NewEntity();
-                    _world.AddComponentToEntity(deathRequest,new DeathEventComponent
+                    _world.AddComponentToEntity(deathRequest,new DeathRequestComponent
                     {
-                        packedEntity = _world.PackEntity(requestEntity)
+                        packedEntity = _world.PackEntity(health)
                     });
                 }
 

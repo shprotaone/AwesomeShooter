@@ -60,7 +60,6 @@ namespace Infrastructure.ECS
 
         public void Tick()
         {
-            Debug.Log("Tick");
             if(_isInitialized)
                 _updateSystems?.Run ();
         }
@@ -73,7 +72,6 @@ namespace Infrastructure.ECS
 
         public void Dispose()
         {
-            Debug.Log("Dispose");
             if (_updateSystems != null)
             {
                 _updateSystems.Destroy();
