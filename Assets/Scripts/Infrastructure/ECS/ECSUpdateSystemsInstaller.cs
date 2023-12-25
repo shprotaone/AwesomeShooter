@@ -7,9 +7,10 @@ namespace Infrastructure.ECS
     {
         public override void InstallBindings()
         {
+            Container.BindInterfacesAndSelfTo<ExperienceSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerInitSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<WeaponSpawnSystem>().AsSingle();
-            Container.BindInterfacesAndSelfTo<SpawnEnemySystem>().AsSingle();
+            Container.BindInterfacesAndSelfTo<EnemySpawnSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<InputSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<MovementSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerJumpSystem>().AsSingle();
@@ -20,7 +21,7 @@ namespace Infrastructure.ECS
             Container.BindInterfacesAndSelfTo<LifetimeSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<FireRateSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<ObstacleCollisionCheckSystem>().AsSingle();
-            Container.BindInterfacesAndSelfTo<EnemyCollisionCheckSystem>().AsSingle();
+            Container.BindInterfacesAndSelfTo<EnemyCollisionSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<ReloadMagazineSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<WeaponHolderSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<PickUpSystem>().AsSingle();

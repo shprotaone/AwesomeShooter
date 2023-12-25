@@ -78,6 +78,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2c8aad6b91818c4468652c9aec0f5b75
+    m_Address: MainGameplayCanvas
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: d014c07cfc00ef941ba154f6668e6ddb, type: 2}
   m_SchemaSet:

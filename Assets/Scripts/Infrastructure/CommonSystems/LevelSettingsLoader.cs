@@ -29,5 +29,10 @@ namespace Infrastructure.CommonSystems
         {
             return await _playerFactory.GetPlayerSettings();
         }
+
+        public async UniTask<PlayerLevelSettingsSO> GetLevelsStorage()
+        {
+            return await _playerFactory.GetLevelsStorage();
+        }
     }
 }

@@ -11,6 +11,8 @@ namespace Infrastructure.CommonSystems
     {
         public override void InstallBindings()
         {
+            
+            
             BindWeaponFactory();
 
             BulletFactoryBinding();
@@ -30,10 +32,18 @@ namespace Infrastructure.CommonSystems
             BindEcsSystems();
 
             BindEcsRunner();
+            
+            BindUIFactory();
 
             BindRestartService();
 
+
             Debug.Log("BindingComplete");
+        }
+
+        private void BindUIFactory()
+        {
+            Container.BindInterfacesAndSelfTo<GameplayUIFactory>().AsSingle();
         }
 
         private void BindEnemyFactory()

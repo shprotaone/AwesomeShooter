@@ -21,3 +21,4 @@ MonoBehaviour:
   _camClampAngle: 80
   _camHorizontalSpeed: 10
   _camVerticalSpeed: 10
+  _health: 100

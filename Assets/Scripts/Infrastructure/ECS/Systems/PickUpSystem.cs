@@ -5,6 +5,7 @@ using Infrastructure.ECS.Components;
 using Infrastructure.ECS.Components.Tags;
 using Infrastructure.ECS.Views;
 using Leopotam.EcsLite;
+using Objects;
 using TMPro;
 using UnityEngine;
 
@@ -13,32 +14,32 @@ namespace Infrastructure.ECS.Systems
     public class PickUpSystem : IEcsInitSystem,IEcsRunSystem
     {
         private EcsWorld _world;
-        private EcsFilter _pickUpFilter;
         private EcsFilter _playerFilter;
-        private EcsPool<PickUpComponent> _pickUpPool;
+        private EcsFilter _aroundFilter;
+
+        private EcsPool<DamageComponent> _damagePool;
         private EcsPool<ModelComponent> _playerPool;
         private EcsPool<WeaponHolderComponent> _weaponHolderPool;
-
         private EcsPool<AroundScanComponent> _aroundScanPool;
-        private EcsFilter _aroundFilter;
 
         private Vector3 _playerPosition;
         private LayerMask _mask;
+        private LayerMask _enemyMask;
         private Collider[] _hitColliders = new Collider[1];
 
         public void Init(IEcsSystems systems)
         {
             _playerPosition = new Vector3();
             _mask = Masks.Pickable;
+            _enemyMask = Masks.Enemy;
             _world = systems.GetWorld();
             _aroundFilter = _world.Filter<AroundScanComponent>().Inc<PlayerTag>().End();
             _aroundScanPool = _world.GetPool<AroundScanComponent>();
 
-            _pickUpPool = _world.GetPool<PickUpComponent>();
-            _pickUpFilter = _world.Filter<PickUpComponent>().End();
-
             _playerFilter = _world.Filter<ModelComponent>().Inc<PlayerTag>().End();
             _playerPool = _world.GetPool<ModelComponent>();
+
+            _damagePool = _world.GetPool<DamageComponent>();
         }
 
         public void Run(IEcsSystems systems)
@@ -58,7 +59,7 @@ namespace Infrastructure.ECS.Systems
 
         private void CheckTriggers()
         {
-            int numColliders = Physics.OverlapSphereNonAlloc(_playerPosition, 3, _hitColliders, _mask.value);
+            int numColliders = Physics.OverlapSphereNonAlloc(_playerPosition, 3, _hitColliders, _mask.value | _enemyMask.value);
 
             foreach (int entity in _aroundFilter)
             {
@@ -71,6 +72,12 @@ namespace Infrastructure.ECS.Systems
                         weaponConfig.entity.Unpack(_world, out int result);
                         OnTriggerEnter(result);
                     }
+                    else if (_hitColliders[0].TryGetComponent(out Enemy enemy))
+                    {
+                        //TODO: На будущее
+                        // enemy.PackedEntity.Unpack(_world, out int enemyEntity);
+                        // OnHitPlayer(enemyEntity,enemy);
+                    }
 
                 }
                 else
@@ -81,12 +88,30 @@ namespace Infrastructure.ECS.Systems
             }
         }
 
+        private void OnHitPlayer(int enemyEntity,Enemy enemy)
+        {
+            /*if (_damagePool.Has(enemyEntity))
+            {
+                int damageRequest = _world.NewEntity();
+                var damage = _damagePool.Get(enemyEntity).value;
+                
+                // _world.AddComponentToEntity(damageRequest, new DamageRequestComponent()
+                // {
+                //     packEntity = enemy.PackedEntity,
+                //     damage = damage
+                // });
+                
+                Debug.Log("DamageApproved");
+            }*/
+        }
+
         private void OnTriggerEnter(int entity)
         {
             int itemEntity = entity;
             ItemType type = itemEntity.GetECSComponent<ItemTypeComponent>(_world).type;
             EcsPackedEntity itemPackEntity = _world.PackEntity(itemEntity);
             int requestEntity = _world.NewEntity();
+            
             _world.AddComponentToEntity(requestEntity,new PickUpRequest()
             {
                 entity = itemPackEntity,

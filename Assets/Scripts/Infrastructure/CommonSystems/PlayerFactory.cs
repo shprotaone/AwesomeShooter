@@ -30,5 +30,12 @@ namespace Infrastructure.CommonSystems
                 await _assetProvider.Load<GameObject>(AssetAddress.PlayerSettingsSOPath);
             return settingsSo.GetComponent<PlayerSettingsSO>();
         }
+
+        public async UniTask<PlayerLevelSettingsSO> GetLevelsStorage()
+        {
+            GameObject settingsSo =
+                await _assetProvider.Load<GameObject>(AssetAddress.PlayerLevelSettingsSOPath);
+            return settingsSo.GetComponent<PlayerLevelSettingsSO>();
+        }
     }
 }

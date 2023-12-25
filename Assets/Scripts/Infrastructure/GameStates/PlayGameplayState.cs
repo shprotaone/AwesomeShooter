@@ -14,7 +14,7 @@ namespace Infrastructure.Bootstrappers
 
         public async UniTask Exit()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

@@ -20,21 +20,25 @@ namespace Infrastructure.ECS
         private IEcsUpdateSystems _ecsUpdateSystems;
         private IEcsFixedSystems _ecsFixedSystems;
         private IGameSceneData _gameSceneData;
+        private DiContainer _container;
 
         private bool _isInitialized;
 
         public EcsWorld CurrentWorld => _world;
 
-        private EcsStartup(IEcsUpdateSystems updateSystems, IEcsFixedSystems ecsFixedSystems)
+        private EcsStartup(IEcsUpdateSystems updateSystems, IEcsFixedSystems ecsFixedSystems,DiContainer container)
         {
             _ecsUpdateSystems = updateSystems;
             _ecsFixedSystems = ecsFixedSystems;
+            _container = container;
         }
 
         public async UniTask Initialize(IGameSceneData gameSceneData)
         {
             Debug.Log("StartInit");
             _world = new EcsWorld();
+            _container.BindInstance(_world).AsSingle();
+            
             _gameSceneData = gameSceneData;
         }
 

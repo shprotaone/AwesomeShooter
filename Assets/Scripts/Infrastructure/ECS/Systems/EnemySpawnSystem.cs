@@ -11,13 +11,13 @@ using Objects;
 
 namespace Infrastructure.ECS.Systems
 {
-    public class SpawnEnemySystem : IEcsInitSystem,IEcsRunSystem
+    public class EnemySpawnSystem : IEcsInitSystem,IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
         private EnemyPool _pool;
         private IGameSceneData _gameSceneData;
 
-        public SpawnEnemySystem(EnemyPool pool, ILevelSettingsLoader levelSettingsLoader)
+        public EnemySpawnSystem(EnemyPool pool, ILevelSettingsLoader levelSettingsLoader)
         {
             _pool = pool;
             _gameSceneData = levelSettingsLoader.GameSceneData;
@@ -69,6 +69,16 @@ namespace Infrastructure.ECS.Systems
             components.Add(new DeathComponent()
             {
                 OnDeath = enemy.DisableObj
+            });
+            
+            components.Add(new DamageComponent()
+            {
+                value = enemy.EnemySettings.Damage
+            });
+            
+            components.Add(new ExperienceStorageComponent()
+            {
+                value = 10
             });
 
             return components;

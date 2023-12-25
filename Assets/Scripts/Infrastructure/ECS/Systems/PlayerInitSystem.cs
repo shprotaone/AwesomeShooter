@@ -5,7 +5,6 @@ using Infrastructure.CommonSystems;
 using Infrastructure.ECS.Components;
 using Infrastructure.ECS.Components.Tags;
 using Infrastructure.ECS.Systems;
-using Infrastructure.Factories;
 using Leopotam.EcsLite;
 using MonoBehaviours.Interfaces;
 using Settings;
@@ -41,7 +40,7 @@ public class PlayerInitSystem : IEcsInitSystem
         var componentList = CreateComponents(player, playerSettingsSo);
 
         var entity = _world.NewEntityWithComponents(componentList);
-        _world.PackEntity(entity);
+        player.GetComponentInChildren<PlayerTagMono>().SetEntity(_world.PackEntity(entity));
     }
 
     private List<object> CreateComponents(GameObject playerPrefab,PlayerSettingsSO settings)
@@ -90,6 +89,27 @@ public class PlayerInitSystem : IEcsInitSystem
         {
             holderTransform = playerPrefab.GetComponentInChildren<WeaponHolderTag>().transform,
             IsBusy = false
+        });
+        
+        components.Add(new HealthComponent()
+        {
+            health = settings.Health
+        });
+        
+        components.Add(new DamageComponent()
+        {
+            value = 5f
+        });
+        
+        components.Add(new DeathComponent()
+        {
+            OnDeath = () => Debug.Log("Death")
+        });
+        
+        components.Add(new ExperienceComponent()
+        {
+            Experience = 0,
+            Level = 0
         });
 
         return components;

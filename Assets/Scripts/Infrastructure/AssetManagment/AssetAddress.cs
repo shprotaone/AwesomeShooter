@@ -4,6 +4,7 @@ namespace Infrastructure.AssetManagment
 {
     public static class AssetAddress
     {
+        public const string PlayerLevelSettingsSOPath = "";
         public const string PlayerPrefabPath = "Player";
         public const string PlayerSettingsSOPath = "PlayerSettingsSO";
         public const string CommonBulletPrefabPath = "CommonBullet";
@@ -15,5 +16,6 @@ namespace Infrastructure.AssetManagment
         public const string GameplayScenePath = "GameplayScene";
         public const string WeaponBaseModelPath = "BaseWeapon";
         public const string CommonEnemyPrefabPath = "CommonEnemy";
+        public const string GameplayHUDPath = "MainGameplayCanvas";
     }
 }
