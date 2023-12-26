@@ -10,5 +10,6 @@ namespace Infrastructure.CommonSystems
         IGameSceneData GameSceneData { get; }
         UniTask<IGameSceneData> LoadGameSceneData();
         UniTask<PlayerSettingsSO> GetPlayerSettings();
+        UniTask<PlayerLevelSettingsSO> GetLevelsStorage();
     }
 }

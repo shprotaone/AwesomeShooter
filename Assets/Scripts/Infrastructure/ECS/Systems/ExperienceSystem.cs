@@ -1,4 +1,5 @@
-﻿using Infrastructure.ECS.Components;
+﻿using Infrastructure.CommonSystems;
+using Infrastructure.ECS.Components;
 using Infrastructure.ECS.Components.Tags;
 using Leopotam.EcsLite;
 using Settings;
@@ -13,11 +14,11 @@ namespace Infrastructure.ECS.Systems
         private EcsPool<ExperienceComponent> _experiencePool;
         private EcsPool<AddExperienceRequestComponent> _experienceRequestPool;
 
-        private PlayerLevelSettingsSO _playerLevelSettings;
+        private LevelSettingsContainer _settingsContainer;
         
-        public ExperienceSystem(PlayerLevelSettingsSO playerLevelSettingsSo)
+        public ExperienceSystem(LevelSettingsContainer settingsContainer)
         {
-            _playerLevelSettings = playerLevelSettingsSo;
+            _settingsContainer = settingsContainer;
         }
         
         public void Init(IEcsSystems systems)
@@ -36,6 +37,7 @@ namespace Infrastructure.ECS.Systems
             {
                 ref var currentRequest = ref _experienceRequestPool.Get(request);
                 AddExperience(currentRequest);
+                _world.DelEntity(request);
             }
         }
 
@@ -57,7 +59,7 @@ namespace Infrastructure.ECS.Systems
                 //     }
                 // }
                 
-                _world.DelEntity(i);
+
 
             }
         }

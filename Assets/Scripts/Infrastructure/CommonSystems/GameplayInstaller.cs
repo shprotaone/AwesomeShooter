@@ -1,7 +1,10 @@
+using Cysharp.Threading.Tasks;
 using Infrastructure.ECS;
 using Infrastructure.Factories;
+using Infrastructure.Services;
 using Infrastructure.StateMachines;
 using Settings;
+using UI;
 using UnityEngine;
 using Zenject;
 
@@ -11,8 +14,6 @@ namespace Infrastructure.CommonSystems
     {
         public override void InstallBindings()
         {
-            
-            
             BindWeaponFactory();
 
             BulletFactoryBinding();
@@ -21,11 +22,12 @@ namespace Infrastructure.CommonSystems
 
             PlayerFactoryBinding();
 
+            BindLevelSettings();
+
             BindStatesFactory();
 
             BindSceneStateMachine();
 
-            BindLevelSettings();
 
             BindEnemyFactory();
 
@@ -43,7 +45,9 @@ namespace Infrastructure.CommonSystems
 
         private void BindUIFactory()
         {
+            Container.BindInterfacesAndSelfTo<UIService>().AsSingle();
             Container.BindInterfacesAndSelfTo<GameplayUIFactory>().AsSingle();
+            Container.BindInterfacesAndSelfTo<MainHUDController>().AsSingle();
         }
 
         private void BindEnemyFactory()
@@ -105,8 +109,9 @@ namespace Infrastructure.CommonSystems
         
         private void BindLevelSettings()
         {
+            Container.BindInterfacesAndSelfTo<LevelSettingsContainer>().AsSingle();
             Container.BindInterfacesAndSelfTo<LevelSettingsLoader>().AsSingle();
-        }
 
+        }
     }
 }

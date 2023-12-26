@@ -1,4 +1,5 @@
 ﻿using System;
+using Infrastructure.CommonSystems;
 using Infrastructure.ECS.Components;
 using Infrastructure.ECS.Components.Providers;
 using Infrastructure.ECS.Components.Tags;
@@ -18,20 +19,22 @@ namespace Infrastructure.ECS.Systems
         private EcsPool<MovableComponent> _movablePool;
         private EcsPool<GroundCheckComponent> _groundCheckPool;
         private EcsPool<GravityComponent> _gravityComponentPool;
-        private PlayerSettingsSO _playerSettings;
+        private LevelSettingsContainer _levelSettings;
 
         private InputService _inputService;
 
         private bool _isJumped;
-        public PlayerJumpSystem(InputService inputService)
+        public PlayerJumpSystem(InputService inputService,LevelSettingsContainer levelSettings)
         {
             _inputService = inputService;
+            _levelSettings = levelSettings;
+
         }
 
         public void Init(IEcsSystems systems)
         {
             _world = systems.GetWorld();
-            _playerSettings = systems.GetShared<IGameSceneData>().PlayerSettingsSo;
+            //_playerSettings = systems.GetShared<IGameSceneData>().PlayerSettingsSo;
 
             _jumpFilter = _world.Filter<PlayerTag>()
                 .Inc<JumpComponent>()
@@ -64,7 +67,7 @@ namespace Infrastructure.ECS.Systems
 
                 if (_isJumped)
                 {
-                    velocity.y = Mathf.Sqrt(_playerSettings.JumpForce * 2f * gravityComponent.gravity);
+                    velocity.y = Mathf.Sqrt(_levelSettings.PlayerSettings.JumpForce * 2f * gravityComponent.gravity);
                     _isJumped = false;
                 }
 

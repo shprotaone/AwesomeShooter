@@ -17,10 +17,12 @@ public class PlayerInitSystem : IEcsInitSystem
 
     private readonly IPlayerFactory _playerFactory;
     private IGameSceneData _gameSceneData;
+    private LevelSettingsContainer _settingsContainer;
 
-    public PlayerInitSystem(IPlayerFactory playerFactory, ILevelSettingsLoader levelSettingsLoader)
+    public PlayerInitSystem(IPlayerFactory playerFactory,LevelSettingsContainer settingsContainer)
     {
         _playerFactory = playerFactory;
+        _settingsContainer = settingsContainer;
     }
 
     public void Init(IEcsSystems systems)
@@ -36,8 +38,7 @@ public class PlayerInitSystem : IEcsInitSystem
         GameObject player = GameObject.Instantiate(playerPrefab);
 
         player.transform.position = gameSceneData.SpawnPlayerPoint.position;
-        var playerSettingsSo = gameSceneData.PlayerSettingsSo;
-        var componentList = CreateComponents(player, playerSettingsSo);
+        var componentList = CreateComponents(player, _settingsContainer.PlayerSettings);
 
         var entity = _world.NewEntityWithComponents(componentList);
         player.GetComponentInChildren<PlayerTagMono>().SetEntity(_world.PackEntity(entity));
@@ -109,7 +110,7 @@ public class PlayerInitSystem : IEcsInitSystem
         components.Add(new ExperienceComponent()
         {
             Experience = 0,
-            Level = 0
+            Level = 1
         });
 
         return components;

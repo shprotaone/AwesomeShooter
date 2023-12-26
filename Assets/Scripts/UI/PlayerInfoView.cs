@@ -1,19 +1,20 @@
 ﻿using System;
-using Settings;
+using Infrastructure.CommonSystems;
+using Infrastructure.Services;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
 namespace UI
 {
-    public class PlayerInfoView : MonoBehaviour
+    public class PlayerInfoView : MonoBehaviour,IView
     {
         [SerializeField] private Slider _hpSlider;
         [SerializeField] private Slider _expSLider;
 
-        private PlayerLevelSettingsSO _levelSettingsSo;
+        private LevelSettingsContainer _levelSettingsSo;
         [Inject]
-        private void Construct(PlayerLevelSettingsSO levelSettingsSo)
+        private void Construct(LevelSettingsContainer levelSettingsSo)
         {
             _levelSettingsSo = levelSettingsSo;
         }
@@ -26,7 +27,7 @@ namespace UI
 
         public void SetUpExp(int currentLevel)
         {
-            _expSLider.maxValue = _levelSettingsSo._levels.
+            _expSLider.maxValue = _levelSettingsSo.PlayerLevelSettingsSo.levels.
                 Find(x => x.level == currentLevel).experienceToUp;
         }
 

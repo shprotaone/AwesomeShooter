@@ -10,7 +10,7 @@ namespace Infrastructure.ECS.Systems
         private EcsWorld _world;
         private EcsFilter _magazineFilter;
         private EcsFilter _weaponFilter;
-        private EcsPool<AmmoMagazineComponent> _magazinePool;
+        private EcsPool<AmmoComponent> _magazinePool;
         private EcsPool<WeaponComponent> _weaponPool;
 
         private InputService _inputService;
@@ -25,7 +25,7 @@ namespace Infrastructure.ECS.Systems
         public void Init(IEcsSystems systems)
         {
             _world = systems.GetWorld();
-            _magazinePool = _world.GetPool<AmmoMagazineComponent>();
+            _magazinePool = _world.GetPool<AmmoComponent>();
             _weaponFilter = _world.Filter<WeaponComponent>().End();
             _weaponPool = _world.GetPool<WeaponComponent>();
         }
@@ -47,7 +47,8 @@ namespace Infrastructure.ECS.Systems
             foreach (int entity in _weaponFilter)
             {
                 ref var currentAmmo = ref _magazinePool.Get(entity);
-                currentAmmo._currentAmmo = currentAmmo._maxCapacity;
+                currentAmmo.currentAmmo = currentAmmo.maxCapacity;
+                currentAmmo.OnCurrentAmmo?.Invoke(currentAmmo.currentAmmo);
             }
         }
     }

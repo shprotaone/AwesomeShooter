@@ -2,5 +2,5 @@
 
 namespace Infrastructure.ECS.Components.Providers
 {
-    public sealed class AmmoMagazineProvider : MonoProvider<AmmoMagazineComponent>{}
+    public sealed class AmmoMagazineProvider : MonoProvider<AmmoComponent>{}
 }

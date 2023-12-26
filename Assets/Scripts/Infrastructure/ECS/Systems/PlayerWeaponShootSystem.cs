@@ -16,7 +16,7 @@ namespace Infrastructure.ECS.Systems
         private EcsFilter _playerWeaponFilter;
         private EcsPool<WeaponComponent> _playerWeaponPool;
         private EcsPool<FireRateComponent> _fireRatePool;
-        private EcsPool<AmmoMagazineComponent> _magazinePool;
+        private EcsPool<AmmoComponent> _magazinePool;
 
         private BulletPool _bulletPool;
         private InputService _inputService;
@@ -43,7 +43,7 @@ namespace Infrastructure.ECS.Systems
 
             _playerWeaponPool = _world.GetPool<WeaponComponent>();
             _fireRatePool = _world.GetPool<FireRateComponent>();
-            _magazinePool = _world.GetPool<AmmoMagazineComponent>();
+            _magazinePool = _world.GetPool<AmmoComponent>();
         }
 
         public void Run(IEcsSystems systems)
@@ -59,7 +59,8 @@ namespace Infrastructure.ECS.Systems
                     if (firerate >= weaponComponent.settings.fireRate)
                     {
                         SpawnBullet(weaponComponent);
-                        magazine._currentAmmo--;
+                        magazine.currentAmmo--;
+                        magazine.OnCurrentAmmo?.Invoke(magazine.currentAmmo);
                         firerate = 0;
                     }
                 }

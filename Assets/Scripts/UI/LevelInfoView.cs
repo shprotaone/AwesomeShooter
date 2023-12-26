@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Infrastructure.Services;
+using UnityEngine;
 
 namespace UI
 {
-    public class LevelInfoView : MonoBehaviour
+    public class LevelInfoView : MonoBehaviour,IView
     {
     }
 }
