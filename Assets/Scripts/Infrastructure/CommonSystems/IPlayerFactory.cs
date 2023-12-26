@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Settings;
 using UnityEngine;
 
@@ -8,5 +9,6 @@ namespace Infrastructure.CommonSystems
     {
         UniTask<GameObject> GetPlayer();
         UniTask<PlayerSettingsSO> GetPlayerSettings();
+        UniTask<PlayerLevelSettingsSO> GetLevelsStorage();
     }
 }

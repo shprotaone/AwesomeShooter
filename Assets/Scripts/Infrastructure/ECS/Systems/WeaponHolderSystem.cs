@@ -1,5 +1,7 @@
 ﻿using Infrastructure.ECS.Components;
+using Infrastructure.Services;
 using Leopotam.EcsLite;
+using UIComponents;
 using UnityEngine;
 
 namespace Infrastructure.ECS.Systems
@@ -14,8 +16,14 @@ namespace Infrastructure.ECS.Systems
         private EcsPool<WeaponHolderComponent> _weaponHolderPool;
         private EcsPool<WeaponComponent> _weaponPool;
         private EcsPool<PickUpRequest> _pickUpRequestPool;
-        private EcsPool<AmmoMagazineComponent> _ammoPool;
+        private EcsPool<AmmoComponent> _ammoPool;
         private EcsPool<ColliderComponent> _colliderPool;
+
+        private UIService _uiService;
+        public WeaponHolderSystem(UIService uiService)
+        {
+            _uiService = uiService;
+        }
 
         public void Init(IEcsSystems systems)
         {
@@ -26,7 +34,7 @@ namespace Infrastructure.ECS.Systems
             _weaponHolderPool = _world.GetPool<WeaponHolderComponent>();
             _modelPool = _world.GetPool<ModelComponent>();
             _weaponPool = _world.GetPool<WeaponComponent>();
-            _ammoPool = _world.GetPool<AmmoMagazineComponent>();
+            _ammoPool = _world.GetPool<AmmoComponent>();
             _pickUpRequestPool = _world.GetPool<PickUpRequest>();
             _colliderPool = _world.GetPool<ColliderComponent>();
         }
@@ -58,6 +66,7 @@ namespace Infrastructure.ECS.Systems
                 {
                     weaponHolderComponent.IsBusy = true;
                     SetUpWeapon(requestComponent, weaponHolderComponent);
+
                 }
             }
         }
@@ -72,16 +81,18 @@ namespace Infrastructure.ECS.Systems
             ref var colliderComponent = ref _colliderPool.Get(weapon);
             colliderComponent.collider.enabled = false;
 
-            SetAmmo(weapon,weaponComponent);
+            ref var magazine = ref _ammoPool.Get(weapon);
+
             SetWeaponPosition(weapon,weaponComponent, weaponHolderComponent);
+            SetUpView(ref magazine);
         }
 
-        private void SetAmmo(int entity, WeaponComponent weaponComponent)
+        private void SetUpView(ref AmmoComponent magazine)
         {
-            ref var magazine = ref _ammoPool.Get(entity);
-            magazine._maxCapacity = weaponComponent.settings.magazineCapacity;
-            magazine._currentAmmo = weaponComponent.settings.magazineCapacity;
-
+            WeaponView view = _uiService.GetView<WeaponView>();
+            magazine.OnCurrentAmmo = view.ChangeAmmoCount;
+            view.ChangeAmmoCount(magazine.maxCapacity);
+            view.SetMaxAmmoCount(magazine.maxCapacity);
         }
 
         private void SetWeaponPosition(int weaponEntity, WeaponComponent weaponComponent,WeaponHolderComponent weaponHolder)

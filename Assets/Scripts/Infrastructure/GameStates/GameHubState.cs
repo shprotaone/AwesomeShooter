@@ -3,6 +3,7 @@ using Infrastructure.AssetManagment;
 using Infrastructure.CommonSystems;
 using Infrastructure.GameStates;
 using Infrastructure.SceneManagment;
+using Infrastructure.Services;
 
 namespace Infrastructure.Bootstrappers
 {
@@ -10,15 +11,15 @@ namespace Infrastructure.Bootstrappers
     {
         private ILoadingCurtain _loadingCurtain;
         private ISceneLoader _sceneLoader;
+        private CursorLockService _cursorLockService;
 
-        public GameHubState(ISceneLoader sceneLoader,ILoadingCurtain loadingCurtain)
+        public GameHubState(ISceneLoader sceneLoader,
+            ILoadingCurtain loadingCurtain,
+            CursorLockService cursorLockService)
         {
             _sceneLoader = sceneLoader;
             _loadingCurtain = loadingCurtain;
-        }
-        public async UniTask Exit()
-        {
-            
+            _cursorLockService = cursorLockService;
         }
 
         public async UniTask Enter()
@@ -26,6 +27,13 @@ namespace Infrastructure.Bootstrappers
             await _loadingCurtain.Show();
             await _sceneLoader.Load(AssetAddress.MainMenuScenePath);
             await _loadingCurtain.Hide();
+
+            _cursorLockService.Show();
+        }
+
+        public async UniTask Exit()
+        {
+            
         }
     }
 }

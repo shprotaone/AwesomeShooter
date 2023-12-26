@@ -1,11 +1,6 @@
-using System;
 using Infrastructure.CommonSystems;
 using Infrastructure.ECS.Components;
-using Infrastructure.ECS.Components.Providers;
 using Leopotam.EcsLite;
-using MonoBehaviours.Interfaces;
-using Settings;
-using UnityEditor;
 using UnityEngine;
 
 namespace Infrastructure.ECS.Systems
@@ -18,20 +13,17 @@ namespace Infrastructure.ECS.Systems
         private EcsPool<DirectionComponent> _directionComponent;
         private EcsPool<ModelComponent> _modelComponent;
         private EcsPool<MouseLookDirectionComponent> _mouseLookComponent;
-        private EcsPool<GravityComponent> _gravityComponent;
-        private IPlayerFactory _playerFactory;
-        private PlayerSettingsSO _playerSettings;
+        private LevelSettingsContainer _levelSettings;
 
-        public MovementSystem(IPlayerFactory playerFactory)
+        public MovementSystem(LevelSettingsContainer levelSettings)
         {
-            _playerFactory = playerFactory;
+            _levelSettings = levelSettings;
         }
 
         public async void Init(IEcsSystems systems)
         {
             _world = systems.GetWorld();
-            _playerSettings = systems.GetShared<IGameSceneData>().PlayerSettingsSo;
-            
+
             _movableFilter = _world.Filter<MovableComponent>().
                 Inc<DirectionComponent>().
                 Inc<ModelComponent>().
@@ -41,7 +33,6 @@ namespace Infrastructure.ECS.Systems
             _directionComponent = _world.GetPool<DirectionComponent>();
             _modelComponent = _world.GetPool<ModelComponent>();
             _mouseLookComponent = _world.GetPool<MouseLookDirectionComponent>();
-            _gravityComponent = _world.GetPool<GravityComponent>();
         }
 
         public void Run(IEcsSystems systems)
@@ -61,7 +52,8 @@ namespace Infrastructure.ECS.Systems
 
                 rawDirection.y = velocity.y;
                 modelComponent.modelTransform.rotation = cameraTransform.rotation;
-                characterController.Move(rawDirection * _playerSettings.Speed * Time.deltaTime);
+                characterController.Move
+                    (rawDirection * _levelSettings.PlayerSettings.Speed * Time.deltaTime);
             }
         }
     }

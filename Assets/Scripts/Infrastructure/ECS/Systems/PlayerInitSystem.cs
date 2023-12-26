@@ -5,7 +5,6 @@ using Infrastructure.CommonSystems;
 using Infrastructure.ECS.Components;
 using Infrastructure.ECS.Components.Tags;
 using Infrastructure.ECS.Systems;
-using Infrastructure.Factories;
 using Leopotam.EcsLite;
 using MonoBehaviours.Interfaces;
 using Settings;
@@ -18,10 +17,12 @@ public class PlayerInitSystem : IEcsInitSystem
 
     private readonly IPlayerFactory _playerFactory;
     private IGameSceneData _gameSceneData;
+    private LevelSettingsContainer _settingsContainer;
 
-    public PlayerInitSystem(IPlayerFactory playerFactory, ILevelSettingsLoader levelSettingsLoader)
+    public PlayerInitSystem(IPlayerFactory playerFactory,LevelSettingsContainer settingsContainer)
     {
         _playerFactory = playerFactory;
+        _settingsContainer = settingsContainer;
     }
 
     public void Init(IEcsSystems systems)
@@ -37,11 +38,10 @@ public class PlayerInitSystem : IEcsInitSystem
         GameObject player = GameObject.Instantiate(playerPrefab);
 
         player.transform.position = gameSceneData.SpawnPlayerPoint.position;
-        var playerSettingsSo = gameSceneData.PlayerSettingsSo;
-        var componentList = CreateComponents(player, playerSettingsSo);
+        var componentList = CreateComponents(player, _settingsContainer.PlayerSettings);
 
         var entity = _world.NewEntityWithComponents(componentList);
-        _world.PackEntity(entity);
+        player.GetComponentInChildren<PlayerTagMono>().SetEntity(_world.PackEntity(entity));
     }
 
     private List<object> CreateComponents(GameObject playerPrefab,PlayerSettingsSO settings)
@@ -90,6 +90,27 @@ public class PlayerInitSystem : IEcsInitSystem
         {
             holderTransform = playerPrefab.GetComponentInChildren<WeaponHolderTag>().transform,
             IsBusy = false
+        });
+        
+        components.Add(new HealthComponent()
+        {
+            health = settings.Health
+        });
+        
+        components.Add(new DamageComponent()
+        {
+            value = 5f
+        });
+        
+        components.Add(new DeathComponent()
+        {
+            OnDeath = () => Debug.Log("Death")
+        });
+        
+        components.Add(new ExperienceComponent()
+        {
+            Experience = 0,
+            Level = 1
         });
 
         return components;

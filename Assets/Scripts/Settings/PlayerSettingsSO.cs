@@ -16,10 +16,14 @@ namespace Settings
         [SerializeField] private float _camHorizontalSpeed;
         [SerializeField] private float _camVerticalSpeed;
 
+        [Header("Настройки игрока")] 
+        [SerializeField] private float _health;
+
         public float Speed => _speed;
         public float JumpForce => _jumpForce;
         public float GroundDistance => _groundDistance;
         public LayerMask FloorLayer => _floorLayer;
+        public float Health => _health;
 
         public float ClampAngle => _camClampAngle;
         public float HorizontalSpeed => _camHorizontalSpeed;

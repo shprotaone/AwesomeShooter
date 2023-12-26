@@ -1,4 +1,5 @@
 ﻿using System;
+using Infrastructure.CommonSystems;
 using Infrastructure.ECS.Components;
 using Infrastructure.ECS.Services;
 using Leopotam.EcsLite;
@@ -16,27 +17,30 @@ namespace Infrastructure.ECS.Systems
         private EcsWorld _world;
         private EcsFilter _playerFilter;
         private EcsPool<MouseLookDirectionComponent> _lookDirectionComponent;
-        private PlayerSettingsSO _playerSettings;
+        private LevelSettingsContainer _levelSettings;
 
+        private PlayerSettingsSO _playerSettings;
         private Vector2 _deltaInput;
         private Vector3 _startTransformRotation;
 
-        public PlayerMouseLookSystem(InputService inputService)
+        public PlayerMouseLookSystem(InputService inputService,LevelSettingsContainer levelSettingsSo)
         {
             _inputService = inputService;
+            _levelSettings = levelSettingsSo;
             _inputService.OnMouseInput += SetDelta;
         }
 
         public void Init(IEcsSystems systems)
         {
             _world = systems.GetWorld();
-            _playerSettings = systems.GetShared<IGameSceneData>().PlayerSettingsSo;
+            //_playerSettings = systems.GetShared<IGameSceneData>().PlayerSettingsSo;
 
             _playerFilter = _world.Filter<MouseLookDirectionComponent>().
                 Inc<ModelComponent>().
                 End();
 
             _lookDirectionComponent = _world.GetPool<MouseLookDirectionComponent>();
+            _playerSettings = _levelSettings.PlayerSettings;
         }
 
         public void Run(IEcsSystems systems)

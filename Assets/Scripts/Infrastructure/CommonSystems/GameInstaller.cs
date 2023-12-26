@@ -2,6 +2,7 @@ using Infrastructure.AssetManagment;
 using Infrastructure.ECS.Services;
 using Infrastructure.Factories;
 using Infrastructure.SceneManagment;
+using Infrastructure.Services;
 using Infrastructure.StateMachines;
 using Zenject;
 
@@ -25,6 +26,13 @@ namespace Infrastructure.CommonSystems
             
             BindInputService();
 
+            BindCursorLockService();
+
+        }
+
+        private void BindCursorLockService()
+        {
+            Container.BindInterfacesAndSelfTo<CursorLockService>().AsSingle();
         }
 
 

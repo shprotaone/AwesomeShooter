@@ -3,6 +3,7 @@ using Infrastructure.Factories;
 using MonoBehaviours;
 using MonoBehaviours.Interfaces;
 using Settings;
+using Zenject;
 
 namespace Infrastructure.CommonSystems
 {
@@ -28,6 +29,11 @@ namespace Infrastructure.CommonSystems
         public async UniTask<PlayerSettingsSO> GetPlayerSettings()
         {
             return await _playerFactory.GetPlayerSettings();
+        }
+
+        public async UniTask<PlayerLevelSettingsSO> GetLevelsStorage()
+        {
+            return await _playerFactory.GetLevelsStorage();
         }
     }
 }

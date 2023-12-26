@@ -26,9 +26,16 @@ namespace Infrastructure.CommonSystems
 
         public async UniTask<PlayerSettingsSO> GetPlayerSettings()
         {
-            GameObject settingsSo =
-                await _assetProvider.Load<GameObject>(AssetAddress.PlayerSettingsSOPath);
-            return settingsSo.GetComponent<PlayerSettingsSO>();
+            PlayerSettingsSO settingsSo =
+                await _assetProvider.Load<PlayerSettingsSO>(AssetAddress.PlayerSettingsSOPath);
+            return settingsSo;
+        }
+
+        public async UniTask<PlayerLevelSettingsSO> GetLevelsStorage()
+        {
+            PlayerLevelSettingsSO settingsSo =
+                await _assetProvider.Load<PlayerLevelSettingsSO>(AssetAddress.PlayerLevelSettingsSOPath);
+            return settingsSo;
         }
     }
 }

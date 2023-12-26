@@ -88,10 +88,10 @@ namespace Infrastructure.ECS.Systems
                 modelTransform = weapon.transform
             });
 
-            components.Add(new AmmoMagazineComponent()
+            components.Add(new AmmoComponent()
             {
-                _currentAmmo = weapon.WeaponSettings.magazineCapacity,
-                _maxCapacity = weapon.WeaponSettings.magazineCapacity
+                currentAmmo = weapon.WeaponSettings.magazineCapacity,
+                maxCapacity = weapon.WeaponSettings.magazineCapacity
             });
 
             components.Add(new ColliderComponent()

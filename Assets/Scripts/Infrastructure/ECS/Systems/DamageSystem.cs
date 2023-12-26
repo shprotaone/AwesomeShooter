@@ -28,21 +28,23 @@ namespace Infrastructure.ECS.Systems
             {
                 ref var damageRequest = ref _damageRequestPool.Get(requestEntity);
                 ref var damage = ref damageRequest.damage;
-                damageRequest.packEntity.Unpack(_world,out int health);
+                damageRequest.packEntity.Unpack(_world,out int entityWithHealth);
 
-                ref var damagedHealth = ref _healthPool.Get(health).health;
-                damagedHealth -= damage;
+                ref var healthComponent = ref _healthPool.Get(entityWithHealth);
+                ref var health = ref healthComponent.health;
+                
+                health -= damage;
+                healthComponent.OnHealthChanged?.Invoke(health);
 
-                if (damagedHealth <= 0)
+                _world.DelEntity(requestEntity);
+                if (health <= 0)
                 {
                     int deathRequest = _world.NewEntity();
                     _world.AddComponentToEntity(deathRequest,new DeathRequestComponent
                     {
-                        packedEntity = _world.PackEntity(health)
+                        packedEntity = _world.PackEntity(entityWithHealth)
                     });
                 }
-
-                _damageRequestPool.Del(requestEntity);
             }
         }
     }
