@@ -71,6 +71,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DisableLook"",
+                    ""type"": ""Button"",
+                    ""id"": ""35b62c8e-f042-4736-ab7d-7763be7259d9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -172,6 +181,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Reload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""16e7d73e-3dce-40b8-af50-44dd14580495"",
+                    ""path"": ""<Keyboard>/period"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DisableLook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -185,6 +205,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_GroundMovement_Look = m_GroundMovement.FindAction("Look", throwIfNotFound: true);
         m_GroundMovement_Fire = m_GroundMovement.FindAction("Fire", throwIfNotFound: true);
         m_GroundMovement_Reload = m_GroundMovement.FindAction("Reload", throwIfNotFound: true);
+        m_GroundMovement_DisableLook = m_GroundMovement.FindAction("DisableLook", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -251,6 +272,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_GroundMovement_Look;
     private readonly InputAction m_GroundMovement_Fire;
     private readonly InputAction m_GroundMovement_Reload;
+    private readonly InputAction m_GroundMovement_DisableLook;
     public struct GroundMovementActions
     {
         private @PlayerControls m_Wrapper;
@@ -260,6 +282,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_GroundMovement_Look;
         public InputAction @Fire => m_Wrapper.m_GroundMovement_Fire;
         public InputAction @Reload => m_Wrapper.m_GroundMovement_Reload;
+        public InputAction @DisableLook => m_Wrapper.m_GroundMovement_DisableLook;
         public InputActionMap Get() { return m_Wrapper.m_GroundMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -284,6 +307,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Reload.started += instance.OnReload;
             @Reload.performed += instance.OnReload;
             @Reload.canceled += instance.OnReload;
+            @DisableLook.started += instance.OnDisableLook;
+            @DisableLook.performed += instance.OnDisableLook;
+            @DisableLook.canceled += instance.OnDisableLook;
         }
 
         private void UnregisterCallbacks(IGroundMovementActions instance)
@@ -303,6 +329,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Reload.started -= instance.OnReload;
             @Reload.performed -= instance.OnReload;
             @Reload.canceled -= instance.OnReload;
+            @DisableLook.started -= instance.OnDisableLook;
+            @DisableLook.performed -= instance.OnDisableLook;
+            @DisableLook.canceled -= instance.OnDisableLook;
         }
 
         public void RemoveCallbacks(IGroundMovementActions instance)
@@ -327,5 +356,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
+        void OnDisableLook(InputAction.CallbackContext context);
     }
 }

@@ -31,11 +31,5 @@ namespace Infrastructure.Factories
             LoadingCurtain curtain = newObj.GetComponent<LoadingCurtain>();
             await _curtain.InitializeCurtain(curtain);
         }
-
-        public async UniTask<IGameSceneData> GetGameSceneData()
-        {
-            GameObject prefab = await _assetProvider.Load<GameObject>(AssetAddress.FirstLevelGameSceneDataPath);
-            return prefab.GetComponent<GameSceneData>();
-        }
     }
 }

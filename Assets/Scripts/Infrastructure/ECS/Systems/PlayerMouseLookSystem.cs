@@ -22,12 +22,19 @@ namespace Infrastructure.ECS.Systems
         private PlayerSettingsSO _playerSettings;
         private Vector2 _deltaInput;
         private Vector3 _startTransformRotation;
+        private bool _isLookDeactivated;
 
         public PlayerMouseLookSystem(InputService inputService,LevelSettingsContainer levelSettingsSo)
         {
             _inputService = inputService;
             _levelSettings = levelSettingsSo;
             _inputService.OnMouseInput += SetDelta;
+            _inputService.OnDisableLook += DisableLook;
+        }
+
+        private void DisableLook(bool obj)
+        {
+            _isLookDeactivated = obj;
         }
 
         public void Init(IEcsSystems systems)
@@ -47,6 +54,8 @@ namespace Infrastructure.ECS.Systems
         {
             foreach (var entity in _playerFilter)
             {
+                if (_isLookDeactivated) return;
+
                 ref var lookCameraComponent = ref _lookDirectionComponent.Get(entity);
 
                 _startTransformRotation.x +=

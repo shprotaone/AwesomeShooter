@@ -1,8 +1,10 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using Cysharp.Threading.Tasks;
 using Infrastructure.Factories;
 using MonoBehaviours;
 using MonoBehaviours.Interfaces;
 using Settings;
+using UnityEngine;
 using Zenject;
 
 namespace Infrastructure.CommonSystems
@@ -21,9 +23,9 @@ namespace Infrastructure.CommonSystems
             _playerFactory = playerFactory;
         }
 
-        public async UniTask<IGameSceneData> LoadGameSceneData()
+        public async UniTask<GameObject> LoadLevel()
         {
-            return await _commonSystemsFactory.GetGameSceneData();
+            return await _playerFactory.LoadLevel();
         }
 
         public async UniTask<PlayerSettingsSO> GetPlayerSettings()
@@ -35,5 +37,6 @@ namespace Infrastructure.CommonSystems
         {
             return await _playerFactory.GetLevelsStorage();
         }
+
     }
 }

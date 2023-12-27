@@ -56,7 +56,7 @@ namespace Infrastructure.ECS.Systems
 
                 if (_isAttack && weaponComponent.isEquipped)
                 {
-                    if (firerate >= weaponComponent.settings.fireRate)
+                    if (firerate >= weaponComponent.settings.fireRate && magazine.currentAmmo > 0)
                     {
                         SpawnBullet(weaponComponent);
                         magazine.currentAmmo--;

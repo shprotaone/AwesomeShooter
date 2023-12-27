@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3255779863583865829}
   - component: {fileID: 8972398572551528907}
+  - component: {fileID: 4388855293998998352}
   m_Layer: 0
   m_Name: FacePoint
   m_TagString: Untagged
@@ -46,6 +47,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10ab63e8fd3a1fe409fd2cf05d08cc18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4388855293998998352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132921494437138846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3540bfcb303ea9c44b9c7ce17d37ddce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _offset: {x: 0, y: 0, z: 5}
+  _drawLenght: 40
+  _extends: {x: 20, y: 4, z: 0.5}
+  _cashedPoints: []
+  _selectablePoints: []
 --- !u!1 &413775215885970142
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,7 +258,7 @@ Transform:
   m_GameObject: {fileID: 1523594316362430864}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.27, y: 1.76, z: -8.22}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -570,7 +588,7 @@ Transform:
   m_GameObject: {fileID: 2346146532241174957}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6520002, z: 0.51499987}
+  m_LocalPosition: {x: 0, y: 0.65200007, z: 0.515}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

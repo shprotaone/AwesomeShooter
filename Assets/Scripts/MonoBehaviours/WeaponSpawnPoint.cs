@@ -1,4 +1,6 @@
+using System;
 using Settings.Weapons;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace MonoBehaviours
@@ -14,5 +16,11 @@ namespace MonoBehaviours
         public WeaponType WeaponType => _weaponType;
 
         public bool IsPicked => _isPicked;
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawSphere(transform.position,1);
+        }
     }
 }

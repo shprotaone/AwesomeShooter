@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Extention;
 using Infrastructure.CommonSystems;
 using Infrastructure.ECS.Components;
 using Infrastructure.ECS.Components.Tags;
-using Infrastructure.Factories;
+using Infrastructure.Services;
 using Leopotam.EcsLite;
 using MonoBehaviours;
 using MonoBehaviours.Interfaces;
 using Objects;
+using UnityEngine.AI;
 
 namespace Infrastructure.ECS.Systems
 {
@@ -17,10 +19,17 @@ namespace Infrastructure.ECS.Systems
         private EnemyPool _pool;
         private IGameSceneData _gameSceneData;
 
-        public EnemySpawnSystem(EnemyPool pool, ILevelSettingsLoader levelSettingsLoader)
+        private TimeService _timeService;
+        private float _timeToNextSpawn;
+
+        public EnemySpawnSystem(EnemyPool pool,
+            ILevelSettingsLoader levelSettingsLoader,
+            TimeService timeService)
         {
             _pool = pool;
             _gameSceneData = levelSettingsLoader.GameSceneData;
+            _timeService = timeService;
+            _timeToNextSpawn = 0.5f;
         }
 
         public void Init(IEcsSystems systems)
@@ -36,18 +45,35 @@ namespace Infrastructure.ECS.Systems
 
         public void Run(IEcsSystems systems)
         {
+            _timeToNextSpawn -= _timeService.DeltaTime;
 
+            if (_timeToNextSpawn < 0)
+            {
+                _timeToNextSpawn = 0.5f; //TODO: Вынести в настройки
+                EnemySpawnPoint nextPoint = GetRandomPoint();
+                SpawnEnemy(nextPoint);
+            }
+        }
+
+        private EnemySpawnPoint GetRandomPoint()
+        {
+            Random rnd = new Random();
+            int nextIndex = rnd.Next(0, _gameSceneData.SpawnEnemiesPoints.Length);
+            return _gameSceneData.SpawnEnemiesPoints[nextIndex];
         }
 
         private void SpawnEnemy(EnemySpawnPoint point)
         {
-            Enemy enemy = _pool.Pool.Get();
-            enemy.transform.position = point.Transform.position;
-            var componentList = CreateComponents(enemy);
+            if (point.IsActive)
+            {
+                Enemy enemy = _pool.Pool.Get();
+                //TODO: жизни должны заполняться
+                enemy.transform.position = point.Transform.position;
+                var componentList = CreateComponents(enemy);
 
-            int entity = _ecsWorld.NewEntityWithComponents(componentList);
-            enemy.SetPackedEntity(_ecsWorld.PackEntity(entity));
-
+                int entity = _ecsWorld.NewEntityWithComponents(componentList);
+                enemy.SetPackedEntity(_ecsWorld.PackEntity(entity));
+            }
         }
 
         private List<object> CreateComponents(Enemy enemy)
@@ -79,6 +105,12 @@ namespace Infrastructure.ECS.Systems
             components.Add(new ExperienceStorageComponent()
             {
                 value = 10
+            });
+
+            components.Add(new EnemyMovableComponent()
+            {
+                speed = enemy.EnemySettings.Speed,
+                agent = enemy.GetComponent<NavMeshAgent>()
             });
 
             return components;

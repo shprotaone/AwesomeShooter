@@ -37,5 +37,12 @@ namespace Infrastructure.CommonSystems
                 await _assetProvider.Load<PlayerLevelSettingsSO>(AssetAddress.PlayerLevelSettingsSOPath);
             return settingsSo;
         }
+
+        public async UniTask<GameObject> LoadLevel()
+        {
+            GameObject prefab = await _assetProvider.Load<GameObject>(AssetAddress.FirstLevelGameSceneDataPath);
+            GameObject newObj = _instantiator.InstantiatePrefab(prefab);
+            return newObj;
+        }
     }
 }

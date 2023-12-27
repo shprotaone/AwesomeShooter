@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using Infrastructure.CommonSystems;
 using Infrastructure.ECS;
@@ -6,6 +7,7 @@ using Infrastructure.GameStates;
 using Infrastructure.StateMachines;
 using MonoBehaviours.Interfaces;
 using UI;
+using UnityEngine;
 
 namespace Infrastructure.Bootstrappers
 {
@@ -17,6 +19,8 @@ namespace Infrastructure.Bootstrappers
         private GameplayUIFactory _gameplayUIFactory;
         private EnemyPool _enemyPool;
         private EcsStartup _ecsStartup;
+
+        private GameObject _level;
 
         public InitGamePlayState(SceneStateMachine sceneStateMachine,
             ILevelSettingsLoader levelSettingsLoader,
@@ -53,7 +57,8 @@ namespace Infrastructure.Bootstrappers
 
         private async UniTask<IGameSceneData> SetUpLevelSettings()
         {
-            var gameSceneData = await _levelSettingsLoader.LoadGameSceneData();
+            _level = await _levelSettingsLoader.LoadLevel();
+            var gameSceneData = _level.GetComponentInChildren<IGameSceneData>();
             var playerSettings = await _levelSettingsLoader.GetPlayerSettings();
             var playerLevels = await _levelSettingsLoader.GetLevelsStorage();
 
