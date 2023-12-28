@@ -12,7 +12,7 @@ using Zenject;
 
 namespace Infrastructure.ECS
 {
-    public class EcsStartup : IECSRunner,IRestartble
+    public class EcsStartup : IECSRunner
     {
         private EcsWorld _world;
         private EcsSystems _updateSystems;
@@ -42,7 +42,7 @@ namespace Infrastructure.ECS
             _gameSceneData = gameSceneData;
         }
 
-        public void StartSystems()
+        public async UniTask StartSystems()
         {
             AddSystems();
             _updateSystems.ConvertScene();
@@ -104,11 +104,6 @@ namespace Infrastructure.ECS
             }
 
             return systems;
-        }
-
-        public void Restart()
-        {
-            Dispose();
         }
     }
 }

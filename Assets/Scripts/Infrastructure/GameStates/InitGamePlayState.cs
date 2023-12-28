@@ -42,7 +42,7 @@ namespace Infrastructure.Bootstrappers
             var gameSceneData = await SetUpLevelSettings();
             await _enemyPool.Init();
             await _ecsStartup.Initialize(gameSceneData);
-            _ecsStartup.StartSystems();
+            await _ecsStartup.StartSystems();
 
             await _gameplayUIFactory.CreateMainHud();
             await _sceneStateMachine.Enter<PlayGameplayState>();
@@ -57,8 +57,7 @@ namespace Infrastructure.Bootstrappers
 
         private async UniTask<IGameSceneData> SetUpLevelSettings()
         {
-            _level = await _levelSettingsLoader.LoadLevel();
-            var gameSceneData = _level.GetComponentInChildren<IGameSceneData>();
+            var gameSceneData = await _levelSettingsLoader.LoadLevel();
             var playerSettings = await _levelSettingsLoader.GetPlayerSettings();
             var playerLevels = await _levelSettingsLoader.GetLevelsStorage();
 

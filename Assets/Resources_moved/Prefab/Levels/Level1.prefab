@@ -433,6 +433,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7036703954800580841}
+  - component: {fileID: 5130890786234995727}
   m_Layer: 0
   m_Name: Level1
   m_TagString: Untagged
@@ -462,6 +463,43 @@ Transform:
   - {fileID: 4014428065244077615}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5130890786234995727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 916695867880696852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e728f23785f5c4c42a4e02be7b7420e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnPlayerPoint: {fileID: 7503391311198691433}
+  _spawnWeaponPoints:
+  - {fileID: 5558701389908747780}
+  - {fileID: 7562665980603855701}
+  _spawnEnemiesPoints:
+  - {fileID: 8013215960739908218}
+  - {fileID: 433755601774171507}
+  - {fileID: 2651366075721985354}
+  - {fileID: 6598111700043297357}
+  - {fileID: 262587062067936151}
+  - {fileID: 6995120215991634803}
+  - {fileID: 5133625586480118947}
+  - {fileID: 8631845326116701571}
+  - {fileID: 1941163849499541882}
+  - {fileID: 7285391103117269682}
+  - {fileID: 8733611639590163921}
+  - {fileID: 7057890145038958905}
+  - {fileID: 3130115053168711226}
+  - {fileID: 906040081341809447}
+  - {fileID: 1888633982707836985}
+  - {fileID: 3728843106055102216}
+  - {fileID: 5964882491318645323}
+  - {fileID: 514859503232955876}
+  - {fileID: 7232125999783089607}
+  - {fileID: 2370874103481039656}
 --- !u!1 &1093983085798249726
 GameObject:
   m_ObjectHideFlags: 0
@@ -4614,7 +4652,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8746592138725866735}
-  - component: {fileID: 2605084589095094281}
   m_Layer: 0
   m_Name: InitialPointsLevel1
   m_TagString: Untagged
@@ -4644,43 +4681,6 @@ Transform:
   - {fileID: 8029802887035416203}
   m_Father: {fileID: 7036703954800580841}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2605084589095094281
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4386216903704378448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e728f23785f5c4c42a4e02be7b7420e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _spawnPlayerPoint: {fileID: 7503391311198691433}
-  _spawnWeaponPoints:
-  - {fileID: 5558701389908747780}
-  - {fileID: 7562665980603855701}
-  _spawnEnemiesPoints:
-  - {fileID: 8013215960739908218}
-  - {fileID: 433755601774171507}
-  - {fileID: 2651366075721985354}
-  - {fileID: 6598111700043297357}
-  - {fileID: 262587062067936151}
-  - {fileID: 6995120215991634803}
-  - {fileID: 5133625586480118947}
-  - {fileID: 8631845326116701571}
-  - {fileID: 1941163849499541882}
-  - {fileID: 7285391103117269682}
-  - {fileID: 8733611639590163921}
-  - {fileID: 7057890145038958905}
-  - {fileID: 3130115053168711226}
-  - {fileID: 906040081341809447}
-  - {fileID: 1888633982707836985}
-  - {fileID: 3728843106055102216}
-  - {fileID: 5964882491318645323}
-  - {fileID: 514859503232955876}
-  - {fileID: 7232125999783089607}
-  - {fileID: 2370874103481039656}
 --- !u!1 &4727967424362663869
 GameObject:
   m_ObjectHideFlags: 0

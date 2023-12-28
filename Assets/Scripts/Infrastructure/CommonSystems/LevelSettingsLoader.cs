@@ -23,7 +23,7 @@ namespace Infrastructure.CommonSystems
             _playerFactory = playerFactory;
         }
 
-        public async UniTask<GameObject> LoadLevel()
+        public async UniTask<IGameSceneData> LoadLevel()
         {
             return await _playerFactory.LoadLevel();
         }

@@ -51,9 +51,6 @@ namespace Infrastructure.ECS.Systems
 
         private void CheckNeareastSpawner()
         {
-            sw = new Stopwatch();
-            sw.Start();
-
             if (_playerTransform != null)
             {
                 _results = Physics.BoxCastAll(_playerTransform.position, _extends,_playerTransform.forward,
@@ -64,16 +61,17 @@ namespace Infrastructure.ECS.Systems
             {
                 for (int i = 0; i < _results.Length; i++)
                 {
-                    var point = _results[i].transform.GetComponent<EnemySpawnPoint>();
+                    if(_results[i].transform == null) continue;
 
-                    bool contains = CheckSelectable(point);
-                    if (!contains) _selectablePoints[i] = point;
+                    if (_results[i].transform.TryGetComponent(out EnemySpawnPoint point))
+                    {
+                        bool contains = CheckSelectable(point);
+                        if (!contains) _selectablePoints[i] = point;
+                    }
                 }
             }
 
             CheckUnselectableV2(_results.Length);
-            sw.Stop();
-            Debug.Log("Active points " + _results.Length);
         }
 
         private void CheckUnselectableV2(int index)

@@ -17,13 +17,13 @@ public class BoxCastDrawer : MonoBehaviour
    [SerializeField] private EnemySpawnPoint[] _selectablePoints;
 
    private Stopwatch sw;
-   private void Start()
+   /*private void Start()
    {
       _results = new RaycastHit[10];
       _selectablePoints = new EnemySpawnPoint[10];
    }
 
-   /*public void FixedUpdate()
+   public void FixedUpdate()
    {
       sw = new Stopwatch();
       sw.Start();
@@ -79,7 +79,32 @@ public class BoxCastDrawer : MonoBehaviour
       // Convert the local coordinate values into world
       // coordinates for the matrix transformation.
       Gizmos.matrix = transform.localToWorldMatrix;
-      Gizmos.DrawCube(transform.localPosition + Vector3.forward * (_drawLenght / 2),new Vector3(_extends.x,_extends.y,_drawLenght));
+      DrawBoxCast(transform.position,
+         transform.position + _drawLenght * transform.forward,
+         _extends,transform.rotation);
       Gizmos.DrawRay(transform.localPosition,Vector3.forward * _drawLenght);
+   }
+
+   void DrawBoxCast(Vector3 start, Vector3 end, Vector3 size, Quaternion rotation)
+   {
+      Gizmos.color = Color.green;
+      // Cache the Gizmos matrix.
+      Matrix4x4 currentMatrix = Gizmos.matrix;
+      // Draw Cubes
+      Gizmos.matrix = Matrix4x4.TRS(start, rotation, size);
+      Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
+      Gizmos.matrix = Matrix4x4.TRS(end, rotation, size);
+      Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
+      // Draw Connecting Lines
+      Vector3 x = Vector3.right * size.x * 0.5f;
+      Vector3 y = Vector3.up * size.y * 0.5f;
+      Vector3 z = Vector3.forward * size.z * 0.5f;
+      Gizmos.matrix = Matrix4x4.TRS(start, rotation, Vector3.one);
+      Gizmos.DrawRay(Vector3.zero - x - y - z, Vector3.forward * _drawLenght);
+      Gizmos.DrawRay(Vector3.zero - x + y - z, Vector3.forward * _drawLenght);
+      Gizmos.DrawRay(Vector3.zero + x - y - z, Vector3.forward * _drawLenght);
+      Gizmos.DrawRay(Vector3.zero + x + y - z, Vector3.forward * _drawLenght);
+      // Reset the Gizmos matrix.
+      Gizmos.matrix = currentMatrix;
    }
 }
