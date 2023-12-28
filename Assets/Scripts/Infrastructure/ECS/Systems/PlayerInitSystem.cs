@@ -17,7 +17,7 @@ public class PlayerInitSystem : IEcsInitSystem
     private EcsWorld _world;
 
     private readonly IPlayerFactory _playerFactory;
-    private IGameSceneData _gameSceneData;
+    private ILevelData _levelData;
     private LevelSettingsContainer _settingsContainer;
 
     public PlayerInitSystem(IPlayerFactory playerFactory,
@@ -30,11 +30,11 @@ public class PlayerInitSystem : IEcsInitSystem
     public async void Init(IEcsSystems systems)
     {
         _world = systems.GetWorld();
-        _gameSceneData = systems.GetShared<IGameSceneData>();
-        await SetUpPlayer(_gameSceneData);
+        _levelData = systems.GetShared<ILevelData>();
+        await SetUpPlayer(_levelData);
     }
 
-    private async UniTask SetUpPlayer(IGameSceneData gameSceneData)
+    private async UniTask SetUpPlayer(ILevelData levelData)
     {
         GameObject playerPrefab = await _playerFactory.GetPlayer();
 
@@ -42,7 +42,7 @@ public class PlayerInitSystem : IEcsInitSystem
 
         var entity = _world.NewEntityWithComponents(componentList);
         playerPrefab.GetComponentInChildren<PlayerTagMono>().SetEntity(_world.PackEntity(entity));
-        playerPrefab.transform.position = gameSceneData.SpawnPlayerPoint.position;
+        playerPrefab.transform.position = levelData.SpawnPlayerPoint.position;
     }
 
     private List<object> CreateComponents(GameObject playerPrefab,PlayerSettingsSO settings)

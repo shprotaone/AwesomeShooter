@@ -10,7 +10,7 @@ namespace Infrastructure.CommonSystems
     {
         UniTask<GameObject> GetPlayer();
         UniTask<PlayerSettingsSO> GetPlayerSettings();
-        UniTask<PlayerLevelSettingsSO> GetLevelsStorage();
-        UniTask<IGameSceneData> LoadLevel();
+        UniTask<PlayerLevelProgress> GetLevelsStorage();
+        UniTask<ILevelData> LoadLevel();
     }
 }

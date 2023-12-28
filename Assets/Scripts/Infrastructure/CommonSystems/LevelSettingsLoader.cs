@@ -11,11 +11,11 @@ namespace Infrastructure.CommonSystems
 {
     public class LevelSettingsLoader : ILevelSettingsLoader
     {
-        private IGameSceneData _gameSceneData;
+        private ILevelData _levelData;
         private ICommonSystemsFactory _commonSystemsFactory;
         private IPlayerFactory _playerFactory;
 
-        public IGameSceneData GameSceneData => _gameSceneData;
+        public ILevelData LevelData => _levelData;
 
         public LevelSettingsLoader(ICommonSystemsFactory commonSystemsFactory,IPlayerFactory playerFactory)
         {
@@ -23,7 +23,7 @@ namespace Infrastructure.CommonSystems
             _playerFactory = playerFactory;
         }
 
-        public async UniTask<IGameSceneData> LoadLevel()
+        public async UniTask<ILevelData> LoadLevel()
         {
             return await _playerFactory.LoadLevel();
         }
@@ -33,7 +33,7 @@ namespace Infrastructure.CommonSystems
             return await _playerFactory.GetPlayerSettings();
         }
 
-        public async UniTask<PlayerLevelSettingsSO> GetLevelsStorage()
+        public async UniTask<PlayerLevelProgress> GetLevelsStorage()
         {
             return await _playerFactory.GetLevelsStorage();
         }

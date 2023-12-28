@@ -3,8 +3,9 @@ using UnityEngine;
 
 namespace MonoBehaviours.Interfaces
 {
-    public interface IGameSceneData
+    public interface ILevelData
     {
+        public LevelSettings LevelSettings { get; }
         public Transform SpawnPlayerPoint { get; }
         public WeaponSpawnPoint[] SpawnWeaponPoints { get; }
         public EnemySpawnPoint[] SpawnEnemiesPoints { get; }

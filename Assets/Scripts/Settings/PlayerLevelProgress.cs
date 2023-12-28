@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 namespace Settings
 {
     [CreateAssetMenu(menuName = "Settings/LevelSettings")]
-    public class PlayerLevelSettingsSO :ScriptableObject
+    public class PlayerLevelProgress : ScriptableObject
     {
         public List<PlayerLevelStep> levels;
     }

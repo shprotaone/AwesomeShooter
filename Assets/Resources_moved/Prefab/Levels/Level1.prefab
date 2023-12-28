@@ -475,6 +475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e728f23785f5c4c42a4e02be7b7420e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _levelSettings: {fileID: 11400000, guid: 3928aa8d932453a47aa6cc32c70d0335, type: 2}
   _spawnPlayerPoint: {fileID: 7503391311198691433}
   _spawnWeaponPoints:
   - {fileID: 5558701389908747780}
@@ -6949,9 +6950,9 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.1
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 7caa2f01aaeffd64bbaa5cf310695d53, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 0c26845ff505748468b7c2547d01511f, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1 &6370909390181966854
 GameObject:

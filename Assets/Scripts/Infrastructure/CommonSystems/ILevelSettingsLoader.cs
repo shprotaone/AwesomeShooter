@@ -8,9 +8,9 @@ namespace Infrastructure.CommonSystems
 {
     public interface ILevelSettingsLoader
     {
-        IGameSceneData GameSceneData { get; }
-        UniTask<IGameSceneData> LoadLevel();
+        ILevelData LevelData { get; }
+        UniTask<ILevelData> LoadLevel();
         UniTask<PlayerSettingsSO> GetPlayerSettings();
-        UniTask<PlayerLevelSettingsSO> GetLevelsStorage();
+        UniTask<PlayerLevelProgress> GetLevelsStorage();
     }
 }

@@ -27,7 +27,7 @@ namespace UI
 
         public void SetUpExp(int currentLevel)
         {
-            _expSLider.maxValue = _levelSettingsSo.PlayerLevelSettingsSo.levels.
+            _expSLider.maxValue = _levelSettingsSo.PlayerLevelProgress.levels.
                 Find(x => x.level == currentLevel).experienceToUp;
         }
 
