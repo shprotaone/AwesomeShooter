@@ -3,32 +3,48 @@ using Extention;
 using Infrastructure.CommonSystems;
 using Infrastructure.ECS.Components;
 using Infrastructure.ECS.Components.Tags;
-using Infrastructure.Factories;
+using Infrastructure.Services;
 using Leopotam.EcsLite;
 using MonoBehaviours;
 using MonoBehaviours.Interfaces;
 using Objects;
+using UnityEngine;
+using UnityEngine.AI;
+using Random = System.Random;
 
 namespace Infrastructure.ECS.Systems
 {
     public class EnemySpawnSystem : IEcsInitSystem,IEcsRunSystem
     {
         private EcsWorld _ecsWorld;
-        private EnemyPool _pool;
-        private IGameSceneData _gameSceneData;
+        private EnemyPool _prefabPool;
+        private ILevelData _levelData;
 
-        public EnemySpawnSystem(EnemyPool pool, ILevelSettingsLoader levelSettingsLoader)
+        private EcsFilter _enemiesFilter;
+        private TimeService _timeService;
+        private ILevelProgressService _levelProgressService;
+        private float _timeToNextSpawn;
+
+        public EnemySpawnSystem(EnemyPool prefabPool,
+            TimeService timeService,
+            ILevelProgressService levelProgressService)
         {
-            _pool = pool;
-            _gameSceneData = levelSettingsLoader.GameSceneData;
+            _prefabPool = prefabPool;
+            _timeService = timeService;
+            _levelProgressService = levelProgressService;
         }
 
         public void Init(IEcsSystems systems)
         {
             _ecsWorld = systems.GetWorld();
-            _gameSceneData = systems.GetShared<IGameSceneData>();
+            _levelData = systems.GetShared<ILevelData>();
+            
+            _timeToNextSpawn = _levelData.LevelSettings.minSpawnTimeRate;
+            _levelProgressService.SetEnemiesInLevel(_levelData.LevelSettings.enemiesOnLevel);
+            
+            _enemiesFilter = _ecsWorld.Filter<EnemyTag>().End();
 
-            foreach (EnemySpawnPoint point in _gameSceneData.SpawnEnemiesPoints)
+            foreach (EnemySpawnPoint point in _levelData.SpawnEnemiesPoints)
             {
                 SpawnEnemy(point);
             }
@@ -36,18 +52,35 @@ namespace Infrastructure.ECS.Systems
 
         public void Run(IEcsSystems systems)
         {
+            _timeToNextSpawn -= _timeService.DeltaTime;
 
+            if (_timeToNextSpawn < 0 && CheckMaxEnemiesOnMap() && _levelProgressService.LeftEnemy > 0)
+            {
+                _timeToNextSpawn = _levelData.LevelSettings.minSpawnTimeRate;
+                EnemySpawnPoint nextPoint = GetRandomPoint();
+                SpawnEnemy(nextPoint);
+            }
+
+            Debug.Log("Enemy in map " +_enemiesFilter.GetEntitiesCount());
+        }
+
+        private EnemySpawnPoint GetRandomPoint()
+        {
+            Random rnd = new Random();
+            int nextIndex = rnd.Next(0, _levelData.SpawnEnemiesPoints.Length);
+            return _levelData.SpawnEnemiesPoints[nextIndex];
         }
 
         private void SpawnEnemy(EnemySpawnPoint point)
         {
-            Enemy enemy = _pool.Pool.Get();
-            enemy.transform.position = point.Transform.position;
-            var componentList = CreateComponents(enemy);
-
-            int entity = _ecsWorld.NewEntityWithComponents(componentList);
-            enemy.SetPackedEntity(_ecsWorld.PackEntity(entity));
-
+            if (point.IsActive)
+            {
+                Enemy enemy = _prefabPool.Pool.Get();
+                enemy.transform.position = point.Transform.position;
+                var componentList = CreateComponents(enemy);
+                int entity = _ecsWorld.NewEntityWithComponents(componentList);
+                enemy.SetPackedEntity(_ecsWorld.PackEntity(entity));
+            }
         }
 
         private List<object> CreateComponents(Enemy enemy)
@@ -81,7 +114,18 @@ namespace Infrastructure.ECS.Systems
                 value = 10
             });
 
+            components.Add(new EnemyMovableComponent()
+            {
+                speed = enemy.EnemySettings.Speed,
+                agent = enemy.GetComponent<NavMeshAgent>()
+            });
+
             return components;
+        }
+
+        private bool CheckMaxEnemiesOnMap()
+        {
+            return _levelData.LevelSettings.maxEnemiesOnMap >= _enemiesFilter.GetEntitiesCount();
         }
     }
 }

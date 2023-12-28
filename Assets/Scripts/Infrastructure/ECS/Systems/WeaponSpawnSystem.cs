@@ -17,23 +17,23 @@ namespace Infrastructure.ECS.Systems
         private EcsWorld _ecsWorld;
         private IInstantiator _instatiator;
         private IWeaponFactory _weaponFactory;
-        private IGameSceneData _gameSceneData;
+        private ILevelData _levelData;
 
         public WeaponSpawnSystem(IWeaponFactory weaponFactory,
             ILevelSettingsLoader levelSettingsLoader,
             IInstantiator instantiator)
         {
             _weaponFactory = weaponFactory;
-            _gameSceneData = levelSettingsLoader.GameSceneData;
+            _levelData = levelSettingsLoader.LevelData;
             _instatiator = instantiator;
         }
         
         public void Init(IEcsSystems systems)
         {
             _ecsWorld = systems.GetWorld();
-            _gameSceneData = systems.GetShared<IGameSceneData>();
+            _levelData = systems.GetShared<ILevelData>();
             //по количеству точек
-            foreach (WeaponSpawnPoint point in _gameSceneData.SpawnWeaponPoints)
+            foreach (WeaponSpawnPoint point in _levelData.SpawnWeaponPoints)
             {
                 SpawnWeapon(point);
             }

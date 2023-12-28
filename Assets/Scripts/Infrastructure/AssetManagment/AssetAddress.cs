@@ -21,7 +21,7 @@ namespace Infrastructure.AssetManagment
 
         //---LevelSettings---
 
-        public const string FirstLevelGameSceneDataPath = "InitialPointsLevel1";
+        public const string FirstLevelGameSceneDataPath = "Level1";
 
         //---CommonSystems---
 

@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WeaponType: 0
   positionPreset: {x: 0.249, y: 0, z: 0.779}
-  fireRate: 0.5
+  fireRate: 0.1
   magazineCapacity: 20
+  ItemType: 0

@@ -28,6 +28,13 @@ namespace Infrastructure.CommonSystems
 
             BindCursorLockService();
 
+            BindTimeService();
+
+        }
+
+        private void BindTimeService()
+        {
+            Container.BindInterfacesAndSelfTo<TimeService>().AsSingle();
         }
 
         private void BindCursorLockService()

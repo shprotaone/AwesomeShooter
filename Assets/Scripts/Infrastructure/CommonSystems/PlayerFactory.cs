@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Infrastructure.AssetManagment;
+using MonoBehaviours.Interfaces;
 using Settings;
 using UnityEngine;
 using Zenject;
@@ -21,7 +22,17 @@ namespace Infrastructure.CommonSystems
         public async UniTask<GameObject> GetPlayer()
         {
             GameObject prefab = await _assetProvider.Load<GameObject>(AssetAddress.PlayerPrefabPath);
-            return prefab;
+            GameObject newObj = _instantiator.InstantiatePrefab(prefab);
+            return newObj;
+        }
+
+        public async UniTask<ILevelData> LoadLevel()
+        {
+            GameObject prefab = await _assetProvider.Load<GameObject>(AssetAddress.FirstLevelGameSceneDataPath);
+            GameObject newObj = _instantiator.InstantiatePrefab(prefab);
+
+
+            return newObj.GetComponent<ILevelData>();
         }
 
         public async UniTask<PlayerSettingsSO> GetPlayerSettings()
@@ -31,11 +42,11 @@ namespace Infrastructure.CommonSystems
             return settingsSo;
         }
 
-        public async UniTask<PlayerLevelSettingsSO> GetLevelsStorage()
+        public async UniTask<PlayerLevelProgress> GetLevelsStorage()
         {
-            PlayerLevelSettingsSO settingsSo =
-                await _assetProvider.Load<PlayerLevelSettingsSO>(AssetAddress.PlayerLevelSettingsSOPath);
-            return settingsSo;
+            PlayerLevelProgress progress =
+                await _assetProvider.Load<PlayerLevelProgress>(AssetAddress.PlayerLevelSettingsSOPath);
+            return progress;
         }
     }
 }

@@ -2,14 +2,15 @@
 using Cysharp.Threading.Tasks;
 using MonoBehaviours.Interfaces;
 using Settings;
+using UnityEngine;
 
 namespace Infrastructure.CommonSystems
 {
     public interface ILevelSettingsLoader
     {
-        IGameSceneData GameSceneData { get; }
-        UniTask<IGameSceneData> LoadGameSceneData();
+        ILevelData LevelData { get; }
+        UniTask<ILevelData> LoadLevel();
         UniTask<PlayerSettingsSO> GetPlayerSettings();
-        UniTask<PlayerLevelSettingsSO> GetLevelsStorage();
+        UniTask<PlayerLevelProgress> GetLevelsStorage();
     }
 }

@@ -1,19 +1,21 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using Cysharp.Threading.Tasks;
 using Infrastructure.Factories;
 using MonoBehaviours;
 using MonoBehaviours.Interfaces;
 using Settings;
+using UnityEngine;
 using Zenject;
 
 namespace Infrastructure.CommonSystems
 {
     public class LevelSettingsLoader : ILevelSettingsLoader
     {
-        private IGameSceneData _gameSceneData;
+        private ILevelData _levelData;
         private ICommonSystemsFactory _commonSystemsFactory;
         private IPlayerFactory _playerFactory;
 
-        public IGameSceneData GameSceneData => _gameSceneData;
+        public ILevelData LevelData => _levelData;
 
         public LevelSettingsLoader(ICommonSystemsFactory commonSystemsFactory,IPlayerFactory playerFactory)
         {
@@ -21,9 +23,9 @@ namespace Infrastructure.CommonSystems
             _playerFactory = playerFactory;
         }
 
-        public async UniTask<IGameSceneData> LoadGameSceneData()
+        public async UniTask<ILevelData> LoadLevel()
         {
-            return await _commonSystemsFactory.GetGameSceneData();
+            return await _playerFactory.LoadLevel();
         }
 
         public async UniTask<PlayerSettingsSO> GetPlayerSettings()
@@ -31,9 +33,10 @@ namespace Infrastructure.CommonSystems
             return await _playerFactory.GetPlayerSettings();
         }
 
-        public async UniTask<PlayerLevelSettingsSO> GetLevelsStorage()
+        public async UniTask<PlayerLevelProgress> GetLevelsStorage()
         {
             return await _playerFactory.GetLevelsStorage();
         }
+
     }
 }

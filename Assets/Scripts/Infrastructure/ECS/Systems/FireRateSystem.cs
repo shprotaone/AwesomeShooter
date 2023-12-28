@@ -21,7 +21,11 @@ namespace Infrastructure.ECS.Systems
             foreach (int entity in _firerateFilter)
             {
                 ref var firetime = ref _fireratePool.Get(entity).firerate;
-                firetime += Time.deltaTime;
+                if (firetime > 0)
+                {
+                    firetime -= Time.deltaTime;
+                }
+
             }
         }
     }

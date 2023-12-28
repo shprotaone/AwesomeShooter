@@ -59,7 +59,7 @@ namespace Infrastructure.ECS.Systems
 
         private void CheckTriggers()
         {
-            int numColliders = Physics.OverlapSphereNonAlloc(_playerPosition, 3, _hitColliders, _mask.value | _enemyMask.value);
+            int numColliders = Physics.OverlapSphereNonAlloc(_playerPosition, 2, _hitColliders, _mask.value | _enemyMask.value);
 
             foreach (int entity in _aroundFilter)
             {
@@ -84,6 +84,8 @@ namespace Infrastructure.ECS.Systems
                 {
                     aroundComponents = "";
                 }
+
+                Debug.Log("PickUp " + numColliders);
 
             }
         }

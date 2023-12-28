@@ -12,14 +12,14 @@ using Zenject;
 
 namespace Infrastructure.ECS
 {
-    public class EcsStartup : IECSRunner,IRestartble
+    public class EcsStartup : IECSRunner
     {
         private EcsWorld _world;
         private EcsSystems _updateSystems;
         private EcsSystems _fixedUpdateSystems;
         private IEcsUpdateSystems _ecsUpdateSystems;
         private IEcsFixedSystems _ecsFixedSystems;
-        private IGameSceneData _gameSceneData;
+        private ILevelData _levelData;
         private DiContainer _container;
 
         private bool _isInitialized;
@@ -33,16 +33,16 @@ namespace Infrastructure.ECS
             _container = container;
         }
 
-        public async UniTask Initialize(IGameSceneData gameSceneData)
+        public async UniTask Initialize(ILevelData levelData)
         {
             Debug.Log("StartInit");
             _world = new EcsWorld();
             _container.BindInstance(_world).AsSingle();
             
-            _gameSceneData = gameSceneData;
+            _levelData = levelData;
         }
 
-        public void StartSystems()
+        public async UniTask StartSystems()
         {
             AddSystems();
             _updateSystems.ConvertScene();
@@ -97,18 +97,13 @@ namespace Infrastructure.ECS
 
         private EcsSystems GetSystems(List<IEcsSystem> bindingSystems)
         {
-            EcsSystems systems = new EcsSystems(_world,_gameSceneData);
+            EcsSystems systems = new EcsSystems(_world,_levelData);
             foreach (var s in bindingSystems)
             {
                 systems.Add(s);
             }
 
             return systems;
-        }
-
-        public void Restart()
-        {
-            Dispose();
         }
     }
 }

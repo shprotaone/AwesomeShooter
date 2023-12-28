@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: CommonBulletSettings
   m_EditorClassIdentifier: 
   bulletType: 0
-  projectileSpeed: 5
+  projectileSpeed: 50
   damage: 2
   lifetime: 5

@@ -1,11 +1,14 @@
+using System;
 using Cysharp.Threading.Tasks;
 using Infrastructure.CommonSystems;
 using Infrastructure.ECS;
 using Infrastructure.Factories;
 using Infrastructure.GameStates;
+using Infrastructure.Services;
 using Infrastructure.StateMachines;
 using MonoBehaviours.Interfaces;
 using UI;
+using UnityEngine;
 
 namespace Infrastructure.Bootstrappers
 {
@@ -13,17 +16,21 @@ namespace Infrastructure.Bootstrappers
     {
         private SceneStateMachine _sceneStateMachine;
         private ILevelSettingsLoader _levelSettingsLoader;
+        private IServiceInitializer _serviceInitializer;
         private LevelSettingsContainer _levelSettings;
         private GameplayUIFactory _gameplayUIFactory;
         private EnemyPool _enemyPool;
         private EcsStartup _ecsStartup;
+
+        private GameObject _level;
 
         public InitGamePlayState(SceneStateMachine sceneStateMachine,
             ILevelSettingsLoader levelSettingsLoader,
             LevelSettingsContainer levelSettingsContainer,
             EnemyPool enemyPool,
             EcsStartup ecsStartup,
-            GameplayUIFactory gameplayUIFactory)
+            GameplayUIFactory gameplayUIFactory,
+            IServiceInitializer serviceInitializer)
         {
             _sceneStateMachine = sceneStateMachine;
             _levelSettingsLoader = levelSettingsLoader;
@@ -31,6 +38,7 @@ namespace Infrastructure.Bootstrappers
             _enemyPool = enemyPool;
             _gameplayUIFactory = gameplayUIFactory;
             _levelSettings = levelSettingsContainer;
+            _serviceInitializer = serviceInitializer;
         }
 
         public async UniTask Enter()
@@ -38,11 +46,11 @@ namespace Infrastructure.Bootstrappers
             var gameSceneData = await SetUpLevelSettings();
             await _enemyPool.Init();
             await _ecsStartup.Initialize(gameSceneData);
-            _ecsStartup.StartSystems();
+            await _ecsStartup.StartSystems();
 
             await _gameplayUIFactory.CreateMainHud();
+            _serviceInitializer.Init();
             await _sceneStateMachine.Enter<PlayGameplayState>();
-
         }
 
         public async UniTask Exit()
@@ -51,9 +59,9 @@ namespace Infrastructure.Bootstrappers
 
         }
 
-        private async UniTask<IGameSceneData> SetUpLevelSettings()
+        private async UniTask<ILevelData> SetUpLevelSettings()
         {
-            var gameSceneData = await _levelSettingsLoader.LoadGameSceneData();
+            var gameSceneData = await _levelSettingsLoader.LoadLevel();
             var playerSettings = await _levelSettingsLoader.GetPlayerSettings();
             var playerLevels = await _levelSettingsLoader.GetLevelsStorage();
 

@@ -68,8 +68,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8d1a0e2c7420c1548a954c33f6417a38
-    m_Address: InitialPointsLevel1
+  - m_GUID: 40b298832d636244bb99652516c2b828
+    m_Address: Level1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

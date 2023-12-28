@@ -5,16 +5,16 @@ namespace Infrastructure.CommonSystems
     public class LevelSettingsContainer
     {
         private PlayerSettingsSO _playerSettings;
-        private PlayerLevelSettingsSO _levelSettings;
+        private PlayerLevelProgress _levelSettings;
 
         public PlayerSettingsSO PlayerSettings => _playerSettings;
-        public PlayerLevelSettingsSO PlayerLevelSettingsSo => _levelSettings;
+        public PlayerLevelProgress PlayerLevelProgress => _levelSettings;
 
         public void SetPlayerSettings(PlayerSettingsSO playerSettings) =>
             _playerSettings = playerSettings;
 
-        public void SetPlayerLevelSettings(PlayerLevelSettingsSO levelSettingsSo) =>
-            _levelSettings = levelSettingsSo;
+        public void SetPlayerLevelSettings(PlayerLevelProgress levelProgress) =>
+            _levelSettings = levelProgress;
 
     }
 }

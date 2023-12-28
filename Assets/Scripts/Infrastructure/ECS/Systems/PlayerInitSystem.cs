@@ -10,38 +10,39 @@ using MonoBehaviours.Interfaces;
 using Settings;
 using StaticData;
 using UnityEngine;
+using Zenject;
 
 public class PlayerInitSystem : IEcsInitSystem
 {
     private EcsWorld _world;
 
     private readonly IPlayerFactory _playerFactory;
-    private IGameSceneData _gameSceneData;
+    private ILevelData _levelData;
     private LevelSettingsContainer _settingsContainer;
 
-    public PlayerInitSystem(IPlayerFactory playerFactory,LevelSettingsContainer settingsContainer)
+    public PlayerInitSystem(IPlayerFactory playerFactory,
+        LevelSettingsContainer settingsContainer)
     {
         _playerFactory = playerFactory;
         _settingsContainer = settingsContainer;
     }
 
-    public void Init(IEcsSystems systems)
+    public async void Init(IEcsSystems systems)
     {
         _world = systems.GetWorld();
-        _gameSceneData = systems.GetShared<IGameSceneData>();
-        CreateEntity(_gameSceneData);
+        _levelData = systems.GetShared<ILevelData>();
+        await SetUpPlayer(_levelData);
     }
 
-    private async UniTask CreateEntity(IGameSceneData gameSceneData)
+    private async UniTask SetUpPlayer(ILevelData levelData)
     {
         GameObject playerPrefab = await _playerFactory.GetPlayer();
-        GameObject player = GameObject.Instantiate(playerPrefab);
 
-        player.transform.position = gameSceneData.SpawnPlayerPoint.position;
-        var componentList = CreateComponents(player, _settingsContainer.PlayerSettings);
+        var componentList = CreateComponents(playerPrefab, _settingsContainer.PlayerSettings);
 
         var entity = _world.NewEntityWithComponents(componentList);
-        player.GetComponentInChildren<PlayerTagMono>().SetEntity(_world.PackEntity(entity));
+        playerPrefab.GetComponentInChildren<PlayerTagMono>().SetEntity(_world.PackEntity(entity));
+        playerPrefab.transform.position = levelData.SpawnPlayerPoint.position;
     }
 
     private List<object> CreateComponents(GameObject playerPrefab,PlayerSettingsSO settings)

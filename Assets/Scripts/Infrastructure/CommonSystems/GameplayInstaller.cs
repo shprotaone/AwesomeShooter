@@ -14,11 +14,15 @@ namespace Infrastructure.CommonSystems
     {
         public override void InstallBindings()
         {
+            BindServiceInitializer();
+            
             BindWeaponFactory();
 
             BulletFactoryBinding();
 
             BulletPoolBinding();
+
+            BindServices();
 
             PlayerFactoryBinding();
 
@@ -28,19 +32,22 @@ namespace Infrastructure.CommonSystems
 
             BindSceneStateMachine();
 
-
             BindEnemyFactory();
+
+            BindUIFactory();
 
             BindEcsSystems();
 
             BindEcsRunner();
-            
-            BindUIFactory();
 
             BindRestartService();
 
-
             Debug.Log("BindingComplete");
+        }
+
+        private void BindServiceInitializer()
+        {
+            Container.BindInterfacesAndSelfTo<ServiceInitializer>().AsSingle();
         }
 
         private void BindUIFactory()
@@ -111,7 +118,11 @@ namespace Infrastructure.CommonSystems
         {
             Container.BindInterfacesAndSelfTo<LevelSettingsContainer>().AsSingle();
             Container.BindInterfacesAndSelfTo<LevelSettingsLoader>().AsSingle();
+        }
 
+        private void BindServices()
+        {
+            Container.BindInterfacesAndSelfTo<LevelProgressService>().AsSingle();
         }
     }
 }

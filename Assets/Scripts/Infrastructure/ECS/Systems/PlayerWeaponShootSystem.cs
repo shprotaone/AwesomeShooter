@@ -56,12 +56,12 @@ namespace Infrastructure.ECS.Systems
 
                 if (_isAttack && weaponComponent.isEquipped)
                 {
-                    if (firerate >= weaponComponent.settings.fireRate)
+                    if (firerate <= 0 && magazine.currentAmmo > 0)
                     {
                         SpawnBullet(weaponComponent);
                         magazine.currentAmmo--;
                         magazine.OnCurrentAmmo?.Invoke(magazine.currentAmmo);
-                        firerate = 0;
+                        firerate = weaponComponent.settings.fireRate;
                     }
                 }
             }
