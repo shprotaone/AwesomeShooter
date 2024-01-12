@@ -2,16 +2,16 @@
 
 namespace Infrastructure.Services
 {
-    public class LevelProgressService : ILevelProgressService,IService
+    public class LevelProgressGameService : ILevelProgressService,IGameService
     {
         public event Action<int> OnLeftEnemy;
         private int _leftEnemy;
         
         public int LeftEnemy => _leftEnemy;
 
-        public LevelProgressService(IServiceInitializer serviceInitializer)
+        public LevelProgressGameService(IServiceInitializer serviceInitializer)
         {
-            serviceInitializer.Services.Add(this);
+            serviceInitializer.Add(this);
         }
 
         public void Init()
@@ -22,7 +22,6 @@ namespace Infrastructure.Services
         public void SetEnemiesInLevel(int levelSettingsEnemiesOnLevel)
         {
             _leftEnemy = levelSettingsEnemiesOnLevel;
-            
         }
 
         public void DecreaseLeftEnemy()

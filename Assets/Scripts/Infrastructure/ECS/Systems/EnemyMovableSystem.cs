@@ -1,11 +1,12 @@
 ﻿using Infrastructure.ECS.Components;
 using Infrastructure.ECS.Components.Tags;
+using Infrastructure.Services;
 using Leopotam.EcsLite;
 using UnityEngine;
 
 namespace Infrastructure.ECS.Systems
 {
-    public class EnemyMovableSystem : IEcsInitSystem,IEcsRunSystem
+    public class EnemyMovableSystem : IEcsInitSystem,IEcsRunSystem,IPaused
     {
         private EcsWorld _world;
 
@@ -15,6 +16,15 @@ namespace Infrastructure.ECS.Systems
         private EcsPool<HealthComponent> _healthPool;
         private EcsPool<ModelComponent> _playerPool;
         private EcsPool<EnemyMovableComponent> _pool;
+
+        private readonly PauseGameService _pauseGameService;
+
+        public bool IsPaused { get; set; }
+
+        public EnemyMovableSystem(PauseGameService pauseGameService)
+        {
+            pauseGameService.Add(this);
+        }
 
         public void Init(IEcsSystems systems)
         {
@@ -39,6 +49,10 @@ namespace Infrastructure.ECS.Systems
                 {
                     enemyMovable.agent.destination = CheckPlayerPosition();
                 }
+                
+                if(IsPaused) enemyMovable.agent.isStopped = true;
+                else enemyMovable.agent.isStopped = false;
+                
             }
         }
 

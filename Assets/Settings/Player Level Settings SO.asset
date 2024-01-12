@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levels:
   - level: 1
-    experienceToUp: 250
+    experienceToUp: 100
   - level: 2
-    experienceToUp: 500
+    experienceToUp: 200
   - level: 3
-    experienceToUp: 750
+    experienceToUp: 300
   - level: 4
     experienceToUp: 1000

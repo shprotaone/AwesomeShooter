@@ -14,6 +14,8 @@ namespace Infrastructure.CommonSystems
     {
         public override void InstallBindings()
         {
+            BindPauseService();
+            
             BindServiceInitializer();
             
             BindWeaponFactory();
@@ -122,7 +124,14 @@ namespace Infrastructure.CommonSystems
 
         private void BindServices()
         {
-            Container.BindInterfacesAndSelfTo<LevelProgressService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<LevelProgressGameService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<LevelingGameService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<SkillGameService>().AsSingle();
+        }
+
+        private void BindPauseService()
+        {
+            Container.BindInterfacesAndSelfTo<PauseGameService>().AsSingle();
         }
     }
 }

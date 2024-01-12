@@ -60,8 +60,6 @@ namespace Infrastructure.ECS.Systems
                 EnemySpawnPoint nextPoint = GetRandomPoint();
                 SpawnEnemy(nextPoint);
             }
-
-            Debug.Log("Enemy in map " +_enemiesFilter.GetEntitiesCount());
         }
 
         private EnemySpawnPoint GetRandomPoint()

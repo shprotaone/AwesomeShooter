@@ -27,6 +27,7 @@ namespace Infrastructure.ECS.Systems
         private LayerMask _enemyMask;
         private Collider[] _hitColliders = new Collider[1];
 
+        private int perDamage;
         public void Init(IEcsSystems systems)
         {
             _playerPosition = new Vector3();
@@ -72,39 +73,23 @@ namespace Infrastructure.ECS.Systems
                         weaponConfig.entity.Unpack(_world, out int result);
                         OnTriggerEnter(result);
                     }
-                    else if (_hitColliders[0].TryGetComponent(out Enemy enemy))
+                    else if (_hitColliders[0].TryGetComponent(out Enemy enemy) && perDamage == 0)
                     {
-                        //TODO: На будущее
-                        // enemy.PackedEntity.Unpack(_world, out int enemyEntity);
-                        // OnHitPlayer(enemyEntity,enemy);
+                        OnHitPlayer(entity,enemy);
                     }
 
                 }
                 else
                 {
+                    perDamage = 0;
                     aroundComponents = "";
                 }
-
-                Debug.Log("PickUp " + numColliders);
-
             }
         }
 
         private void OnHitPlayer(int enemyEntity,Enemy enemy)
         {
-            /*if (_damagePool.Has(enemyEntity))
-            {
-                int damageRequest = _world.NewEntity();
-                var damage = _damagePool.Get(enemyEntity).value;
-                
-                // _world.AddComponentToEntity(damageRequest, new DamageRequestComponent()
-                // {
-                //     packEntity = enemy.PackedEntity,
-                //     damage = damage
-                // });
-                
-                Debug.Log("DamageApproved");
-            }*/
+            CreateDamageRequest(enemyEntity, enemy);
         }
 
         private void OnTriggerEnter(int entity)
@@ -126,7 +111,26 @@ namespace Infrastructure.ECS.Systems
             if (((1 << other.gameObject.layer) & _mask) != 0)
             {
                 Debug.Log("Enter " + other.gameObject);
+                _world.DelEntity(perDamage);
             }
+        }
+        
+        private void CreateDamageRequest(int entity, Enemy enemy)
+        {
+            perDamage = _world.NewEntity();
+            var to = _damagePool.Get(entity);
+
+            _world.AddComponentToEntity(perDamage, new PeriodicDamageRequestComponent()
+            {
+                PackedEntity = _world.PackEntity(entity),
+                Damage = to.value,
+                TimeOfDamage = enemy.EnemySettings.DamageTime
+            });
+
+            _world.AddComponentToEntity(perDamage, new FireRateComponent()
+            {
+                firerate = enemy.EnemySettings.DamageTime
+            });
         }
     }
 }

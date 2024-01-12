@@ -1,6 +1,6 @@
 ﻿namespace Infrastructure.Services
 {
-    public interface IService
+    public interface IGameService
     {
         void Init();
     }

@@ -26,6 +26,7 @@ namespace Infrastructure.ECS
             Container.BindInterfacesAndSelfTo<ReloadMagazineSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<WeaponHolderSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<DamageSystem>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PeriodicDamageSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<DeathSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<EcsUpdateSystems>().AsSingle();
 

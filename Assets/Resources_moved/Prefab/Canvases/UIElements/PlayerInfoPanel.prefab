@@ -963,6 +963,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2fdf179aed84af2bd9cb470c81f77cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _levelText: {fileID: 2719010463932344350}
   _hpSlider: {fileID: 3716499996220565841}
   _expSLider: {fileID: 9043316722040112158}
 --- !u!1 &8955603404157574798

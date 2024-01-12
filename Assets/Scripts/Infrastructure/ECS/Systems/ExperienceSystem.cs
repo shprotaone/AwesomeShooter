@@ -1,6 +1,7 @@
 ﻿using Infrastructure.CommonSystems;
 using Infrastructure.ECS.Components;
 using Infrastructure.ECS.Components.Tags;
+using Infrastructure.Services;
 using Leopotam.EcsLite;
 using Settings;
 
@@ -14,11 +15,11 @@ namespace Infrastructure.ECS.Systems
         private EcsPool<ExperienceComponent> _experiencePool;
         private EcsPool<AddExperienceRequestComponent> _experienceRequestPool;
 
-        private LevelSettingsContainer _settingsContainer;
+        private ILevelingGameService _levelingGameService;
         
-        public ExperienceSystem(LevelSettingsContainer settingsContainer)
+        public ExperienceSystem(ILevelingGameService levelingGameService)
         {
-            _settingsContainer = settingsContainer;
+            _levelingGameService = levelingGameService;
         }
         
         public void Init(IEcsSystems systems)
@@ -50,17 +51,7 @@ namespace Infrastructure.ECS.Systems
                 experienceValue += currentRequest.experience;
 
                 experienceComponent.OnExperienceAdd?.Invoke(experienceValue);
-                
-                // for (int j = 0; j <  _playerLevelSettings._levels.Count; j++)
-                // {
-                //     if (_playerLevelSettings._levels[i].experienceToUp <= experienceValue)
-                //     {
-                //         experienceComponent.Level = _playerLevelSettings._levels[i + 1].level;
-                //     }
-                // }
-                
-
-
+                _levelingGameService.CheckNextLevel(experienceValue);
             }
         }
     }

@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Cysharp.Threading.Tasks;
 
 namespace Infrastructure.Services
 {
     public interface IServiceInitializer
     {
-        List<IService> Services { get; }
-        void Init();
+        UniTask Init();
+        void Add(IGameService service);
     }
 }

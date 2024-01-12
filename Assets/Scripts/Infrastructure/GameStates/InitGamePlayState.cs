@@ -49,7 +49,7 @@ namespace Infrastructure.Bootstrappers
             await _ecsStartup.StartSystems();
 
             await _gameplayUIFactory.CreateMainHud();
-            _serviceInitializer.Init();
+            await _serviceInitializer.Init();
             await _sceneStateMachine.Enter<PlayGameplayState>();
         }
 

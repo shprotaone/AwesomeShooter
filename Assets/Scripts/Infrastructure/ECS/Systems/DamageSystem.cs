@@ -37,6 +37,7 @@ namespace Infrastructure.ECS.Systems
                 healthComponent.OnHealthChanged?.Invoke(health);
 
                 _world.DelEntity(requestEntity);
+                
                 if (health <= 0)
                 {
                     int deathRequest = _world.NewEntity();

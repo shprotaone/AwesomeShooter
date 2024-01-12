@@ -36,6 +36,8 @@ namespace Infrastructure.Factories
             await CreatePlayerInfo();
             await CreateLevelInfo();
             await CreateWeaponInfo();
+            await CreateLoadUpPopUp();
+            
             await _mainHUDController.Initialize();
         }
 
@@ -58,6 +60,13 @@ namespace Infrastructure.Factories
             var instance = await Load(AssetAddress.WeaponPanelPath);
             instance.transform.SetParent(_mainPanelParent,false);
             _uiService.AddService(instance.GetComponent<WeaponView>());
+        }
+
+        private async UniTask CreateLoadUpPopUp()
+        {
+            var instance = await Load(AssetAddress.LevelUpPopPath);
+            instance.transform.SetParent(_mainPanelParent, false);
+            _uiService.AddService(instance.GetComponent<SkillChooseView>());
         }
 
         private async UniTask<GameObject> Load(string assetPath)

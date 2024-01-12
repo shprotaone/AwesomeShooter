@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Infrastructure.CommonSystems;
 using Infrastructure.ECS.Services;
+using Infrastructure.Services;
 using Leopotam.EcsLite;
 using MonoBehaviours.Interfaces;
 using Settings;
@@ -12,7 +13,7 @@ using Zenject;
 
 namespace Infrastructure.ECS
 {
-    public class EcsStartup : IECSRunner
+    public class EcsStartup : IECSRunner,IPaused
     {
         private EcsWorld _world;
         private EcsSystems _updateSystems;
@@ -20,17 +21,25 @@ namespace Infrastructure.ECS
         private IEcsUpdateSystems _ecsUpdateSystems;
         private IEcsFixedSystems _ecsFixedSystems;
         private ILevelData _levelData;
+        private PauseGameService _pauseGameService;
         private DiContainer _container;
 
         private bool _isInitialized;
 
         public EcsWorld CurrentWorld => _world;
+        public bool IsPaused { get; set; }
 
-        private EcsStartup(IEcsUpdateSystems updateSystems, IEcsFixedSystems ecsFixedSystems,DiContainer container)
+
+        private EcsStartup(IEcsUpdateSystems updateSystems, 
+            IEcsFixedSystems ecsFixedSystems,
+            DiContainer container,
+            PauseGameService pauseGameService)
         {
             _ecsUpdateSystems = updateSystems;
             _ecsFixedSystems = ecsFixedSystems;
             _container = container;
+            _pauseGameService = pauseGameService;
+            pauseGameService.Add(this);
         }
 
         public async UniTask Initialize(ILevelData levelData)
@@ -64,13 +73,13 @@ namespace Infrastructure.ECS
 
         public void Tick()
         {
-            if(_isInitialized)
+            if(_isInitialized && !IsPaused)
                 _updateSystems?.Run ();
         }
 
         public void FixedTick()
         {
-            if(_isInitialized)
+            if(_isInitialized && !IsPaused)
                 _fixedUpdateSystems?.Run();
         }
 

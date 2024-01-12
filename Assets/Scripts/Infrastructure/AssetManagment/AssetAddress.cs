@@ -31,10 +31,13 @@ namespace Infrastructure.AssetManagment
         //---UI---
 
         public const string MainMenuCanvasPath = "MainMenuCanvas";
-
         public const string GameplayHUDPath = "MainGameplayCanvas";
+        
+        //---Elements---
+        
         public const string PlayerInfoPanelPath = "PlayerInfoPanel";
         public const string LevelInfoPanelPath = "LevelInfoPanel";
         public const string WeaponPanelPath = "WeaponPanel";
+        public const string LevelUpPopPath = "LevelUpPopUp";
     }
 }

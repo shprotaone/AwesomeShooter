@@ -9,17 +9,16 @@ namespace Infrastructure.ECS.Systems
         private EcsWorld _world;
         private EcsFilter _collisionFilter;
         private EcsFilter _projectileFilter;
-        private EcsPool<DamageComponent> _damagePool;
         private EcsPool<EnemyCollisionComponent> _collisionPool;
         private EcsPool<ProjectileComponent> _projectilePool;
 
+        private int _perDamageRequest;
         public void Init(IEcsSystems systems)
         {
             _world = systems.GetWorld();
             _collisionFilter = _world.Filter<EnemyCollisionComponent>().End();
             _collisionPool = _world.GetPool<EnemyCollisionComponent>();
             _projectilePool = _world.GetPool<ProjectileComponent>();
-            _damagePool = _world.GetPool<DamageComponent>();
         }
 
         public void Run(IEcsSystems systems)
@@ -31,11 +30,10 @@ namespace Infrastructure.ECS.Systems
 
                 if (isEnter)
                 {
-                    enemyComponent.collision.entryEntity.Unpack(_world,out int enterEntity);
+                    enemyComponent.collision.entryEntity.Unpack(_world, out int enterEntity);
                     enemyComponent.collision.IsEnter = false;
 
                     DamageRequest(enterEntity, enemyComponent);
-
                 }
             }
         }
@@ -55,17 +53,6 @@ namespace Infrastructure.ECS.Systems
 
                 from.projectile.DisableBullet();
                 _world.DelEntity(enterEntity);
-            }
-            else if (_damagePool.Has(enterEntity))
-            {
-                int damageRequest = _world.NewEntity();
-                var to = _damagePool.Get(enterEntity);
-                
-                _world.AddComponentToEntity(damageRequest, new DamageRequestComponent()
-                {
-                    packEntity = _world.PackEntity(enterEntity),
-                    damage = to.value
-                });
             }
         }
     }

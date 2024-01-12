@@ -9,9 +9,11 @@ namespace Settings
         [SerializeField] private float _health;
         [SerializeField] private float _damage;
         [SerializeField] private float _speed;
+        [SerializeField] private float _damageTime;
 
         public float Health => _health;
         public float Damage => _damage;
         public float Speed => _speed;
+        public float DamageTime => _damageTime;
     }
 }

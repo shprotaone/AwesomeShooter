@@ -1,27 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace Infrastructure.Services
 {
-    public class ServiceInitializer : IServiceInitializer,IDisposable
+    public class ServiceInitializer : IServiceInitializer
     {
-        public List<IService> Services { get; }
+        private List<IGameService> _services;
 
         public ServiceInitializer()
         {
-            Services = new List<IService>();
-        }
-        public void Init()
-        {
-            foreach (IService service in Services)
-            {
-                service.Init();
-            }
+            _services = new List<IGameService>();
         }
 
-        public void Dispose()
+        public void Add(IGameService service)
         {
-            Services.Clear();
+            _services.Add(service);
+        }
+        
+        public async UniTask Init()
+        {
+            foreach (IGameService service in _services)
+            { 
+                service.Init();
+            }
         }
     }
 }
