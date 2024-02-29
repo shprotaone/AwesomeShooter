@@ -5,6 +5,7 @@ using Infrastructure.ECS.Components.Tags;
 using Infrastructure.ECS.Systems;
 using Infrastructure.Services;
 using Leopotam.EcsLite;
+using Scripts.Test;
 using UIComponents;
 using UnityEngine;
 using Zenject;
@@ -30,9 +31,15 @@ namespace UI
             SetUpHp();
             SetUpExperienceWindow();
             SetUpWeapon();
+            await SetUpTestServiceWindow();
         }
 
-        private void SetUpWeapon()
+        private async UniTask SetUpTestServiceWindow()
+        {
+            await _uiService.GetView<TestServiceView>().Init();
+        }
+
+        private async void SetUpWeapon()
         {
             WeaponView view = _uiService.GetView<WeaponView>();
             view.ResetView();

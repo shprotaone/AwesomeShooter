@@ -39,5 +39,7 @@ namespace Infrastructure.AssetManagment
         public const string LevelInfoPanelPath = "LevelInfoPanel";
         public const string WeaponPanelPath = "WeaponPanel";
         public const string LevelUpPopPath = "LevelUpPopUp";
+        public const string TestServiceViewPanel = "TestCanvas";
+        public const string TestLineView = "TestLine";
     }
 }

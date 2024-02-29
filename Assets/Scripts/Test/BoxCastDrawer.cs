@@ -7,7 +7,9 @@ using MonoBehaviours;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-public class BoxCastDrawer : MonoBehaviour
+namespace Scripts.Test
+{
+   public class BoxCastDrawer : MonoBehaviour
 {
    [SerializeField] private Vector3 _offset;
    [SerializeField] private float _drawLenght;
@@ -107,4 +109,5 @@ public class BoxCastDrawer : MonoBehaviour
       // Reset the Gizmos matrix.
       Gizmos.matrix = currentMatrix;
    }
+}
 }

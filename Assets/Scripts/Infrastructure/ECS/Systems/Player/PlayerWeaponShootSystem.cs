@@ -7,6 +7,7 @@ using Infrastructure.ECS.Services;
 using Infrastructure.Factories;
 using Leopotam.EcsLite;
 using Objects;
+using Scripts.Test;
 
 namespace Infrastructure.ECS.Systems
 {
@@ -20,14 +21,19 @@ namespace Infrastructure.ECS.Systems
 
         private BulletPool _bulletPool;
         private InputService _inputService;
+        private ITestService _testService;
         private bool _isAttack;
         private float fireTimer = 0;
 
-        public PlayerWeaponShootSystem(InputService inputService,BulletPool bulletPool)
+        public PlayerWeaponShootSystem(InputService inputService,BulletPool bulletPool,ITestService testService)
         {
             _inputService = inputService;
             _bulletPool = bulletPool;
             _inputService.OnAttackButtonPressed += Attack;
+
+            _testService = testService;
+            _testService.AddField(typeof(Projectile).ToString());
+
             _bulletPool.Init();
             _bulletPool.SetBulletType(BulletType.COMMON);
         }
@@ -76,6 +82,7 @@ namespace Infrastructure.ECS.Systems
 
             projectile.SetPackEntity(_world.PackEntity(projectileEntity));
 
+            _testService.Increase<Projectile>();
         }
 
         private void Attack(bool flag)

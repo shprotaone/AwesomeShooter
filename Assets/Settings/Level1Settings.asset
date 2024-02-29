@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Level1Settings
   m_EditorClassIdentifier: 
   enemiesOnLevel: 100
-  maxEnemiesOnMap: 30
+  maxEnemiesOnMap: 5
   minSpawnTimeRate: 0.5
   maxSpawnTimeRate: 0

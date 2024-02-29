@@ -1,6 +1,7 @@
 ﻿using Extention;
 using Infrastructure.ECS.Components;
 using Leopotam.EcsLite;
+using Scripts.Test;
 
 namespace Infrastructure.ECS.Systems
 {
@@ -12,7 +13,15 @@ namespace Infrastructure.ECS.Systems
         private EcsPool<EnemyCollisionComponent> _collisionPool;
         private EcsPool<ProjectileComponent> _projectilePool;
 
+        private ITestService _testService;
         private int _perDamageRequest;
+
+        public EnemyCollisionSystem(ITestService testService)
+        {
+            _testService = testService;
+            _testService.AddField(typeof(DamageRequestComponent).ToString());
+        }
+
         public void Init(IEcsSystems systems)
         {
             _world = systems.GetWorld();
@@ -26,33 +35,43 @@ namespace Infrastructure.ECS.Systems
             foreach (var entity in _collisionFilter)
             {
                 ref var enemyComponent = ref _collisionPool.Get(entity);
-                bool isEnter = enemyComponent.collision.IsEnter;
 
-                if (isEnter)
-                {
-                    enemyComponent.collision.entryEntity.Unpack(_world, out int enterEntity);
-                    enemyComponent.collision.IsEnter = false;
+                if (enemyComponent.onTrigger.IsEnter == false) return;
 
-                    DamageRequest(enterEntity, enemyComponent);
-                }
+                enemyComponent.onTrigger.entryEntity.Unpack(_world, out int enterEntity);
+
+                DamageRequest(enterEntity, enemyComponent);
+
+                enemyComponent.onTrigger.IsEnter = false;
             }
         }
 
         private void DamageRequest(int enterEntity, EnemyCollisionComponent enemyComponent)
         {
-            if (_projectilePool.Has(enterEntity))
+            var from = _projectilePool.Get(enterEntity);
+            int damageRequest = _world.NewEntity();
+
+            if (enemyComponent.enemy == null)
             {
-                int damageRequest = _world.NewEntity();
-                var from = _projectilePool.Get(enterEntity);
-
-                _world.AddComponentToEntity(damageRequest, new DamageRequestComponent()
-                {
-                    packEntity = enemyComponent.enemy.PackedEntity,
-                    damage = from.projectile.Damage
-                });
-
                 from.projectile.DisableBullet();
                 _world.DelEntity(enterEntity);
+                return;
+            }
+
+            _world.AddComponentToEntity(damageRequest, new DamageRequestComponent()
+            {
+                packEntity = enemyComponent.enemy.PackedEntity,
+                damage = from.projectile.Damage
+            });
+
+            _testService.Increase<DamageRequestComponent>();
+
+            from.projectile.DisableBullet();
+            _world.DelEntity(enterEntity);
+
+            if (_projectilePool.Has(enterEntity))
+            {
+
             }
         }
     }

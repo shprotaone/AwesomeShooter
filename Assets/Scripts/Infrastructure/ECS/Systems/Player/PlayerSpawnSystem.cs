@@ -10,7 +10,7 @@ using Debug = UnityEngine.Debug;
 
 namespace Infrastructure.ECS.Systems
 {
-    public class SpawnActivatorSystem : IEcsInitSystem,IEcsRunSystem
+    public class PlayerSpawnSystem : IEcsInitSystem,IEcsRunSystem
     {
         private EcsWorld _world;
 

@@ -12,6 +12,7 @@ namespace Infrastructure.Services
         {
             _services = new List<IView>();
         }
+
         public void AddService(IView view)
         {
             _services.Add(view);

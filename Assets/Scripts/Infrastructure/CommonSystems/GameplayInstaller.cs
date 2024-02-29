@@ -3,6 +3,7 @@ using Infrastructure.ECS;
 using Infrastructure.Factories;
 using Infrastructure.Services;
 using Infrastructure.StateMachines;
+using Scripts.Test;
 using Settings;
 using UI;
 using UnityEngine;
@@ -44,7 +45,12 @@ namespace Infrastructure.CommonSystems
 
             BindRestartService();
 
-            Debug.Log("BindingComplete");
+            BindTestService();
+        }
+
+        private void BindTestService()
+        {
+            Container.BindInterfacesAndSelfTo<TestService>().AsSingle();
         }
 
         private void BindServiceInitializer()

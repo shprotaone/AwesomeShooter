@@ -78,6 +78,7 @@ namespace Infrastructure.ECS.Systems
                 var componentList = CreateComponents(enemy);
                 int entity = _ecsWorld.NewEntityWithComponents(componentList);
                 enemy.SetPackedEntity(_ecsWorld.PackEntity(entity));
+                enemy.SetEntityNumber(enemy.PackedEntity.Id.ToString());
             }
         }
 
@@ -88,7 +89,7 @@ namespace Infrastructure.ECS.Systems
             components.Add(new EnemyTag());
             components.Add(new EnemyCollisionComponent()
             {
-                collision = enemy.GetComponent<CollisionEvent>(),
+                onTrigger = enemy.GetComponent<OnTriggerEvent>(),
                 enemy = enemy
             });
 
@@ -123,7 +124,7 @@ namespace Infrastructure.ECS.Systems
 
         private bool CheckMaxEnemiesOnMap()
         {
-            return _levelData.LevelSettings.maxEnemiesOnMap >= _enemiesFilter.GetEntitiesCount();
+            return _levelData.LevelSettings.maxEnemiesOnMap > _enemiesFilter.GetEntitiesCount();
         }
     }
 }

@@ -19,6 +19,7 @@ namespace Infrastructure.Bootstrappers
         private IServiceInitializer _serviceInitializer;
         private LevelSettingsContainer _levelSettings;
         private GameplayUIFactory _gameplayUIFactory;
+        private UIService _uiService;
         private EnemyPool _enemyPool;
         private EcsStartup _ecsStartup;
 

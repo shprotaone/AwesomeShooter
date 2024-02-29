@@ -28,7 +28,9 @@ namespace Infrastructure.ECS
             Container.BindInterfacesAndSelfTo<DamageSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<PeriodicDamageSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<DeathSystem>().AsSingle();
+            Container.BindInterfacesAndSelfTo<TestCollisionSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<EcsUpdateSystems>().AsSingle();
+
 
         }
     }

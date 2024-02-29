@@ -3,12 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SphereDrawer : MonoBehaviour
+namespace Scripts.Test
 {
-    [SerializeField] private Color _color;
-    private void OnDrawGizmos()
+    public class SphereDrawer : MonoBehaviour
     {
-        Gizmos.color = _color;
-        Gizmos.DrawSphere(transform.position,1);
+        [SerializeField] private Color _color;
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = _color;
+            Gizmos.DrawSphere(transform.position,1);
+        }
     }
+
 }

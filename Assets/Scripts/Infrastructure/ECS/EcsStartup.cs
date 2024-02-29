@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Infrastructure.CommonSystems;
 using Infrastructure.ECS.Services;
+using Infrastructure.ECS.Systems;
 using Infrastructure.Services;
+using LeoEcsPhysics;
 using Leopotam.EcsLite;
 using MonoBehaviours.Interfaces;
 using Settings;
@@ -21,7 +23,6 @@ namespace Infrastructure.ECS
         private IEcsUpdateSystems _ecsUpdateSystems;
         private IEcsFixedSystems _ecsFixedSystems;
         private ILevelData _levelData;
-        private PauseGameService _pauseGameService;
         private DiContainer _container;
 
         private bool _isInitialized;
@@ -38,13 +39,12 @@ namespace Infrastructure.ECS
             _ecsUpdateSystems = updateSystems;
             _ecsFixedSystems = ecsFixedSystems;
             _container = container;
-            _pauseGameService = pauseGameService;
             pauseGameService.Add(this);
         }
 
         public async UniTask Initialize(ILevelData levelData)
         {
-            Debug.Log("StartInit");
+
             _world = new EcsWorld();
             _container.BindInstance(_world).AsSingle();
             
@@ -56,6 +56,9 @@ namespace Infrastructure.ECS
             AddSystems();
             _updateSystems.ConvertScene();
             _fixedUpdateSystems.ConvertScene();
+
+            EcsPhysicsEvents.ecsWorld = _world;
+
             _updateSystems.Init();
             _fixedUpdateSystems.Init();
             _isInitialized = true;
@@ -85,6 +88,8 @@ namespace Infrastructure.ECS
 
         public void Dispose()
         {
+            EcsPhysicsEvents.ecsWorld = null;
+
             if (_updateSystems != null)
             {
                 _updateSystems.Destroy();

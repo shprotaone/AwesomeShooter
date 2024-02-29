@@ -24,12 +24,12 @@ namespace Infrastructure.ECS.Systems
             foreach (var entity in _obstacleFilter)
             {
                 ref var obstacleComponent = ref _obstaclePool.Get(entity);
-                bool isEnter = obstacleComponent.collision.IsEnter;
+                bool isEnter = obstacleComponent._onTrigger.IsEnter;
 
                 if (isEnter)
                 {
-                    obstacleComponent.collision.entryEntity.Unpack(_world,out int bullet);
-                    obstacleComponent.collision.IsEnter = false;
+                    obstacleComponent._onTrigger.entryEntity.Unpack(_world,out int bullet);
+                    obstacleComponent._onTrigger.IsEnter = false;
                     if (_projectilePool.Has(bullet))
                     {
                         var projectile = _projectilePool.Get(bullet);

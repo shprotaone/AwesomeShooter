@@ -10,6 +10,7 @@ namespace Infrastructure.CommonSystems
 {
     public class GameRunner : MonoBehaviour
     {
+        [SerializeField] private bool _loadFromMenu;
         private IInstantiator _instantiator;
         private AsyncOperationHandle<GameObject> handle;
 
@@ -18,13 +19,17 @@ namespace Infrastructure.CommonSystems
         {
             _instantiator = instantiator;
         }
+
         private void Awake()
         {
-            var bootstrapper = FindObjectOfType<GameBootstrapper>();
-        
-            if(bootstrapper != null) return;
+            if (_loadFromMenu)
+            {
+                var bootstrapper = FindObjectOfType<GameBootstrapper>();
 
-            StartCoroutine(LoadBootstrapper());
+                if(bootstrapper != null) return;
+
+                StartCoroutine(LoadBootstrapper());
+            }
         }
 
         private IEnumerator LoadBootstrapper()

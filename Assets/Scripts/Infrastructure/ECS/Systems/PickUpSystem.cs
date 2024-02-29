@@ -17,30 +17,24 @@ namespace Infrastructure.ECS.Systems
         private EcsFilter _playerFilter;
         private EcsFilter _aroundFilter;
 
-        private EcsPool<DamageComponent> _damagePool;
         private EcsPool<ModelComponent> _playerPool;
         private EcsPool<WeaponHolderComponent> _weaponHolderPool;
         private EcsPool<AroundScanComponent> _aroundScanPool;
 
         private Vector3 _playerPosition;
         private LayerMask _mask;
-        private LayerMask _enemyMask;
         private Collider[] _hitColliders = new Collider[1];
 
-        private int perDamage;
         public void Init(IEcsSystems systems)
         {
             _playerPosition = new Vector3();
             _mask = Masks.Pickable;
-            _enemyMask = Masks.Enemy;
             _world = systems.GetWorld();
             _aroundFilter = _world.Filter<AroundScanComponent>().Inc<PlayerTag>().End();
             _aroundScanPool = _world.GetPool<AroundScanComponent>();
 
             _playerFilter = _world.Filter<ModelComponent>().Inc<PlayerTag>().End();
             _playerPool = _world.GetPool<ModelComponent>();
-
-            _damagePool = _world.GetPool<DamageComponent>();
         }
 
         public void Run(IEcsSystems systems)
@@ -60,7 +54,7 @@ namespace Infrastructure.ECS.Systems
 
         private void CheckTriggers()
         {
-            int numColliders = Physics.OverlapSphereNonAlloc(_playerPosition, 2, _hitColliders, _mask.value | _enemyMask.value);
+            int numColliders = Physics.OverlapSphereNonAlloc(_playerPosition, 2, _hitColliders, _mask.value);
 
             foreach (int entity in _aroundFilter)
             {
@@ -73,23 +67,12 @@ namespace Infrastructure.ECS.Systems
                         weaponConfig.entity.Unpack(_world, out int result);
                         OnTriggerEnter(result);
                     }
-                    else if (_hitColliders[0].TryGetComponent(out Enemy enemy) && perDamage == 0)
-                    {
-                        OnHitPlayer(entity,enemy);
-                    }
-
                 }
                 else
                 {
-                    perDamage = 0;
                     aroundComponents = "";
                 }
             }
-        }
-
-        private void OnHitPlayer(int enemyEntity,Enemy enemy)
-        {
-            CreateDamageRequest(enemyEntity, enemy);
         }
 
         private void OnTriggerEnter(int entity)
@@ -103,33 +86,6 @@ namespace Infrastructure.ECS.Systems
             {
                 entity = itemPackEntity,
                 itemType = type
-            });
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (((1 << other.gameObject.layer) & _mask) != 0)
-            {
-                Debug.Log("Enter " + other.gameObject);
-                _world.DelEntity(perDamage);
-            }
-        }
-        
-        private void CreateDamageRequest(int entity, Enemy enemy)
-        {
-            perDamage = _world.NewEntity();
-            var to = _damagePool.Get(entity);
-
-            _world.AddComponentToEntity(perDamage, new PeriodicDamageRequestComponent()
-            {
-                PackedEntity = _world.PackEntity(entity),
-                Damage = to.value,
-                TimeOfDamage = enemy.EnemySettings.DamageTime
-            });
-
-            _world.AddComponentToEntity(perDamage, new FireRateComponent()
-            {
-                firerate = enemy.EnemySettings.DamageTime
             });
         }
     }

@@ -9,7 +9,7 @@ namespace Infrastructure.ECS
         {          
             Container.BindInterfacesAndSelfTo<PlayerGroundCheckSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<PickUpSystem>().AsSingle();
-            Container.BindInterfacesAndSelfTo<SpawnActivatorSystem>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PlayerSpawnSystem>().AsSingle();
             Container.BindInterfacesAndSelfTo<EcsFixedSystems>().AsSingle();
         }
     }

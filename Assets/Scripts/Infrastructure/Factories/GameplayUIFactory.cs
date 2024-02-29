@@ -1,6 +1,8 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Infrastructure.AssetManagment;
 using Infrastructure.Services;
+using Scripts.Test;
 using UI;
 using UIComponents;
 using UnityEngine;
@@ -37,8 +39,16 @@ namespace Infrastructure.Factories
             await CreateLevelInfo();
             await CreateWeaponInfo();
             await CreateLoadUpPopUp();
-            
+            await CreateTestServiceWindow();
+
             await _mainHUDController.Initialize();
+        }
+
+        private async UniTask CreateTestServiceWindow()
+        {
+            var instance = await Load(AssetAddress.TestServiceViewPanel);
+            instance.transform.SetParent(_mainPanelParent,false);
+            _uiService.AddService(instance.GetComponent<TestServiceView>());
         }
 
         private async UniTask CreatePlayerInfo()
@@ -74,6 +84,13 @@ namespace Infrastructure.Factories
             GameObject prefab = await _assetProvider.Load<GameObject>(assetPath);
             GameObject instance = _instantiator.InstantiatePrefab(prefab);
             return instance;
+        }
+
+        public async UniTask<TestLineView> CreateTestLineView()
+        {
+            var prefab = await _assetProvider.Load<GameObject>(AssetAddress.TestLineView);
+            var instance = _instantiator.InstantiatePrefab(prefab);
+            return instance.GetComponent<TestLineView>();
         }
     }
 }

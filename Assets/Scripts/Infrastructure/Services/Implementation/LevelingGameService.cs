@@ -18,7 +18,6 @@ namespace Infrastructure.Services
         {
             _settingsContainer = settingsContainer;
             serviceInitializer.Add(this);
-            Debug.Log("LevelingBuilding");
         }
 
         public void Init()

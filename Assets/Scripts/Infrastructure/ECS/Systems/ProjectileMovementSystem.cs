@@ -19,8 +19,6 @@ namespace Infrastructure.ECS.Systems
 
             _projectilePool = _world.GetPool<ProjectileComponent>();
             _lifetimePool = _world.GetPool<LifeTimeComponent>();
-
-            Debug.Log("Entity In World" + _world.GetEntitiesCount());
         }
 
         public void Run(IEcsSystems systems)

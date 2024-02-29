@@ -1,5 +1,6 @@
 ﻿using System;
 using Objects;
+using UnityEngine.Serialization;
 
 namespace Infrastructure.ECS.Components
 {
@@ -7,6 +8,6 @@ namespace Infrastructure.ECS.Components
     public struct EnemyCollisionComponent
     {
         public Enemy enemy;
-        public CollisionEvent collision;
+        public OnTriggerEvent onTrigger;
     }
 }

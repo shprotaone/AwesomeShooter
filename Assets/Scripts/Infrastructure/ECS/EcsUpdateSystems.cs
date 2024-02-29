@@ -14,6 +14,7 @@ namespace Infrastructure.ECS
         {
             _systems = systems.ToList();
         }
+
         public void Dispose()
         {
             _systems.Clear();
